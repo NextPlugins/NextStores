@@ -1,0 +1,3 @@
+name: NextStores
+version: @version@
+main: com.nextplugins.stores.NextStores
