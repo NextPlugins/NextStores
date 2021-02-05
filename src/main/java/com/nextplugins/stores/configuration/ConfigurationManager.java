@@ -1,6 +1,6 @@
 package com.nextplugins.stores.configuration;
 
-import com.nextplugins.onlinetime.NextOnlineTime;
+import com.nextplugins.stores.NextStores;
 import lombok.Data;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,7 +19,7 @@ public final class ConfigurationManager {
 
     public ConfigurationManager saveDefault() {
 
-        NextOnlineTime instance = NextOnlineTime.getInstance();
+        NextStores instance = NextStores.getInstance();
         instance.saveResource(this.config, false);
 
         return this;
@@ -28,7 +28,7 @@ public final class ConfigurationManager {
 
     public Configuration load() {
 
-        NextOnlineTime instance = NextOnlineTime.getInstance();
+        NextStores instance = NextStores.getInstance();
 
         return YamlConfiguration.loadConfiguration(
                 new File(instance.getDataFolder(), this.config)

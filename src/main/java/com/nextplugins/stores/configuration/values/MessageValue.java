@@ -1,6 +1,7 @@
 package com.nextplugins.stores.configuration.values;
 
 import com.nextplugins.stores.NextStores;
+import com.nextplugins.stores.utils.ColorUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,7 @@ public final class MessageValue {
     }
 
     private String colored(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return ColorUtils.colored(message);
     }
 
     private String message(String key) {

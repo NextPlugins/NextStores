@@ -8,8 +8,6 @@ import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.stores.NextStores;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.bukkit.configuration.Configuration;
 
 import java.util.logging.Logger;
 

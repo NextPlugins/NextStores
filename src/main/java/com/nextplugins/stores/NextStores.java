@@ -71,8 +71,9 @@ public final class NextStores extends JavaPlugin {
                     MessageValue.get(MessageValue::incorrectUsage)
             );
 
-            configureBStats();
+            this.getLogger().info("BukkitFrame registered successfully");
 
+            configureBStats();
 
         });
 
