@@ -1,5 +1,7 @@
 package com.nextplugins.stores.command;
 
+import com.google.inject.Inject;
+import com.nextplugins.stores.registry.InventoryRegistry;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
@@ -11,14 +13,15 @@ import org.bukkit.entity.Player;
  */
 public class StoreCommand {
 
+    @Inject private InventoryRegistry inventoryRegistry;
+
     @Command(
             name = "store",
+            aliases = {"loja", "lojas", "setloja"},
             target = CommandTarget.PLAYER
     )
     public void storeCommandContext(Context<Player> context) {
-
-        //TODO store command
-
+        this.inventoryRegistry.getStoreInventory().openInventory(context.getSender());
     }
 
 }
