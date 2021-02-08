@@ -2,7 +2,7 @@ package com.nextplugins.stores.api;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
-import com.nextplugins.stores.api.store.Store;
+import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.manager.StoreManager;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,6 +61,20 @@ public final class NextStoresAPI {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Delete {@link Store} by owner name
+     *
+     * @param owner name
+     */
+    public void deleteStoreByOwner(String owner) {
+        storeManager.getStores().remove(owner);
+    }
+
+    /**
+     * Get all stores
+     *
+     * @return {@link Set} of all {@link Store}
+     */
     public Set<Store> allStores() {
         return ImmutableSet.copyOf(storeManager.getStores().values());
     }

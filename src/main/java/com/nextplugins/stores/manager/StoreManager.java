@@ -1,7 +1,7 @@
 package com.nextplugins.stores.manager;
 
 import com.google.inject.Inject;
-import com.nextplugins.stores.api.store.Store;
+import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.dao.StoreDAO;
 import lombok.Getter;
 

@@ -1,8 +1,7 @@
-package com.nextplugins.stores.utils;
+package com.nextplugins.stores.util;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

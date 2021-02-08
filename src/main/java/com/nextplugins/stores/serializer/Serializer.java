@@ -1,10 +1,10 @@
-package com.nextplugins.stores.parser;
+package com.nextplugins.stores.serializer;
 
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-public interface Parser<T> {
+public interface Serializer<T> {
 
     T decode(String data);
 

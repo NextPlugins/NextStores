@@ -1,9 +1,9 @@
-package com.nextplugins.stores.parser.impl;
+package com.nextplugins.stores.serializer.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nextplugins.stores.parser.Parser;
-import com.nextplugins.stores.utils.SimpleLocation;
+import com.nextplugins.stores.serializer.Serializer;
+import com.nextplugins.stores.util.SimpleLocation;
 import lombok.Getter;
 import org.bukkit.Location;
 
@@ -12,9 +12,9 @@ import org.bukkit.Location;
  * Github: https://github.com/Yuhtin
  */
 
-public class LocationParser implements Parser<Location> {
+public class LocationSerializer implements Serializer<Location> {
 
-    @Getter private static final LocationParser instance = new LocationParser();
+    @Getter private static final LocationSerializer instance = new LocationSerializer();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Override

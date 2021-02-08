@@ -1,4 +1,4 @@
-package com.nextplugins.stores.api.store;
+package com.nextplugins.stores.api.model.store;
 
 import lombok.Builder;
 import lombok.Data;

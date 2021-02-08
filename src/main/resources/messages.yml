@@ -1,1 +1,23 @@
+inventory:
+  main:
+    title: 'Sistema de Loja'
+    lines: 27
+    buttons:
+      yourStore:
+        material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
+        data: 3
+        username: 'Yuhtin' # Nick do dono da cabeça (apenas nick)
+        displayName: "&aMinha Loja"
+        lore:
+          - '&7Clique para gerenciar sua loja.'
+        inventorySlot: 12
+      allStores:
+        material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
+        data: 3
+        username: 'Henry_Fabio' # Nick do dono da cabeça (apenas nick)
+        displayName: "&aLojas"
+        lore:
+          - '&7Clique para acessar o menu de lojas.'
+        inventorySlot: 14
+
 incorrect-usage: '&cUtilize /{usage}.'

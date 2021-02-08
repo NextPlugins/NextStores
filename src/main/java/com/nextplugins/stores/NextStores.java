@@ -12,6 +12,7 @@ import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.configuration.values.FeatureValue;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.guice.PluginModule;
+import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
@@ -38,6 +39,7 @@ public final class NextStores extends JavaPlugin {
     private Configuration messagesConfig;
 
     @Inject private InventoryRegistry inventoryRegistry;
+    @Inject private StoreManager storeManager;
 
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
@@ -63,10 +65,9 @@ public final class NextStores extends JavaPlugin {
             this.injector.injectMembers(this);
 
             inventoryRegistry.init();
+            storeManager.init();
 
             enableCommandFrame();
-
-            this.getLogger().info("BukkitFrame registered successfully");
 
             configureBStats();
 

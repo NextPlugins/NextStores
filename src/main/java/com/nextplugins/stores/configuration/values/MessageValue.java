@@ -1,12 +1,11 @@
 package com.nextplugins.stores.configuration.values;
 
 import com.nextplugins.stores.NextStores;
-import com.nextplugins.stores.utils.ColorUtils;
+import com.nextplugins.stores.util.ColorUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 
 import java.util.List;

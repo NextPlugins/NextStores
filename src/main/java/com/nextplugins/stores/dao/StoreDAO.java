@@ -3,9 +3,9 @@ package com.nextplugins.stores.dao;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.henryfabio.sqlprovider.executor.SQLExecutor;
-import com.nextplugins.stores.api.store.Store;
+import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.dao.adapter.StoreAdapter;
-import com.nextplugins.stores.parser.impl.LocationParser;
+import com.nextplugins.stores.serializer.impl.LocationSerializer;
 
 import java.util.Set;
 
@@ -60,7 +60,7 @@ public final class StoreDAO {
                     statment.set(5, store.getLikes());
                     statment.set(6, store.getDislikes());
                     statment.set(7, store.getNote());
-                    statment.set(8, LocationParser.getInstance().encode(store.getLocation()));
+                    statment.set(8, LocationSerializer.getInstance().encode(store.getLocation()));
 
                 }
         );

@@ -3,8 +3,8 @@ package com.nextplugins.stores.dao.adapter;
 import com.google.inject.Singleton;
 import com.henryfabio.sqlprovider.executor.adapter.SQLResultAdapter;
 import com.henryfabio.sqlprovider.executor.result.SimpleResultSet;
-import com.nextplugins.stores.api.store.Store;
-import com.nextplugins.stores.parser.impl.LocationParser;
+import com.nextplugins.stores.api.model.store.Store;
+import com.nextplugins.stores.serializer.impl.LocationSerializer;
 
 /**
  * @author Yuhtin
@@ -25,7 +25,7 @@ public class StoreAdapter implements SQLResultAdapter<Store> {
                 .likes(resultSet.get("likes"))
                 .dislikes(resultSet.get("dislikes"))
                 .note(resultSet.get("note"))
-                .location(LocationParser.getInstance().decode(resultSet.get("location")))
+                .location(LocationSerializer.getInstance().decode(resultSet.get("location")))
                 .build();
 
     }

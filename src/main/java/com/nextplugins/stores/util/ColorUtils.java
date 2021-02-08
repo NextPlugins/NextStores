@@ -1,4 +1,4 @@
-package com.nextplugins.stores.utils;
+package com.nextplugins.stores.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

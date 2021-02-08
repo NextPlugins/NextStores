@@ -1,11 +1,13 @@
 package com.nextplugins.stores.inventory;
 
+import com.google.inject.Inject;
 import com.henryfabio.minecraft.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.minecraft.inventoryapi.inventory.impl.global.GlobalInventory;
 import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
-import com.nextplugins.stores.utils.ColorUtils;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import com.nextplugins.stores.NextStores;
+import com.nextplugins.stores.configuration.values.InventoryValue;
+import com.nextplugins.stores.inventory.button.InventoryButton;
+import com.nextplugins.stores.registry.InventoryButtonRegistry;
 
 /**
  * @author Yuhtin
@@ -13,21 +15,27 @@ import org.bukkit.inventory.ItemStack;
  */
 public class StoreInventory extends GlobalInventory {
 
+    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
+
     public StoreInventory() {
 
         super(
                 "stores.main",
-                "Sistema de Loja",
-                3 * 9
+                InventoryValue.get(InventoryValue::mainInventoryTitle),
+                InventoryValue.get(InventoryValue::mainInventoryLines)
         );
 
+        NextStores.getInstance().getInjector().injectMembers(this);
     }
 
     @Override
     protected void configureInventory(InventoryEditor editor) {
 
-        editor.setItem(12, InventoryItem.of(new ItemStack(Material.OBSIDIAN)));
-        editor.setItem(14, InventoryItem.of(new ItemStack(Material.PRISMARINE_SHARD)));
+        InventoryButton yourStoreButton = inventoryButtonRegistry.get("main.yourStore");
+        editor.setItem(yourStoreButton.getInventorySlot(), InventoryItem.of(yourStoreButton.getItemStack()));
+
+        InventoryButton allStoresButton = inventoryButtonRegistry.get("main.allStores");
+        editor.setItem(allStoresButton.getInventorySlot(), InventoryItem.of(allStoresButton.getItemStack()));
 
     }
 
