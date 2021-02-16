@@ -25,6 +25,9 @@ public final class InventoryValue {
     private final String mainInventoryTitle = message("main.title");
     private final int mainInventoryLines = configuration.getInt("main.lines");
 
+    private final String configureInventoryTitle = message("configure.title");
+    private final int configureInventoryLines = configuration.getInt("configure.lines");
+
     public static <T> T get(Function<InventoryValue, T> supplier) {
         return supplier.apply(InventoryValue.instance);
     }

@@ -8,6 +8,7 @@ import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.configuration.values.InventoryValue;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
+import com.nextplugins.stores.registry.InventoryRegistry;
 
 /**
  * @author Yuhtin
@@ -16,6 +17,7 @@ import com.nextplugins.stores.registry.InventoryButtonRegistry;
 public class StoreInventory extends GlobalInventory {
 
     @Inject private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject private InventoryRegistry inventoryRegistry;
 
     public StoreInventory() {
 
@@ -32,7 +34,12 @@ public class StoreInventory extends GlobalInventory {
     protected void configureInventory(InventoryEditor editor) {
 
         InventoryButton yourStoreButton = inventoryButtonRegistry.get("main.yourStore");
-        editor.setItem(yourStoreButton.getInventorySlot(), InventoryItem.of(yourStoreButton.getItemStack()));
+        editor.setItem(
+                yourStoreButton.getInventorySlot(),
+                InventoryItem.of(yourStoreButton.getItemStack()).defaultCallback(
+                        callback -> inventoryRegistry.getConfigureStoryInventory().openInventory(callback.getPlayer())
+                )
+        );
 
         InventoryButton allStoresButton = inventoryButtonRegistry.get("main.allStores");
         editor.setItem(allStoresButton.getInventorySlot(), InventoryItem.of(allStoresButton.getItemStack()));

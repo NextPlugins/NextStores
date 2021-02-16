@@ -5,7 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.parser.InventoryButtonParser;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,17 +15,17 @@ public final class InventoryButtonRegistry {
 
     private final Map<String, InventoryButton> inventoryButtonMap = new LinkedHashMap<>();
 
-    @Inject @Named("categories") private Configuration categoriesConfig;
+    @Inject @Named("buttons") private ConfigurationSection buttonsConfig;
     @Inject private InventoryButtonParser inventoryButtonParser;
 
     public void init() {
 
         register("main.yourStore", inventoryButtonParser.parse(
-                categoriesConfig.getConfigurationSection("inventory.main.buttons.personalMarket")
+                buttonsConfig.getConfigurationSection("main.buttons.yourStore")
         ));
 
         register("main.allStores", inventoryButtonParser.parse(
-                categoriesConfig.getConfigurationSection("inventory.main.buttons.sellingMarket")
+                buttonsConfig.getConfigurationSection("main.buttons.allStores")
         ));
 
     }

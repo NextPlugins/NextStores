@@ -19,5 +19,8 @@ inventory:
         lore:
           - '&7Clique para acessar o menu de lojas.'
         inventorySlot: 14
+  configure:
+    title: 'Sua Loja'
+    lines: 27
 
 incorrect-usage: '&cUtilize /{usage}.'
