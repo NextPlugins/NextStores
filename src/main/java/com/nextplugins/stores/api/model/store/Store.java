@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Location;
 
+import java.util.UUID;
+
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
@@ -13,15 +15,15 @@ import org.bukkit.Location;
 @Builder
 public class Store {
 
-    private final String owner;
+    private final UUID owner;
     private String description;
 
-    private boolean openned;
+    private boolean open;
 
     private int visits;
     private int likes;
     private int dislikes;
-    private int note;
+    private double rating;
 
     private Location location;
 

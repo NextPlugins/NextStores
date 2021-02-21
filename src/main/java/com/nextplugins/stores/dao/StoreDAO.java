@@ -24,15 +24,26 @@ public final class StoreDAO {
     public void createTable() {
 
         this.sqlExecutor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
-                "owner VARCHAR(16) NOT NULL PRIMARY KEY UNIQUE," +
-                "openned BOOLEAN," +
+                "owner CHAR(36) NOT NULL PRIMARY KEY UNIQUE," +
+                "open BOOLEAN," +
                 "description TEXT," +
                 "visits INTEGER," +
                 "likes INTEGER," +
                 "dislikes INTEGER," +
-                "note INTEGER," +
+                "rating DOUBLE," +
                 "location TEXT" +
                 ");");
+
+    }
+
+    public Set<Store> selectAll() {
+
+        return this.sqlExecutor.resultManyQuery(
+                "SELECT * FROM " + TABLE,
+                simpleStatement -> {
+                },
+                StoreAdapter.class
+        );
 
     }
 
@@ -51,16 +62,16 @@ public final class StoreDAO {
 
         this.sqlExecutor.updateQuery(
                 String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?,?)", TABLE),
-                statment -> {
+                statement -> {
 
-                    statment.set(1, store.getOwner());
-                    statment.set(2, store.isOpenned());
-                    statment.set(3, store.getDescription());
-                    statment.set(4, store.getVisits());
-                    statment.set(5, store.getLikes());
-                    statment.set(6, store.getDislikes());
-                    statment.set(7, store.getNote());
-                    statment.set(8, LocationSerializer.getInstance().encode(store.getLocation()));
+                    statement.set(1, store.getOwner().toString());
+                    statement.set(2, store.isOpen());
+                    statement.set(3, store.getDescription());
+                    statement.set(4, store.getVisits());
+                    statement.set(5, store.getLikes());
+                    statement.set(6, store.getDislikes());
+                    statement.set(7, store.getRating());
+                    statement.set(8, LocationSerializer.getInstance().encode(store.getLocation()));
 
                 }
         );
