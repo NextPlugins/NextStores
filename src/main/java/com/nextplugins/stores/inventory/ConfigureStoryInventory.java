@@ -3,15 +3,16 @@ package com.nextplugins.stores.inventory;
 import com.google.inject.Inject;
 import com.henryfabio.minecraft.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.minecraft.inventoryapi.inventory.impl.simple.SimpleInventory;
+import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
 import com.henryfabio.minecraft.inventoryapi.item.enums.DefaultItem;
 import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.configuration.ViewerConfiguration;
-import com.henryfabio.minecraft.inventoryapi.viewer.configuration.impl.ViewerConfigurationImpl;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.simple.SimpleViewer;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.NextStoresAPI;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.configuration.values.InventoryValue;
+import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 
 /**
@@ -41,12 +42,11 @@ public class ConfigureStoryInventory extends SimpleInventory {
         Store store = NextStoresAPI.getInstance().findStoreByOwner(viewer.getPlayer().getName());
         if (store == null) {
 
-
-            return;
+            editor.setItem(14, InventoryItem.of(InventoryButton.getSkullItemStackName(viewer.getName()))
+                    .defaultCallback(callback -> callback.getPlayer().sendMessage("TODO"))
+            );
 
         }
-
-        
 
     }
 
@@ -57,7 +57,6 @@ public class ConfigureStoryInventory extends SimpleInventory {
         configuration.backInventory("stores.main");
 
     }
-
 
 
 }

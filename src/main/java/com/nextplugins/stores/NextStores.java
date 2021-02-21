@@ -6,13 +6,13 @@ import com.henryfabio.minecraft.inventoryapi.manager.InventoryManager;
 import com.henryfabio.sqlprovider.connector.SQLConnector;
 import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
-import com.nextplugins.stores.api.NextStoresAPI;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.configuration.values.FeatureValue;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.guice.PluginModule;
 import com.nextplugins.stores.manager.StoreManager;
+import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
@@ -38,8 +38,13 @@ public final class NextStores extends JavaPlugin {
 
     private Configuration messagesConfig;
 
-    @Inject private InventoryRegistry inventoryRegistry;
-    @Inject private StoreManager storeManager;
+    @Inject
+    private InventoryRegistry inventoryRegistry;
+    @Inject
+    private InventoryButtonRegistry inventoryButtonRegistry;
+
+    @Inject
+    private StoreManager storeManager;
 
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
@@ -65,6 +70,7 @@ public final class NextStores extends JavaPlugin {
             this.injector.injectMembers(this);
 
             inventoryRegistry.init();
+            inventoryButtonRegistry.init();
             storeManager.init();
 
             enableCommandFrame();
@@ -99,7 +105,7 @@ public final class NextStores extends JavaPlugin {
             ConfigurationSection sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
-                    .file(new File(sqliteSection.getString("file")))
+                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
                     .build()
                     .connect();
 

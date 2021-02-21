@@ -11,12 +11,12 @@
 connection:
   mysql:
     enable: false
-    address: "localhost:3306"
-    username: "root"
-    password: ""
-    database: "test"
+    address: 'localhost:3306'
+    username: 'root'
+    password: ''
+    database: 'test'
   sqlite:
-    file: "plugins/NextStores/stores.sql"
+    file: 'storage/stores_data.db'
 
 # Ative ou desative o uso do bStats (apenas serve para coletar algumas informações sobre o uso do plugin como quantidade de pessoas usando, servidores e etc...)
 bStats:

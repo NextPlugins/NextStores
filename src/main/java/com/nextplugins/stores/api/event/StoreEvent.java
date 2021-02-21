@@ -1,21 +1,12 @@
 package com.nextplugins.stores.api.event;
 
-import com.nextplugins.stores.api.model.store.Store;
-import lombok.*;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
+import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-@Getter
-@Builder
-public abstract class StoreEvent extends Event implements Cancellable {
+public abstract class StoreEvent extends Event {
 
     @Getter private static final HandlerList handlerList = new HandlerList();
-
-    private final Player player;
-    private final Store store;
-    @Setter private boolean cancelled;
 
     @Override
     public HandlerList getHandlers() {
@@ -23,3 +14,4 @@ public abstract class StoreEvent extends Event implements Cancellable {
     }
 
 }
+

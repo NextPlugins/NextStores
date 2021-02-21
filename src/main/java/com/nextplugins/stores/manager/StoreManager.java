@@ -22,6 +22,7 @@ public class StoreManager {
     @Inject private StoreDAO storeDAO;
 
     public void init() {
+        this.storeDAO.createTable();
         this.storeDAO.selectAll("").forEach(this::addStore);
     }
 

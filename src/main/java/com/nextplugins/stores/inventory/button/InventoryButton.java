@@ -2,6 +2,7 @@ package com.nextplugins.stores.inventory.button;
 
 import lombok.Builder;
 import lombok.Data;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,41 +27,27 @@ public final class InventoryButton {
     private ItemStack itemStack;
 
     public ItemStack getItemStack() {
-
         if (this.itemStack == null) {
-
             this.itemStack = materialData.toItemStack(1);
-
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(this.displayName);
             itemMeta.setLore(this.lore);
             itemMeta.addItemFlags(ItemFlag.values());
-
             this.itemStack.setItemMeta(itemMeta);
-
         }
-
-        return getSkullItemStack();
-
+        return this.itemStack;
     }
 
-    private ItemStack getSkullItemStack() {
-
-        if (username == null) return itemStack;
-
-        ItemStack itemStack = this.getItemStack().clone();
+    public static ItemStack getSkullItemStackName(String playerName) {
+        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 
         if (itemStack.getType().name().contains("SKULL_ITEM")) {
-
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-
-            skullMeta.setOwner(this.username);
+            skullMeta.setOwner(playerName);
             itemStack.setItemMeta(skullMeta);
-
         }
 
         return itemStack;
-
     }
 
 }
