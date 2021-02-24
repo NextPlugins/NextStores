@@ -22,7 +22,7 @@ public class StoreAdapter implements SQLResultAdapter<Store> {
         return Store.builder()
                 .owner(UUID.fromString(resultSet.get("owner")))
                 .description(resultSet.get("description"))
-                .open(resultSet.get("open"))
+                .open(Boolean.parseBoolean(resultSet.get("open")))
                 .visits(resultSet.get("visits"))
                 .likes(resultSet.get("likes"))
                 .dislikes(resultSet.get("dislikes"))

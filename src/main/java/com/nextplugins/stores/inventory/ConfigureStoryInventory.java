@@ -14,6 +14,9 @@ import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.configuration.values.InventoryValue;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
+import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 /**
  * @author Yuhtin
@@ -39,11 +42,39 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
         editor.setItem(0, DefaultItem.BACK.toInventoryItem(viewer));
 
-        Store store = NextStoresAPI.getInstance().findStoreByOwner(viewer.getPlayer().getName());
-        if (store == null) {
+        Optional<Store> store = NextStoresAPI.getInstance().findStoreByPlayer(viewer.getPlayer());
+        if (!store.isPresent()) {
+
+            editor.setItem(13, InventoryItem.of(InventoryButton.getSkullItemStackName(viewer.getName()))
+                    .defaultCallback(callback -> {
+                        Player player = callback.getPlayer();
+
+                        storeManager.addStore(Store.builder()
+                                .owner(player.getUniqueId())
+                                .description("null")
+                                .rating(0)
+                                .likes(0)
+                                .dislikes(0)
+                                .location(player.getLocation())
+                                .open(false)
+                                .visits(0)
+                                .build()
+                        );
+
+                        player.closeInventory();
+                        player.sendMessage("§aA sua loja foi criada com sucesso!");
+                    })
+            );
+
+        } else {
+
+            Store playerStore = store.get();
 
             editor.setItem(14, InventoryItem.of(InventoryButton.getSkullItemStackName(viewer.getName()))
-                    .defaultCallback(callback -> callback.getPlayer().sendMessage("TODO"))
+                    .defaultCallback(callback -> {
+                        callback.getPlayer().sendMessage(playerStore.toString());
+                        System.out.println(playerStore.toString());
+                    })
             );
 
         }
@@ -57,6 +88,5 @@ public class ConfigureStoryInventory extends SimpleInventory {
         configuration.backInventory("stores.main");
 
     }
-
 
 }

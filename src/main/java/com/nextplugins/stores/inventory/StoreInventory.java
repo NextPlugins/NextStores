@@ -42,7 +42,12 @@ public class StoreInventory extends GlobalInventory {
         );
 
         InventoryButton allStoresButton = inventoryButtonRegistry.get("main.allStores");
-        editor.setItem(allStoresButton.getInventorySlot(), InventoryItem.of(allStoresButton.getItemStack()));
+        editor.setItem(
+                allStoresButton.getInventorySlot(),
+                InventoryItem.of(allStoresButton.getItemStack()).defaultCallback(
+                        callback -> inventoryRegistry.getStoreListInventory().openInventory(callback.getPlayer())
+                )
+        );
 
     }
 

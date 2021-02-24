@@ -2,11 +2,13 @@ package com.nextplugins.stores.api;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
+import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.manager.StoreManager;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 import java.util.Set;
@@ -23,6 +25,10 @@ public final class NextStoresAPI {
 
     @Getter public static final NextStoresAPI instance = new NextStoresAPI();
 
+    static {
+        NextStores.getInstance().getInjector().injectMembers(instance);
+    }
+
     @Inject private StoreManager storeManager;
 
     /**
@@ -33,6 +39,12 @@ public final class NextStoresAPI {
      */
     public Store findStoreByOwner(String owner) {
         return storeManager.getStores().getOrDefault(owner, null);
+    }
+
+    public Optional<Store> findStoreByPlayer(Player player) {
+        return allStores().stream()
+                .filter(store -> player.getUniqueId().equals(store.getOwner()))
+                .findFirst();
     }
 
     /**

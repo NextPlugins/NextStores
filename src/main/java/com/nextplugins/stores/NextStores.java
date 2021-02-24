@@ -15,7 +15,6 @@ import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
-import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
 import me.saiintbrisson.minecraft.command.message.MessageType;
 import org.bstats.bukkit.Metrics;
@@ -61,7 +60,7 @@ public final class NextStores extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        PluginDependencyManager.of(this).loadAllDependencies().thenRun(() -> {
+        //PluginDependencyManager.of(this).loadAllDependencies().thenRun(() -> {
 
             InventoryManager.enable(this);
             configureSqlProvider(this.getConfig());
@@ -77,7 +76,7 @@ public final class NextStores extends JavaPlugin {
 
             configureBStats();
 
-        });
+        //});
 
     }
 

@@ -25,7 +25,7 @@ public final class StoreDAO {
 
         this.sqlExecutor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
                 "owner CHAR(36) NOT NULL PRIMARY KEY UNIQUE," +
-                "open BOOLEAN," +
+                "open TEXT," +
                 "description TEXT," +
                 "visits INTEGER," +
                 "likes INTEGER," +
@@ -65,7 +65,7 @@ public final class StoreDAO {
                 statement -> {
 
                     statement.set(1, store.getOwner().toString());
-                    statement.set(2, store.isOpen());
+                    statement.set(2, store.isOpen() ? "true" : "false");
                     statement.set(3, store.getDescription());
                     statement.set(4, store.getVisits());
                     statement.set(5, store.getLikes());

@@ -29,6 +29,7 @@ public class StoreManager {
 
     public void addStore(Store store) {
         this.stores.put(Bukkit.getOfflinePlayer(store.getOwner()).getName(), store);
+        this.storeDAO.insert(store);
     }
 
 }
