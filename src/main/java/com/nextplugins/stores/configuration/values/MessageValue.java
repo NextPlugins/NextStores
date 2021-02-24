@@ -26,7 +26,9 @@ public final class MessageValue {
 
     private final Configuration configuration = NextStores.getInstance().getMessagesConfig();
 
-    private final String incorrectUsage = message("incorrect-usage");
+    // messages
+
+    private final String incorrectUsage = message("messages.incorrect-usage");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);

@@ -17,7 +17,7 @@ public class StoreCommand {
 
     @Command(
             name = "store",
-            aliases = {"loja", "lojas", "setloja"},
+            aliases = {"lojas", "setloja"},
             target = CommandTarget.PLAYER
     )
     public void storeCommandContext(Context<Player> context) {

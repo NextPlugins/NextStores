@@ -18,7 +18,7 @@ public final class InventoryButton {
     private final MaterialData materialData;
 
     private final String displayName;
-    private final String username;
+    private String username;
 
     private final List<String> lore;
 

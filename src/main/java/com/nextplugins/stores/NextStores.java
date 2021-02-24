@@ -36,14 +36,14 @@ public final class NextStores extends JavaPlugin {
     private SQLConnector sqlConnector;
 
     private Configuration messagesConfig;
+    private Configuration mainInventoryConfig;
+    private Configuration storeInventoryConfig;
+    private Configuration storesInventoryConfig;
 
-    @Inject
-    private InventoryRegistry inventoryRegistry;
-    @Inject
-    private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject private InventoryRegistry inventoryRegistry;
+    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
 
-    @Inject
-    private StoreManager storeManager;
+    @Inject private StoreManager storeManager;
 
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
@@ -54,6 +54,9 @@ public final class NextStores extends JavaPlugin {
 
         this.saveDefaultConfig();
         this.messagesConfig = ConfigurationManager.of("messages.yml").saveDefault().load();
+        this.mainInventoryConfig = ConfigurationManager.of("inventories/main.yml").saveDefault().load();
+        this.storeInventoryConfig = ConfigurationManager.of("inventories/store.yml").saveDefault().load();
+        this.storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
 
     }
 

@@ -1,0 +1,41 @@
+inventory:
+  title: 'Configurações da Loja'
+  lines: 3
+  buttons:
+    yourStore:
+      material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
+      data: 3
+      displayName: "&aInformações"
+      lore:
+        - '&7Descrição:'
+        - ' &6$description'
+        - ''
+        - '&7Avaliações positivas:&6 $likes'
+        - '&7Avaliações negativas:&6 $dislikes'
+        - '&7Nota total:&6 $rating'
+        - ''
+        - '&7Está aberta?&6 $open'
+        - '&7Número de visitas:&6 $visits'
+      inventorySlot: 11
+    location:
+      material: COMPASS
+      data: 0
+      displayName: "&aDefinir localização"
+      lore:
+        - '&7Clique para definir a nova localização da sua loja.'
+        - '&7(OBS: será definido a sua localização atual.)'
+      inventorySlot: 13
+    description:
+      material: BOOK_AND_QUILL
+      data: 0
+      displayName: "&aAlterar descrição"
+      lore:
+        - '&7Clique para alterar a descrição da sua loja.'
+      inventorySlot: 14
+    state:
+      material: SIGN
+      data: 0
+      displayName: "&aAbrir/fechar loja"
+      lore:
+        - '&7Clique aqui para abrir ou fechar a sua loja.'
+      inventorySlot: 15

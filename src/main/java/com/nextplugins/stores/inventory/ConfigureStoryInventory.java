@@ -11,10 +11,15 @@ import com.henryfabio.minecraft.inventoryapi.viewer.impl.simple.SimpleViewer;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.NextStoresAPI;
 import com.nextplugins.stores.api.model.store.Store;
-import com.nextplugins.stores.configuration.values.InventoryValue;
+import com.nextplugins.stores.configuration.values.inventories.StoreInventoryValue;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
+import com.nextplugins.stores.registry.InventoryButtonRegistry;
+import com.nextplugins.stores.util.item.ItemBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 
 import java.util.Optional;
 
@@ -24,14 +29,17 @@ import java.util.Optional;
  */
 public class ConfigureStoryInventory extends SimpleInventory {
 
-    @Inject private StoreManager storeManager;
+    @Inject
+    private StoreManager storeManager;
+    @Inject
+    private InventoryButtonRegistry inventoryButtonRegistry;
 
     public ConfigureStoryInventory() {
 
         super(
                 "stores.configure",
-                InventoryValue.get(InventoryValue::configureInventoryTitle),
-                InventoryValue.get(InventoryValue::configureInventoryLines)
+                StoreInventoryValue.get(StoreInventoryValue::title),
+                StoreInventoryValue.get(StoreInventoryValue::lines) * 9
         );
 
         NextStores.getInstance().getInjector().injectMembers(this);
@@ -45,13 +53,21 @@ public class ConfigureStoryInventory extends SimpleInventory {
         Optional<Store> store = NextStoresAPI.getInstance().findStoreByPlayer(viewer.getPlayer());
         if (!store.isPresent()) {
 
-            editor.setItem(13, InventoryItem.of(InventoryButton.getSkullItemStackName(viewer.getName()))
-                    .defaultCallback(callback -> {
+            editor.setItem(13, InventoryItem.of(
+                    new ItemBuilder(InventoryButton.getSkullItemStackName(viewer.getName()))
+                            .name(ChatColor.GREEN + "Criar uma loja")
+                            .lore(
+                                    "",
+                                    ChatColor.GRAY + "Clique aqui para criar uma nova loja.",
+                                    ""
+                            )
+                            .addItemFlags(ItemFlag.values())
+                            .result()
+                    ).defaultCallback(callback -> {
                         Player player = callback.getPlayer();
 
                         storeManager.addStore(Store.builder()
                                 .owner(player.getUniqueId())
-                                .description("null")
                                 .rating(0)
                                 .likes(0)
                                 .dislikes(0)
@@ -67,16 +83,9 @@ public class ConfigureStoryInventory extends SimpleInventory {
             );
 
         } else {
-
             Store playerStore = store.get();
 
-            editor.setItem(14, InventoryItem.of(InventoryButton.getSkullItemStackName(viewer.getName()))
-                    .defaultCallback(callback -> {
-                        callback.getPlayer().sendMessage(playerStore.toString());
-                        System.out.println(playerStore.toString());
-                    })
-            );
-
+            storeItems(playerStore, editor);
         }
 
     }
@@ -86,6 +95,37 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
         ViewerConfiguration configuration = viewer.getConfiguration();
         configuration.backInventory("stores.main");
+
+    }
+
+    private void storeItems(Store store, InventoryEditor editor) {
+
+        InventoryButton infoButton = inventoryButtonRegistry.get("store.info");
+
+        infoButton.setUsername(Bukkit.getOfflinePlayer(store.getOwner()).getName());
+
+        editor.setItem(
+                infoButton.getInventorySlot(),
+                InventoryItem.of(infoButton.getItemStack())
+        );
+
+        InventoryButton locationButton = inventoryButtonRegistry.get("store.location");
+        editor.setItem(
+                locationButton.getInventorySlot(),
+                InventoryItem.of(locationButton.getItemStack())
+        );
+
+        InventoryButton descriptionButton = inventoryButtonRegistry.get("store.description");
+        editor.setItem(
+                descriptionButton.getInventorySlot(),
+                InventoryItem.of(descriptionButton.getItemStack())
+        );
+
+        InventoryButton stateButton = inventoryButtonRegistry.get("store.state");
+        editor.setItem(
+                stateButton.getInventorySlot(),
+                InventoryItem.of(stateButton.getItemStack())
+        );
 
     }
 
