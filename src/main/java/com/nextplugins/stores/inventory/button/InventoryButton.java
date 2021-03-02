@@ -27,24 +27,37 @@ public final class InventoryButton {
     private ItemStack itemStack;
 
     public ItemStack getItemStack() {
+
         if (this.itemStack == null) {
+
+            if (username != null) this.itemStack = InventoryButton.getSkullItemStackName(username);
+
             this.itemStack = materialData.toItemStack(1);
+
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(this.displayName);
             itemMeta.setLore(this.lore);
             itemMeta.addItemFlags(ItemFlag.values());
+
             this.itemStack.setItemMeta(itemMeta);
+
         }
+
         return this.itemStack;
+
     }
 
     public static ItemStack getSkullItemStackName(String playerName) {
+
         ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 
         if (itemStack.getType().name().contains("SKULL_ITEM")) {
+
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+
             skullMeta.setOwner(playerName);
             itemStack.setItemMeta(skullMeta);
+
         }
 
         return itemStack;
