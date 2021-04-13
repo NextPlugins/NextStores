@@ -8,6 +8,7 @@ import com.henryfabio.minecraft.inventoryapi.item.enums.DefaultItem;
 import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.configuration.ViewerConfiguration;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.simple.SimpleViewer;
+import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.NextStoresAPI;
 import com.nextplugins.stores.api.model.store.Store;
@@ -16,7 +17,7 @@ import com.nextplugins.stores.configuration.values.inventories.StoreInventoryVal
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
-import com.nextplugins.stores.util.EventAsyncWaiter;
+import com.nextplugins.stores.util.EventWaiter;
 import com.nextplugins.stores.util.item.ItemBuilder;
 import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
@@ -31,7 +32,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -57,11 +58,11 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
     @Override
     protected void configureInventory(Viewer viewer, InventoryEditor editor) {
-
         editor.setItem(0, DefaultItem.BACK.toInventoryItem(viewer));
 
-        Optional<Store> store = NextStoresAPI.getInstance().findStoreByPlayer(viewer.getPlayer());
-        if (!store.isPresent()) {
+        ViewerPropertyMap propertyMap = viewer.getPropertyMap();
+        Store store = propertyMap.get("store");
+        if (store == null) {
 
             editor.setItem(13, InventoryItem.of(
                     new ItemBuilder(InventoryButton.getSkullItemStackName(viewer.getName()))
@@ -78,7 +79,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
                         Player player = callback.getPlayer();
 
                         storeManager.addStore(Store.builder()
-                                .owner(player.getUniqueId())
+                                .owner(player.getName())
                                 .likes(0)
                                 .dislikes(0)
                                 .location(player.getLocation())
@@ -110,19 +111,19 @@ public class ConfigureStoryInventory extends SimpleInventory {
             );
 
         } else {
-            Store playerStore = store.get();
-
-            storeItems(viewer.getPlayer(), playerStore, editor);
+            store.setDescription(UUID.randomUUID().toString());
+            storeItems(viewer.getPlayer(), store, editor);
         }
 
     }
 
     @Override
     protected void configureViewer(SimpleViewer viewer) {
-
         ViewerConfiguration configuration = viewer.getConfiguration();
         configuration.backInventory("stores.main");
 
+        ViewerPropertyMap propertyMap = viewer.getPropertyMap();
+        propertyMap.set("store", NextStoresAPI.getInstance().findStoreByOwner(viewer.getName()).orElse(null));
     }
 
     private void storeItems(Player player, Store store, InventoryEditor editor) {
@@ -147,7 +148,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                     changeStoreDescriptionMessage.forEach(player::sendMessage);
 
-                    EventAsyncWaiter.newAsyncWaiter(AsyncPlayerChatEvent.class, NextStores.getInstance())
+                    EventWaiter.newAsyncWaiter(AsyncPlayerChatEvent.class, NextStores.getInstance())
                             .expiringAfter(30, TimeUnit.SECONDS)
                             .withTimeOutAction(() -> player.sendMessage(MessageValue.get(MessageValue::descriptionChangeTimeOut)))
                             .filter(event -> event.getPlayer().getUniqueId().equals(player.getUniqueId()))
@@ -162,7 +163,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                                 this.openInventory(player);
                             })
-                            .await(true);
+                            .await(false);
                 })
         );
 
@@ -192,10 +193,12 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
     @Override
     protected void update(Viewer viewer, InventoryEditor editor) {
-        Optional<Store> store = NextStoresAPI.getInstance().findStoreByPlayer(viewer.getPlayer());
+        ViewerPropertyMap propertyMap = viewer.getPropertyMap();
+        Store store = propertyMap.get("store");
 
-        if (!store.isPresent()) return;
-        getInfoButton(viewer.getPlayer(), store.get(), editor);
+        if (store != null) {
+            getInfoButton(viewer.getPlayer(), store, editor);
+        }
     }
 
     private void getInfoButton(Player player, Store store, InventoryEditor editor) {

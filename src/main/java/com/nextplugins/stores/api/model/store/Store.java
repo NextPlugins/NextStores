@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 public class Store {
 
-    private final UUID owner;
+    private final String owner;
     private String description;
 
     private boolean open;

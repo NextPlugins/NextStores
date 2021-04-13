@@ -35,16 +35,14 @@ public final class NextStoresAPI {
      * Get a store by owner name
      *
      * @param owner name
-     * @return {@link Store} finded by owner name
+     * @return {@link Store} found by owner name
      */
-    public Store findStoreByOwner(String owner) {
-        return storeManager.getStores().getOrDefault(owner, null);
+    public Optional<Store> findStoreByOwner(String owner) {
+        return Optional.ofNullable(storeManager.getStores().getOrDefault(owner, null));
     }
 
     public Optional<Store> findStoreByPlayer(Player player) {
-        return allStores().stream()
-                .filter(store -> player.getUniqueId().equals(store.getOwner()))
-                .findFirst();
+        return findStoreByOwner(player.getName());
     }
 
     /**

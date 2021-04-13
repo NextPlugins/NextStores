@@ -18,9 +18,8 @@ public class StoreAdapter implements SQLResultAdapter<Store> {
 
     @Override
     public Store adaptResult(SimpleResultSet resultSet) {
-
         return Store.builder()
-                .owner(UUID.fromString(resultSet.get("owner")))
+                .owner(resultSet.get("owner"))
                 .description(resultSet.get("description"))
                 .open(Boolean.parseBoolean(resultSet.get("open")))
                 .visits(resultSet.get("visits"))
