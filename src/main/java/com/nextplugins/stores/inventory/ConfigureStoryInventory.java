@@ -207,7 +207,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
         editor.setItem(
                 infoButton.getInventorySlot(),
                 InventoryItem.of(
-                        new ItemBuilder(infoButton.getItemStack())
+                        new ItemBuilder(infoButton.getItemStack().clone())
                                 .acceptItemMeta(itemMeta -> {
                                     SkullMeta skullMeta = (SkullMeta) itemMeta;
 
