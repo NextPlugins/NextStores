@@ -9,6 +9,8 @@ import com.nextplugins.stores.configuration.values.inventories.MainInventoryValu
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
+import com.nextplugins.stores.util.item.ItemBuilder;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  * @author Yuhtin
@@ -36,7 +38,15 @@ public class StoreInventory extends GlobalInventory {
         InventoryButton yourStoreButton = inventoryButtonRegistry.get("main.yourStore");
         editor.setItem(
                 yourStoreButton.getInventorySlot(),
-                InventoryItem.of(yourStoreButton.getItemStack()).defaultCallback(
+                InventoryItem.of(
+                        new ItemBuilder(yourStoreButton.getItemStack())
+                                .acceptItemMeta(itemMeta -> {
+                                    SkullMeta skullMeta = (SkullMeta) itemMeta;
+
+                                    skullMeta.setOwner(yourStoreButton.getUsername());
+                                })
+                                .result()
+                ).defaultCallback(
                         callback -> inventoryRegistry.getConfigureStoryInventory().openInventory(callback.getPlayer())
                 )
         );
@@ -44,7 +54,15 @@ public class StoreInventory extends GlobalInventory {
         InventoryButton allStoresButton = inventoryButtonRegistry.get("main.allStores");
         editor.setItem(
                 allStoresButton.getInventorySlot(),
-                InventoryItem.of(allStoresButton.getItemStack()).defaultCallback(
+                InventoryItem.of(
+                        new ItemBuilder(allStoresButton.getItemStack())
+                                .acceptItemMeta(itemMeta -> {
+                                    SkullMeta skullMeta = (SkullMeta) itemMeta;
+
+                                    skullMeta.setOwner(allStoresButton.getUsername());
+                                })
+                                .result()
+                ).defaultCallback(
                         callback -> inventoryRegistry.getStoreListInventory().openInventory(callback.getPlayer())
                 )
         );

@@ -50,6 +50,13 @@ bukkit {
     main = 'com.nextplugins.stores.NextStores'
     authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
     website = 'https://github.com/NextPlugins'
+
+    commands {
+        store {
+            permission = 'nextstores.command.store'
+            aliases = ['lojas']
+        }
+    }
 }
 
 shadowJar {

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class ItemBuilder {
 
@@ -96,6 +97,11 @@ public class ItemBuilder {
 
     public ItemBuilder setUnbreakable(boolean unbreakable) {
         itemMeta.spigot().setUnbreakable(unbreakable);
+        return this;
+    }
+
+    public ItemBuilder acceptItemMeta(Consumer<ItemMeta> consumer) {
+        consumer.accept(itemMeta);
         return this;
     }
 

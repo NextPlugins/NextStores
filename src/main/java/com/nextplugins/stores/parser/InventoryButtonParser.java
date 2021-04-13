@@ -2,7 +2,7 @@ package com.nextplugins.stores.parser;
 
 import com.google.inject.Singleton;
 import com.nextplugins.stores.inventory.button.InventoryButton;
-import com.nextplugins.stores.util.ColorUtils;
+import com.nextplugins.stores.util.text.ColorUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;

@@ -1,2 +1,16 @@
 messages:
   incorrect-usage: '&cUso incorreto! Utilize /{usage}.'
+  location-set: '&a&lYAY! &aVocê trocou a localização da sua loja para a sua posição atual.'
+  description-change-time-out: '&cO tempo para trocar a descrição da sua loja foi esgotado!'
+  already-editing: '&cVocê já está editando a descrição da sua loja!'
+  store-closed: '&cEsta loja encontra-se fechada.'
+  store-state-change: '&aA sua está agora $state'
+  open-state: '&aAberta'
+  close-state: '&cFechada'
+  change-store-description:
+    - ''
+    - ' &aDigite qual será a nova descrição para a sua loja:'
+    - ' &7Para cancelar digite &c"cancelar"'
+    - ''
+  description-change-cancelled: '&aOperação cancelada com sucesso.'
+  command-player-only: '&cEste comando apenas pode ser executado por jogadores.'

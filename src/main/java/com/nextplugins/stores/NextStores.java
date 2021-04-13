@@ -8,16 +8,12 @@ import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
-import com.nextplugins.stores.configuration.values.FeatureValue;
-import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.guice.PluginModule;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
-import me.saiintbrisson.bukkit.command.BukkitFrame;
-import me.saiintbrisson.minecraft.command.message.MessageType;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -76,7 +72,7 @@ public final class NextStores extends JavaPlugin {
             inventoryButtonRegistry.init();
             storeManager.init();
 
-            enableCommandFrame();
+            getCommand("store").setExecutor(new StoreCommand());
 
             configureBStats();
 
@@ -92,7 +88,6 @@ public final class NextStores extends JavaPlugin {
     private void configureSqlProvider(ConfigurationSection section) {
 
         if (section.getBoolean("connection.mysql.enable")) {
-
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
 
             sqlConnector = MySQLDatabaseType.builder()
@@ -104,37 +99,19 @@ public final class NextStores extends JavaPlugin {
                     .connect();
 
         } else {
-
             ConfigurationSection sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
                     .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
                     .build()
                     .connect();
-
         }
 
     }
 
-    private void enableCommandFrame() {
-
-        BukkitFrame bukkitFrame = new BukkitFrame(this);
-        bukkitFrame.registerCommands(
-                this.injector.getInstance(StoreCommand.class)
-        );
-
-        bukkitFrame.getMessageHolder().setMessage(
-                MessageType.INCORRECT_USAGE,
-                MessageValue.get(MessageValue::incorrectUsage)
-        );
-
-    }
-
     private void configureBStats() {
-
         Metrics metrics = new Metrics(this, PLUGIN_ID);
         metrics.addCustomChart(new Metrics.SingleLineChart("shops", () -> this.storeManager.getStores().size()));
-
     }
 
 }

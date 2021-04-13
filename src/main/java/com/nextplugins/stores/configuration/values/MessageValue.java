@@ -1,7 +1,7 @@
 package com.nextplugins.stores.configuration.values;
 
 import com.nextplugins.stores.NextStores;
-import com.nextplugins.stores.util.ColorUtils;
+import com.nextplugins.stores.util.text.ColorUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +29,15 @@ public final class MessageValue {
     // messages
 
     private final String incorrectUsage = message("messages.incorrect-usage");
+    private final String locationSet = message("messages.location-set");
+    private final String descriptionChangeTimeOut = message("messages.description-change-time-out");
+    private final String alreadyEditing = message("messages.already-editing");
+    private final String storeStateChange = message("messages.store-state-change");
+    private final String openState = message("messages.open-state");
+    private final String closeState = message("messages.close-state");
+    private final List<String> changeStoreDescription = messageList("messages.change-store-description");
+    private final String descriptionChangeCancelled = message("messages.description-change-cancelled");
+    private final String commandPlayerOnly = message("messages.command-player-only");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);
