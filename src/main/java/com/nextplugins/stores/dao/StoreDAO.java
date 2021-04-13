@@ -30,7 +30,6 @@ public final class StoreDAO {
                 "visits INTEGER," +
                 "likes INTEGER," +
                 "dislikes INTEGER," +
-                "rating DOUBLE," +
                 "location TEXT" +
                 ");");
 
@@ -61,7 +60,7 @@ public final class StoreDAO {
     public void insert(Store store) {
 
         this.sqlExecutor.updateQuery(
-                String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?,?)", TABLE),
+                String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?)", TABLE),
                 statement -> {
 
                     statement.set(1, store.getOwner().toString());
@@ -70,8 +69,7 @@ public final class StoreDAO {
                     statement.set(4, store.getVisits());
                     statement.set(5, store.getLikes());
                     statement.set(6, store.getDislikes());
-                    statement.set(7, store.getRating());
-                    statement.set(8, LocationSerializer.getInstance().encode(store.getLocation()));
+                    statement.set(7, LocationSerializer.getInstance().encode(store.getLocation()));
 
                 }
         );

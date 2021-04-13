@@ -1,8 +1,8 @@
 package com.nextplugins.stores.command;
 
-import com.google.inject.Inject;
+import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.configuration.values.MessageValue;
-import com.nextplugins.stores.registry.InventoryRegistry;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,9 +12,10 @@ import org.bukkit.entity.Player;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-public final class StoreCommand implements CommandExecutor {
+@RequiredArgsConstructor
+public class StoreCommand implements CommandExecutor {
 
-    @Inject private InventoryRegistry inventoryRegistry;
+    private final NextStores plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,8 +26,9 @@ public final class StoreCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        this.inventoryRegistry.getStoreInventory().openInventory(player);
+        plugin.getInventoryRegistry().getStoreInventory().openInventory(player);
 
         return false;
     }
+
 }

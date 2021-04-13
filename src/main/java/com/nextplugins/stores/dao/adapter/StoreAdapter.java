@@ -26,7 +26,6 @@ public class StoreAdapter implements SQLResultAdapter<Store> {
                 .visits(resultSet.get("visits"))
                 .likes(resultSet.get("likes"))
                 .dislikes(resultSet.get("dislikes"))
-                .rating(resultSet.get("rating"))
                 .location(LocationSerializer.getInstance().decode(resultSet.get("location")))
                 .build();
 

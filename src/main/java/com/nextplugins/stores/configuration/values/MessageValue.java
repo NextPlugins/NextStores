@@ -38,6 +38,9 @@ public final class MessageValue {
     private final List<String> changeStoreDescription = messageList("messages.change-store-description");
     private final String descriptionChangeCancelled = message("messages.description-change-cancelled");
     private final String commandPlayerOnly = message("messages.command-player-only");
+    private final String defaultStoreDescription = message("messages.default-store-description");
+    private final String teleportedToTheStore = message("messages.teleported-to-the-store");
+    private final String storeClosed = message("messages.store-closed");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);

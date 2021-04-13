@@ -18,11 +18,12 @@ import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.util.EventAsyncWaiter;
 import com.nextplugins.stores.util.item.ItemBuilder;
+import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
+import lombok.val;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -32,6 +33,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author Yuhtin
@@ -77,12 +79,15 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                         storeManager.addStore(Store.builder()
                                 .owner(player.getUniqueId())
-                                .rating(0)
                                 .likes(0)
                                 .dislikes(0)
                                 .location(player.getLocation())
                                 .open(false)
                                 .visits(0)
+                                .description(
+                                        MessageValue.get(MessageValue::defaultStoreDescription)
+                                                .replace("$player", player.getName())
+                                )
                                 .build()
                         );
 
@@ -121,28 +126,6 @@ public class ConfigureStoryInventory extends SimpleInventory {
     }
 
     private void storeItems(Player player, Store store, InventoryEditor editor) {
-
-        InventoryButton infoButton = inventoryButtonRegistry.get("store.info");
-
-        infoButton.setUsername(Bukkit.getOfflinePlayer(store.getOwner()).getName());
-
-        editor.setItem(
-                infoButton.getInventorySlot(),
-                InventoryItem.of(
-                        new ItemBuilder(infoButton.getItemStack())
-                                .acceptItemMeta(itemMeta -> {
-                                    SkullMeta skullMeta = (SkullMeta) itemMeta;
-
-                                    if (infoButton.getUsername() == null || infoButton.getUsername().isEmpty()) {
-                                        skullMeta.setOwner(player.getName());
-                                    } else {
-                                        skullMeta.setOwner(infoButton.getUsername());
-                                    }
-                                })
-                                .result()
-                ).defaultCallback(handler -> System.out.println(store.toString()))
-        );
-
         InventoryButton locationButton = inventoryButtonRegistry.get("store.location");
         editor.setItem(
                 locationButton.getInventorySlot(),
@@ -205,6 +188,50 @@ public class ConfigureStoryInventory extends SimpleInventory {
                 })
         );
 
+    }
+
+    @Override
+    protected void update(Viewer viewer, InventoryEditor editor) {
+        Optional<Store> store = NextStoresAPI.getInstance().findStoreByPlayer(viewer.getPlayer());
+
+        if (!store.isPresent()) return;
+        getInfoButton(viewer.getPlayer(), store.get(), editor);
+    }
+
+    private void getInfoButton(Player player, Store store, InventoryEditor editor) {
+        InventoryButton infoButton = inventoryButtonRegistry.get("store.info");
+
+        editor.setItem(
+                infoButton.getInventorySlot(),
+                InventoryItem.of(
+                        new ItemBuilder(infoButton.getItemStack())
+                                .acceptItemMeta(itemMeta -> {
+                                    SkullMeta skullMeta = (SkullMeta) itemMeta;
+
+                                    if (infoButton.getUsername() == null || infoButton.getUsername().isEmpty()) {
+                                        skullMeta.setOwner(player.getName());
+                                    } else {
+                                        skullMeta.setOwner(infoButton.getUsername());
+                                    }
+
+                                    val lore = itemMeta.getLore();
+
+                                    val replacedLore = lore.stream()
+                                            .map(line -> line
+                                                    .replace("$description", store.getDescription())
+                                                    .replace("$likes", String.valueOf(store.getLikes()))
+                                                    .replace("$dislikes", String.valueOf(store.getDislikes()))
+                                                    .replace("$rating", NumberFormat.format(store.getRating()))
+                                                    .replace("$open", store.isOpen() ? "Sim" : "Não")
+                                                    .replace("$visits", String.valueOf(store.getVisits()))
+                                            )
+                                            .collect(Collectors.toList());
+
+                                    itemMeta.setLore(replacedLore);
+                                })
+                                .result()
+                )
+        );
     }
 
 }

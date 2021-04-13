@@ -72,17 +72,12 @@ public final class NextStores extends JavaPlugin {
             inventoryButtonRegistry.init();
             storeManager.init();
 
-            getCommand("store").setExecutor(new StoreCommand());
+            getCommand("store").setExecutor(new StoreCommand(this));
 
             configureBStats();
 
         });
 
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 
     private void configureSqlProvider(ConfigurationSection section) {

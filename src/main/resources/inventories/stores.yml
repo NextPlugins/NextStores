@@ -1,0 +1,13 @@
+item:
+  title: '&aLoja de $player'
+  lore:
+    - ''
+    - ' &7Descrição:&f $description'
+    - ''
+    - ' &7Likes:&f $likes'
+    - ' &7Dislikes:&f $dislikes'
+    - ' &7Nota geral:&f $rating'
+    - ''
+    - ' &7Está aberta?&f $open'
+    - ''
+    - '&aClique para ir até a loja.'

@@ -20,10 +20,17 @@ public class Store {
 
     private boolean open;
 
-    private int visits;
-    private int likes;
-    private int dislikes;
+    private int visits, likes, dislikes;
+
     private double rating;
+
+    public double getRating() {
+        if (likes != 0 && dislikes != 0) {
+            return Math.floor((double) likes / dislikes);
+        } else {
+            return 0;
+        }
+    }
 
     private Location location;
 
