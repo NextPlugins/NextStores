@@ -10,14 +10,17 @@ import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.conversation.ChatConversation;
 import com.nextplugins.stores.guice.PluginModule;
+import com.nextplugins.stores.listener.UserDisconnectListener;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -75,6 +78,8 @@ public final class NextStores extends JavaPlugin {
 
             getCommand("store").setExecutor(new StoreCommand(this));
 
+            listener();
+
             configureBStats();
 
             ChatConversation.registerListener();
@@ -110,6 +115,12 @@ public final class NextStores extends JavaPlugin {
     private void configureBStats() {
         Metrics metrics = new Metrics(this, PLUGIN_ID);
         metrics.addCustomChart(new Metrics.SingleLineChart("shops", () -> this.storeManager.getStores().size()));
+    }
+
+    private void listener() {
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(new UserDisconnectListener(this), this);
     }
 
 }

@@ -1,12 +1,9 @@
 package com.nextplugins.stores.inventory;
 
-import com.google.common.collect.Lists;
 import com.henryfabio.minecraft.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.minecraft.inventoryapi.inventory.impl.paged.PagedInventory;
 import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
-import com.henryfabio.minecraft.inventoryapi.item.enums.DefaultItem;
 import com.henryfabio.minecraft.inventoryapi.item.supplier.InventoryItemSupplier;
-import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.paged.PagedViewer;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.model.store.Store;
@@ -15,9 +12,11 @@ import com.nextplugins.stores.configuration.values.inventories.StoresInventoryVa
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.util.item.ItemBuilder;
 import com.nextplugins.stores.util.number.NumberFormat;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,23 +36,25 @@ public final class StoreListInventory extends PagedInventory {
     }
 
     @Override
-    protected void configureInventory(Viewer viewer, InventoryEditor editor) {
-        viewer.getConfiguration().backInventory("stores.main");
-
-        editor.setItem(45, DefaultItem.BACK.toInventoryItem());
+    protected List<InventoryItemSupplier> createPageItems(PagedViewer viewer) {
+        return getStores();
     }
 
     @Override
-    protected List<InventoryItemSupplier> createPageItems(PagedViewer viewer) {
+    protected void update(PagedViewer viewer, InventoryEditor editor) {
+        getStores();
+    }
 
-        LinkedList<InventoryItemSupplier> items = Lists.newLinkedList();
+    public List<InventoryItemSupplier> getStores() {
+
+        List<InventoryItemSupplier> items = new LinkedList<>();
 
         for (Store store : plugin.getStoreManager().getStores().values()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(store.getOwner());
 
             items.add(() ->
                     InventoryItem.of(
-                            new ItemBuilder(InventoryButton.getSkullItemStackName(player.getName()))
+                            new ItemBuilder(InventoryButton.getSkullItemStackName(player.getName()).clone())
                                     .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", player.getName()))
                                     .lore(
                                             StoresInventoryValue.get(StoresInventoryValue::lore).stream()
@@ -67,23 +68,46 @@ public final class StoreListInventory extends PagedInventory {
                                                     .collect(Collectors.toList())
                                     )
                                     .result()
-                    ).defaultCallback(callback -> {
-                        final Player callbackPlayer = callback.getPlayer();
+                    ).callback(
+                            ClickType.LEFT,
+                            callback -> {
+                                final Player callbackPlayer = callback.getPlayer();
 
-                        if (store.isOpen()) {
-                            callbackPlayer.teleport(store.getLocation());
-                            callbackPlayer.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore)
-                                    .replace("$player", player.getName()));
-                        } else {
-                            callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeClosed));
-                        }
+                                if (store.isOpen()) {
+                                    callbackPlayer.teleport(store.getLocation());
+                                    callbackPlayer.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore)
+                                            .replace("$player", player.getName()));
+                                } else {
+                                    callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeClosed));
+                                }
 
-                        callbackPlayer.closeInventory();
-                    })
+                                callbackPlayer.closeInventory();
+                            }
+                    ).callback(
+                            ClickType.SHIFT_LEFT,
+                            callback -> {
+                                val callbackPlayer = callback.getPlayer();
+
+                                store.like();
+                                callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeLike));
+
+                                this.updateInventory(callbackPlayer);
+                            }
+                    ).callback(
+                            ClickType.SHIFT_RIGHT,
+                            callback -> {
+                                val callbackPlayer = callback.getPlayer();
+
+                                store.dislike();
+                                callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeDislike));
+
+                                this.updateInventory(callbackPlayer);
+                            }
+                    )
             );
         }
 
         return items;
-
     }
+
 }

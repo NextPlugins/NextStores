@@ -10,4 +10,6 @@ item:
     - ''
     - ' &7Está aberta?&f $open'
     - ''
-    - '&aClique para ir até a loja.'
+    - '&aClique esquerdo para ir até a loja.'
+    - '&aShift + Clique esquerdo para dar um like.'
+    - '&aShift + Clique direito para dar um dislike.'

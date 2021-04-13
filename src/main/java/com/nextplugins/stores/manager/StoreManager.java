@@ -19,7 +19,9 @@ public class StoreManager {
 
     @Getter private final Map<String, Store> stores = new HashMap<>();
 
-    @Inject private StoreDAO storeDAO;
+    @Inject
+    @Getter
+    private StoreDAO storeDAO;
 
     public void init() {
         this.storeDAO.createTable();

@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Location;
 
-import java.util.UUID;
-
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
@@ -30,6 +28,14 @@ public class Store {
         } else {
             return 0;
         }
+    }
+
+    public void like() {
+        this.likes = this.likes++;
+    }
+
+    public void dislike() {
+        this.dislikes = this.dislikes++;
     }
 
     private Location location;
