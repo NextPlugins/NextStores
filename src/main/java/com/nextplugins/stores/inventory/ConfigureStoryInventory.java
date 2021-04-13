@@ -14,10 +14,10 @@ import com.nextplugins.stores.api.NextStoresAPI;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.configuration.values.inventories.StoreInventoryValue;
+import com.nextplugins.stores.conversation.ChatConversation;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
-import com.nextplugins.stores.util.EventWaiter;
 import com.nextplugins.stores.util.item.ItemBuilder;
 import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
@@ -27,13 +27,10 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 import java.util.stream.Collectors;
 
 /**
@@ -111,7 +108,6 @@ public class ConfigureStoryInventory extends SimpleInventory {
             );
 
         } else {
-            store.setDescription(UUID.randomUUID().toString());
             storeItems(viewer.getPlayer(), store, editor);
         }
 
@@ -144,26 +140,17 @@ public class ConfigureStoryInventory extends SimpleInventory {
                 InventoryItem.of(descriptionButton.getItemStack()).defaultCallback(callback -> {
                     player.closeInventory();
 
-                    final List<String> changeStoreDescriptionMessage = MessageValue.get(MessageValue::changeStoreDescription);
-
-                    changeStoreDescriptionMessage.forEach(player::sendMessage);
-
-                    EventWaiter.newAsyncWaiter(AsyncPlayerChatEvent.class, NextStores.getInstance())
-                            .expiringAfter(30, TimeUnit.SECONDS)
-                            .withTimeOutAction(() -> player.sendMessage(MessageValue.get(MessageValue::descriptionChangeTimeOut)))
-                            .filter(event -> event.getPlayer().getUniqueId().equals(player.getUniqueId()))
-                            .thenAccept(event -> {
-                                event.setCancelled(true);
-
-                                if (event.getMessage().equalsIgnoreCase("cancelar")) return;
-
-                                final String newDescription = ChatColor.translateAlternateColorCodes('&', event.getMessage());
-
-                                store.setDescription(newDescription);
+                    ChatConversation.awaitResponse(player, ChatConversation.Request.builder()
+                            .messages(MessageValue.get(MessageValue::changeStoreDescription))
+                            .timeoutDuration(Duration.ofSeconds(30))
+                            .timeoutWarn(MessageValue.get(MessageValue::descriptionChangeTimeOut))
+                            .responseConsumer(response -> {
+                                val responseDescription = ChatColor.translateAlternateColorCodes('&', response);
+                                store.setDescription(responseDescription);
 
                                 this.openInventory(player);
                             })
-                            .await(false);
+                            .build());
                 })
         );
 

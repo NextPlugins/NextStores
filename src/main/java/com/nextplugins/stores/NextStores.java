@@ -8,6 +8,7 @@ import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
+import com.nextplugins.stores.conversation.ChatConversation;
 import com.nextplugins.stores.guice.PluginModule;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
@@ -76,6 +77,8 @@ public final class NextStores extends JavaPlugin {
 
             configureBStats();
 
+            ChatConversation.registerListener();
+            ChatConversation.scheduleTimeoutRunnable();
         });
 
     }

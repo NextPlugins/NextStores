@@ -41,6 +41,8 @@ public final class MessageValue {
     private final String defaultStoreDescription = message("messages.default-store-description");
     private final String teleportedToTheStore = message("messages.teleported-to-the-store");
     private final String storeClosed = message("messages.store-closed");
+    private final String commandChatResponse = message("messages.command-chat-response");
+    private final String cancelChatResponse = message("messages.cancel-chat-response");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);

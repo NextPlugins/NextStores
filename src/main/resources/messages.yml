@@ -16,3 +16,5 @@ messages:
   command-player-only: '&cEste comando apenas pode ser executado por jogadores.'
   default-store-description: '&a&lNOVA&7 Loja de $player'
   teleported-to-the-store: '&aVocê foi teleportado à loja de&f $player'
+  command-chat-response: '&cVocê deve responder a pergunta antes de enviar algum comando!'
+  cancel-chat-response: '&cVocê cancelou a resposta do chat!'
