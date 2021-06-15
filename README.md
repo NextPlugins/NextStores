@@ -1,6 +1,6 @@
 # NextStores
 
-Um sistema de lojas completo e 100% em menus! O sistema possibilita os jogadores criarem lojas com possibilidade de avaliarem outras 
+Um sistema de lojas completo e 100% em menus! O sistema possibilita os jogadores de criar e gerenciar a sua loja.
 
 ## Comandos
 |Comando               |Descrição           |Permissão             |
