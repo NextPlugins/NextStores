@@ -28,9 +28,9 @@ public final class StoreListInventory extends PagedInventory {
 
     public StoreListInventory(NextStores plugin) {
         super(
-                "stores.storeList",
-                "Lojas disponíveis",
-                6 * 9
+            "stores.storeList",
+            StoresInventoryValue.get(StoresInventoryValue::inventoryTitle),
+            6 * 9
         );
         this.plugin = plugin;
     }
@@ -53,57 +53,60 @@ public final class StoreListInventory extends PagedInventory {
             OfflinePlayer player = Bukkit.getOfflinePlayer(store.getOwner());
 
             items.add(() ->
-                    InventoryItem.of(
-                            new ItemBuilder(InventoryButton.getSkullItemStackName(player.getName()).clone())
-                                    .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", player.getName()))
-                                    .lore(
-                                            StoresInventoryValue.get(StoresInventoryValue::lore).stream()
-                                                    .map(line -> line
-                                                            .replace("$description", store.getDescription())
-                                                            .replace("$likes", String.valueOf(store.getLikes()))
-                                                            .replace("$dislikes", String.valueOf(store.getDislikes()))
-                                                            .replace("$rating", NumberFormat.format(store.getRating()))
-                                                            .replace("$open", store.isOpen() ? "Sim" : "Não")
-                                                    )
-                                                    .collect(Collectors.toList())
-                                    )
-                                    .result()
-                    ).callback(
-                            ClickType.LEFT,
-                            callback -> {
-                                final Player callbackPlayer = callback.getPlayer();
+                InventoryItem.of(
+                    new ItemBuilder(InventoryButton.getSkullItemStackName(player.getName()).clone())
+                        .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", player.getName()))
+                        .lore(
+                            StoresInventoryValue.get(StoresInventoryValue::lore).stream()
+                                .map(line -> line
+                                    .replace("$description", store.getDescription())
+                                    .replace("$likes", String.valueOf(store.getLikes()))
+                                    .replace("$dislikes", String.valueOf(store.getDislikes()))
+                                    .replace("$rating", NumberFormat.format(store.getRating()))
+                                    .replace("$visits", NumberFormat.format(store.getVisits()))
+                                    .replace("$open", store.isOpen() ? "Sim" : "Não")
+                                )
+                                .collect(Collectors.toList())
+                        )
+                        .result()
+                ).callback(
+                    ClickType.LEFT,
+                    callback -> {
+                        final Player callbackPlayer = callback.getPlayer();
 
-                                if (store.isOpen()) {
-                                    callbackPlayer.teleport(store.getLocation());
-                                    callbackPlayer.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore)
-                                            .replace("$player", player.getName()));
-                                } else {
-                                    callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeClosed));
-                                }
+                        if (store.isOpen()) {
+                            callbackPlayer.teleport(store.getLocation());
+                            callbackPlayer.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore)
+                                .replace("$player", player.getName()));
 
-                                callbackPlayer.closeInventory();
-                            }
-                    ).callback(
-                            ClickType.SHIFT_LEFT,
-                            callback -> {
-                                val callbackPlayer = callback.getPlayer();
+                            store.setVisits(store.getVisits() + 1);
+                        } else {
+                            callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeClosed));
+                        }
 
-                                store.like();
-                                callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeLike));
+                        callbackPlayer.closeInventory();
+                    }
+                ).callback(
+                    ClickType.SHIFT_LEFT,
+                    callback -> {
+                        val callbackPlayer = callback.getPlayer();
 
-                                this.updateInventory(callbackPlayer);
-                            }
-                    ).callback(
-                            ClickType.SHIFT_RIGHT,
-                            callback -> {
-                                val callbackPlayer = callback.getPlayer();
+                        store.like();
+                        callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeLike));
 
-                                store.dislike();
-                                callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeDislike));
+                        callbackPlayer.closeInventory();
+                    }
+                ).callback(
+                    ClickType.SHIFT_RIGHT,
+                    callback -> {
+                        val callbackPlayer = callback.getPlayer();
 
-                                this.updateInventory(callbackPlayer);
-                            }
-                    )
+                        store.dislike();
+                        callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeDislike));
+
+                        callbackPlayer.closeInventory();
+                    }
+                )
             );
         }
 

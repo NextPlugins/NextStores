@@ -46,45 +46,53 @@ public final class NextStores extends JavaPlugin {
 
     @Inject private StoreManager storeManager;
 
+    private final PluginDependencyManager dependencyManager = PluginDependencyManager.of(this);
+
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
     }
 
     @Override
     public void onLoad() {
-
         this.saveDefaultConfig();
         this.messagesConfig = ConfigurationManager.of("messages.yml").saveDefault().load();
         this.mainInventoryConfig = ConfigurationManager.of("inventories/main.yml").saveDefault().load();
         this.storeInventoryConfig = ConfigurationManager.of("inventories/store.yml").saveDefault().load();
         this.storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
-
     }
 
     @Override
     public void onEnable() {
 
-        PluginDependencyManager.of(this).loadAllDependencies().thenRun(() -> {
+        dependencyManager.loadAllDependencies()
+            .exceptionally(error -> {
+                error.printStackTrace();
 
-            InventoryManager.enable(this);
-            configureSqlProvider(this.getConfig());
+                getLogger().severe("Ocorreu um erro durante a inicialização do plugin!");
+                Bukkit.getPluginManager().disablePlugin(this);
 
-            this.injector = PluginModule.from(this).createInjector();
-            this.injector.injectMembers(this);
+                return null;
+            })
+            .thenRun(() -> {
+                InventoryManager.enable(this);
+                configureSqlProvider(this.getConfig());
 
-            inventoryRegistry.init();
-            inventoryButtonRegistry.init();
-            storeManager.init();
+                this.injector = PluginModule.from(this).createInjector();
+                this.injector.injectMembers(this);
 
-            getCommand("store").setExecutor(new StoreCommand(this));
+                inventoryRegistry.init();
+                inventoryButtonRegistry.init();
+                storeManager.init();
 
-            listener();
+                getCommand("store").setExecutor(new StoreCommand(this));
 
-            configureBStats();
+                listener();
 
-            ChatConversation.registerListener();
-            ChatConversation.scheduleTimeoutRunnable();
-        });
+                configureBStats();
+
+                ChatConversation.registerListener();
+                ChatConversation.scheduleTimeoutRunnable();
+            }).join();
 
     }
 
@@ -94,20 +102,20 @@ public final class NextStores extends JavaPlugin {
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
 
             sqlConnector = MySQLDatabaseType.builder()
-                    .address(mysqlSection.getString("address"))
-                    .username(mysqlSection.getString("username"))
-                    .password(mysqlSection.getString("password"))
-                    .database(mysqlSection.getString("database"))
-                    .build()
-                    .connect();
+                .address(mysqlSection.getString("address"))
+                .username(mysqlSection.getString("username"))
+                .password(mysqlSection.getString("password"))
+                .database(mysqlSection.getString("database"))
+                .build()
+                .connect();
 
         } else {
             ConfigurationSection sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
-                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
-                    .build()
-                    .connect();
+                .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
+                .build()
+                .connect();
         }
 
     }

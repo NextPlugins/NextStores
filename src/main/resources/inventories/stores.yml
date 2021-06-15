@@ -1,12 +1,15 @@
+inventory-title: 'Lojas disponíveis'
+
 item:
   title: '&aLoja de $player'
   lore:
     - ''
-    - ' &7Descrição:&f $description'
+    - '&7Descrição:&f $description'
     - ''
     - ' &7Likes:&f $likes'
     - ' &7Dislikes:&f $dislikes'
-    - ' &7Nota geral:&f $rating'
+    - ' &7Nota geral:&f $rating/100'
+    - ' &7Número de visitas:&f $visits'
     - ''
     - ' &7Está aberta?&f $open'
     - ''

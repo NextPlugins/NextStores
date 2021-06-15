@@ -20,22 +20,16 @@ public class Store {
 
     private int visits, likes, dislikes;
 
-    private double rating;
-
     public double getRating() {
-        if (likes != 0 && dislikes != 0) {
-            return Math.floor((double) likes / dislikes);
-        } else {
-            return 0;
-        }
+        return Math.floor((double) likes / (likes + dislikes) * 100);
     }
 
     public void like() {
-        this.likes = this.likes++;
+        setLikes(getLikes() + 1);
     }
 
     public void dislike() {
-        this.dislikes = this.dislikes++;
+        setDislikes(getDislikes() + 1);
     }
 
     private Location location;

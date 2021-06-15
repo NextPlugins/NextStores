@@ -12,7 +12,7 @@ inventory:
         - ''
         - '&7Avaliações positivas:&6 $likes'
         - '&7Avaliações negativas:&6 $dislikes'
-        - '&7Nota total:&6 $rating'
+        - '&7Nota total:&6 $rating/100'
         - ''
         - '&7Está aberta?&6 $open'
         - '&7Número de visitas:&6 $visits'

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.Configuration;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,10 +20,12 @@ public final class StoresInventoryValue {
 
     private static final StoresInventoryValue instance = new StoresInventoryValue();
 
-    private final ConfigurationSection configuration = NextStores.getInstance().getStoresInventoryConfig().getConfigurationSection("item");
+    private final Configuration configuration = NextStores.getInstance().getStoresInventoryConfig();
 
-    private final String title = message("title");
-    private final List<String> lore = messageList("lore");
+    private final String inventoryTitle = message("inventory-title");
+
+    private final String title = message("item.title");
+    private final List<String> lore = messageList("item.lore");
 
     public static <T> T get(Function<StoresInventoryValue, T> supplier) {
         return supplier.apply(StoresInventoryValue.instance);
