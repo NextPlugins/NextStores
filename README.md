@@ -1,5 +1,7 @@
 # NextStores
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/93f33d10a033448c88c93e07f0bb7a32)](https://app.codacy.com/gh/NextPlugins/NextStores?utm_source=github.com&utm_medium=referral&utm_content=NextPlugins/NextStores&utm_campaign=Badge_Grade_Settings)
+
 Um sistema de lojas completo e 100% em menus! O sistema possibilita os jogadores de criar e gerenciar a sua loja. Algumas [imagens in-game](https://imgur.com/a/DWBdfjb)
 
 ## Comandos
