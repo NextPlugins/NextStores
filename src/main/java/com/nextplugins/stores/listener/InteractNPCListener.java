@@ -24,7 +24,7 @@ public class InteractNPCListener implements Listener {
         NPCRunnable runnable = (NPCRunnable) this.npcManager.getRunnable();
         if (runnable.getNPC() == null || event.getNPC().getId() != runnable.getNPC().getId()) return;
 
-        event.getClicker().performCommand("tempo menu");
+        event.getClicker().performCommand("lojas");
 
     }
 
