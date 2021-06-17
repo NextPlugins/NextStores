@@ -57,7 +57,7 @@ bukkit {
     commands {
         store {
             permission = 'nextstores.command.store'
-            aliases = ['lojas']
+            aliases = ['lojas', 'stores']
         }
     }
 }
