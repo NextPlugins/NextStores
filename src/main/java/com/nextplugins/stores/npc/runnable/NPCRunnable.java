@@ -2,7 +2,6 @@ package com.nextplugins.stores.npc.runnable;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.nextplugins.onlinetime.configuration.values.NPCValue;
 import com.nextplugins.stores.configuration.values.NPCValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

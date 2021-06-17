@@ -3,6 +3,7 @@ package com.nextplugins.stores.listener;
 import com.nextplugins.stores.npc.manager.NPCManager;
 import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import lombok.AllArgsConstructor;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
