@@ -11,6 +11,10 @@ import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.conversation.ChatConversation;
 import com.nextplugins.stores.guice.PluginModule;
 import com.nextplugins.stores.listener.UserDisconnectListener;
+import com.nextplugins.stores.listener.store.PlayerDislikeStoreListener;
+import com.nextplugins.stores.listener.store.PlayerLikeStoreListener;
+import com.nextplugins.stores.listener.store.PlayerVisitStoreListener;
+import com.nextplugins.stores.listener.store.StoreStateChangeListener;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.npc.manager.NPCManager;
 import com.nextplugins.stores.npc.runnable.NPCRunnable;
@@ -105,12 +109,10 @@ public final class NextStores extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         if (!npcManager.isEnabled()) return;
 
         val npcRunnable = (NPCRunnable) npcManager.getRunnable();
         npcRunnable.despawn();
-
     }
 
     private void configureSqlProvider(ConfigurationSection section) {
@@ -147,10 +149,12 @@ public final class NextStores extends JavaPlugin {
     }
 
     private void listener() {
-
         val pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new UserDisconnectListener(this), this);
-
+        pluginManager.registerEvents(new PlayerLikeStoreListener(), this);
+        pluginManager.registerEvents(new PlayerDislikeStoreListener(), this);
+        pluginManager.registerEvents(new PlayerVisitStoreListener(), this);
+        pluginManager.registerEvents(new StoreStateChangeListener(), this);
     }
 
 }

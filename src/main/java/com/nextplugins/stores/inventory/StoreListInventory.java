@@ -9,6 +9,9 @@ import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.configuration.impl.ViewerConfigurationImpl;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.paged.PagedViewer;
 import com.nextplugins.stores.NextStores;
+import com.nextplugins.stores.api.event.PlayerDislikeStoreEvent;
+import com.nextplugins.stores.api.event.PlayerLikeStoreEvent;
+import com.nextplugins.stores.api.event.PlayerVisitStoreEvent;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.configuration.values.inventories.StoresInventoryValue;
@@ -89,39 +92,26 @@ public final class StoreListInventory extends PagedInventory {
                 ).callback(
                     ClickType.LEFT,
                     callback -> {
-                        final Player callbackPlayer = callback.getPlayer();
+                        final PlayerVisitStoreEvent playerVisitStoreEvent = new PlayerVisitStoreEvent(callback.getPlayer(), store);
+                        Bukkit.getPluginManager().callEvent(playerVisitStoreEvent);
 
-                        if (store.isOpen()) {
-                            callbackPlayer.teleport(store.getLocation());
-                            callbackPlayer.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore)
-                                .replace("$player", player.getName()));
-
-                            store.setVisits(store.getVisits() + 1);
-                        } else {
-                            callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeClosed));
-                        }
-
-                        callbackPlayer.closeInventory();
+                        callback.getPlayer().closeInventory();
                     }
                 ).callback(
                     ClickType.SHIFT_LEFT,
                     callback -> {
-                        val callbackPlayer = callback.getPlayer();
+                        final PlayerLikeStoreEvent playerLikeStoreEvent = new PlayerLikeStoreEvent(callback.getPlayer(), store);
+                        Bukkit.getPluginManager().callEvent(playerLikeStoreEvent);
 
-                        store.like();
-                        callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeLike));
-
-                        callbackPlayer.closeInventory();
+                        callback.getPlayer().closeInventory();
                     }
                 ).callback(
                     ClickType.SHIFT_RIGHT,
                     callback -> {
-                        val callbackPlayer = callback.getPlayer();
+                        final PlayerDislikeStoreEvent playerDislikeStoreEvent = new PlayerDislikeStoreEvent(callback.getPlayer(), store);
+                        Bukkit.getPluginManager().callEvent(playerDislikeStoreEvent);
 
-                        store.dislike();
-                        callbackPlayer.sendMessage(MessageValue.get(MessageValue::storeDislike));
-
-                        callbackPlayer.closeInventory();
+                        callback.getPlayer().closeInventory();
                     }
                 )
             );
