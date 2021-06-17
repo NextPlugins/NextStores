@@ -16,35 +16,39 @@ public final class InventoryButtonRegistry {
 
     private final Map<String, InventoryButton> inventoryButtonMap = new LinkedHashMap<>();
 
-    @Inject @Named("buttons") private ConfigurationSection buttonsConfig;
+    @Inject @Named("buttons" ) private ConfigurationSection buttonsConfig;
     @Inject private InventoryButtonParser inventoryButtonParser;
 
     public void init() {
 
         register("main.yourStore", inventoryButtonParser.parse(
-                buttonsConfig.getConfigurationSection("buttons.yourStore")
+            buttonsConfig.getConfigurationSection("buttons.yourStore" )
         ));
 
         register("main.allStores", inventoryButtonParser.parse(
-                buttonsConfig.getConfigurationSection("buttons.allStores")
+            buttonsConfig.getConfigurationSection("buttons.allStores" )
         ));
 
         // store inventory
 
         register("store.info", inventoryButtonParser.parse(
-                NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.yourStore")
+            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.yourStore" )
         ));
 
         register("store.location", inventoryButtonParser.parse(
-                NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.location")
+            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.location" )
         ));
 
         register("store.description", inventoryButtonParser.parse(
-                NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.description")
+            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.description" )
         ));
 
         register("store.state", inventoryButtonParser.parse(
-                NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.state")
+            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.state" )
+        ));
+
+        register("store.delete", inventoryButtonParser.parse(
+            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.delete" )
         ));
 
     }

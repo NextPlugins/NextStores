@@ -20,3 +20,11 @@ messages:
   cancel-chat-response: '&cVocê cancelou a resposta do chat!'
   store-like: '&aVocê avaliou positivamente esta loja.'
   store-dislike: '&aVocê avaliou negativamente esta loja.'
+  deleting-store:
+    - ''
+    - '&7 Você está prestes a excluir a sua loja! Para confirmar a exclusão'
+    - '&7digite &a&nconfirmar&7 para cancelar, digite &c&ncancelar'
+    - ''
+  store-deleted: '&aVocê deletou a sua loja com sucesso!'
+  store-delete-time-out: '&cO tempo para confirmar a exclusão de sua loja foi esgotado!'
+  store-deletion-cancelled: '&aVocê cancelou a exclusão de sua loja com sucesso!'

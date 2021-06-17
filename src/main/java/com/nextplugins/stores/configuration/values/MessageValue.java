@@ -45,6 +45,10 @@ public final class MessageValue {
     private final String cancelChatResponse = message("messages.cancel-chat-response");
     private final String storeLike = message("messages.store-like");
     private final String storeDislike = message("messages.store-dislike");
+    private final List<String> deletingStore = messageList("messages.deleting-store");
+    private final String storeDeleted = message("messages.store-deleted");
+    private final String storeDeleteTimeOut = message("messages.store-delete-time-out");
+    private final String storeDeletionCancelled = message("messages.store-deletion-cancelled");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);

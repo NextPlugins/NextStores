@@ -25,7 +25,7 @@ public final class StoreDAO {
     public void createTable() {
 
         this.sqlExecutor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
-                "owner CHAR(36) NOT NULL PRIMARY KEY UNIQUE," +
+                "owner VARCHAR(16) NOT NULL PRIMARY KEY UNIQUE," +
                 "open TEXT," +
                 "description TEXT," +
                 "visits INTEGER," +
@@ -77,9 +77,9 @@ public final class StoreDAO {
 
     }
 
-    public void delete(UUID ownerUniqueId) {
+    public void delete(String owner) {
         this.sqlExecutor.updateQuery(
-            String.format("DELETE FROM %s WHERE uniqueId = '%s'", TABLE, ownerUniqueId.toString())
+            String.format("DELETE FROM %s WHERE owner = '%s'", TABLE, owner)
         );
     }
 

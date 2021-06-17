@@ -175,6 +175,31 @@ public class ConfigureStoryInventory extends SimpleInventory {
             })
         );
 
+        InventoryButton deleteButton = inventoryButtonRegistry.get("store.delete");
+
+        System.out.println(deleteButton.toString());
+        editor.setItem(
+            deleteButton.getInventorySlot(),
+            InventoryItem.of(deleteButton.getItemStack()).defaultCallback(callback -> {
+
+                callback.getPlayer().closeInventory();
+
+                ChatConversation.awaitResponse(callback.getPlayer(), ChatConversation.Request.builder()
+                    .messages(MessageValue.get(MessageValue::deletingStore))
+                    .timeoutDuration(Duration.ofSeconds(30))
+                    .timeoutWarn(MessageValue.get(MessageValue::storeDeleteTimeOut))
+                    .responseConsumer(response -> {
+                        MessageValue.get(MessageValue::deletingStore).forEach(System.out::println);
+                        System.out.println(MessageValue.get(MessageValue::storeDeleteTimeOut));
+
+                        if (response.equalsIgnoreCase("confirmar")) {
+                            storeManager.deleteStore(store);
+                            callback.getPlayer().sendMessage(MessageValue.get(MessageValue::storeDeleted));
+                        }
+                    })
+                    .build());
+            })
+        );
     }
 
     @Override

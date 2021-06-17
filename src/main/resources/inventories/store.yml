@@ -39,3 +39,12 @@ inventory:
       lore:
         - '&7Clique aqui para abrir ou fechar a sua loja.'
       inventorySlot: 15
+    delete:
+      material: BARRIER
+      data: 0
+      displayName: '&cExcluir loja'
+      lore:
+        - '&7Clique aqui para excluir a sua loja.'
+        - ''
+        - '&cCUIDADO! Esta ação é irreversível!'
+      inventorySlot: 26

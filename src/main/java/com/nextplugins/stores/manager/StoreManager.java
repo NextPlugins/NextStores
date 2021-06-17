@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.dao.StoreDAO;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Yuhtin
@@ -31,6 +33,11 @@ public class StoreManager {
     public void addStore(Store store) {
         this.stores.put(store.getOwner(), store);
         this.storeDAO.insert(store);
+    }
+
+    public void deleteStore(Store store) {
+        this.stores.remove(store.getOwner());
+        this.storeDAO.delete(store.getOwner());
     }
 
 }
