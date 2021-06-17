@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Location;
 
+import java.util.Map;
+
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
@@ -31,6 +33,8 @@ public class Store {
     public void dislike() {
         setDislikes(getDislikes() + 1);
     }
+
+    private Map<String, String> playersWhoRated;
 
     private Location location;
 

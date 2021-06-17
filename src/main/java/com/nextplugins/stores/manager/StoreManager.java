@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.dao.StoreDAO;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 
 @Singleton
-public class StoreManager {
+public final class StoreManager {
 
     @Getter private final Map<String, Store> stores = new HashMap<>();
 
@@ -34,6 +35,16 @@ public class StoreManager {
     public void deleteStore(Store store) {
         this.stores.remove(store.getOwner());
         this.storeDAO.delete(store.getOwner());
+    }
+
+    public void rateStore(Store store, Player player, String rate) {
+        if (rate.equalsIgnoreCase("like")) {
+            store.getPlayersWhoRated().put(player.getName(), rate);
+            store.like();
+        } else {
+            store.getPlayersWhoRated().put(player.getName(), rate);
+            store.dislike();
+        }
     }
 
 }
