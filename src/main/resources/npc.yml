@@ -1,0 +1,30 @@
+
+# Nick da skin do npc
+skin-nick: 'Villager'
+
+# Nome que ficará na cabeça do npc (pode ficar vazio ou com alguma informação colorida)
+name: '&bLojas'
+
+# Habilitar para o npc ficar olhando pro jogador mais perto
+# Caso desative, a visão dele vai ficar travada na direção em que você setou o npc
+lookclose: true
+
+hologram:
+  # Altura em que o holograma irá ficar, quanto mais linha, mais altura será necessário
+  # para ficar exatamente acima do npc
+  height: 4
+  # caso não queira holograma, apague as linhas e ponha um [] do lado de messe
+  # message: []
+  message:
+    - '&3&LLOJAS DE JOGADORES'
+    - '&fCompre qualquer tipo de item'
+    - '&fdo servidor diretamente dos jogadores!'
+    - '&7(/lojas)'
+    - ''
+    - '&aClique direito para ver!'
+
+# Posição do npc
+# Não mecha aqui caso não saiba o que está fazendo
+# Forma de salvamento
+# Mundo,X,Y,Z,Yaw,Pitch
+position: ''

@@ -12,6 +12,7 @@ import com.nextplugins.stores.conversation.ChatConversation;
 import com.nextplugins.stores.guice.PluginModule;
 import com.nextplugins.stores.listener.UserDisconnectListener;
 import com.nextplugins.stores.manager.StoreManager;
+import com.nextplugins.stores.npc.manager.NPCManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -40,9 +42,11 @@ public final class NextStores extends JavaPlugin {
     private Configuration mainInventoryConfig;
     private Configuration storeInventoryConfig;
     private Configuration storesInventoryConfig;
+    private Configuration npcConfig;
 
     @Inject private InventoryRegistry inventoryRegistry;
     @Inject private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject private NPCManager npcManager;
 
     @Inject private StoreManager storeManager;
 
@@ -59,6 +63,7 @@ public final class NextStores extends JavaPlugin {
         mainInventoryConfig = ConfigurationManager.of("inventories/main.yml").saveDefault().load();
         storeInventoryConfig = ConfigurationManager.of("inventories/store.yml").saveDefault().load();
         storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
+        npcConfig = ConfigurationManager.of("npc.yml").saveDefault().load();
 
     }
 
@@ -84,6 +89,7 @@ public final class NextStores extends JavaPlugin {
                 inventoryRegistry.init();
                 inventoryButtonRegistry.init();
                 storeManager.init();
+                npcManager.init();
 
                 getCommand("store").setExecutor(new StoreCommand(this));
 
