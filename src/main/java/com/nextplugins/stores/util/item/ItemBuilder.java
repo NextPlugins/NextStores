@@ -105,9 +105,11 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder glow() {
-        itemMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+    public ItemBuilder glow(boolean glow) {
+        if (glow) {
+            itemMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
         return this;
     }
 

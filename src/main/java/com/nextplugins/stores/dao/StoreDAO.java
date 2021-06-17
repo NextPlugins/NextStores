@@ -8,6 +8,7 @@ import com.nextplugins.stores.dao.adapter.StoreAdapter;
 import com.nextplugins.stores.serializer.impl.LocationSerializer;
 
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Yuhtin
@@ -74,6 +75,12 @@ public final class StoreDAO {
                 }
         );
 
+    }
+
+    public void delete(UUID ownerUniqueId) {
+        this.sqlExecutor.updateQuery(
+            String.format("DELETE FROM %s WHERE uniqueId = '%s'", TABLE, ownerUniqueId.toString())
+        );
     }
 
 }

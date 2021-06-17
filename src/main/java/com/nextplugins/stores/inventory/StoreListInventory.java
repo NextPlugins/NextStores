@@ -3,7 +3,10 @@ package com.nextplugins.stores.inventory;
 import com.henryfabio.minecraft.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.minecraft.inventoryapi.inventory.impl.paged.PagedInventory;
 import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
+import com.henryfabio.minecraft.inventoryapi.item.enums.DefaultItem;
 import com.henryfabio.minecraft.inventoryapi.item.supplier.InventoryItemSupplier;
+import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
+import com.henryfabio.minecraft.inventoryapi.viewer.configuration.impl.ViewerConfigurationImpl;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.paged.PagedViewer;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.model.store.Store;
@@ -36,6 +39,20 @@ public final class StoreListInventory extends PagedInventory {
     }
 
     @Override
+    protected void configureInventory(final Viewer viewer, final InventoryEditor editor) {
+        editor.setItem(
+            45,
+            DefaultItem.BACK.toInventoryItem(viewer)
+        );
+    }
+
+    @Override
+    protected void configureViewer(PagedViewer viewer) {
+        final ViewerConfigurationImpl.Paged configuration = viewer.getConfiguration();
+        configuration.backInventory("stores.main" );
+    }
+
+    @Override
     protected List<InventoryItemSupplier> createPageItems(PagedViewer viewer) {
         return getStores();
     }
@@ -64,7 +81,7 @@ public final class StoreListInventory extends PagedInventory {
                                     .replace("$dislikes", String.valueOf(store.getDislikes()))
                                     .replace("$rating", NumberFormat.format(store.getRating()))
                                     .replace("$visits", NumberFormat.format(store.getVisits()))
-                                    .replace("$open", store.isOpen() ? "Sim" : "Não")
+                                    .replace("$open", store.isOpen() ? "Sim" : "Não" )
                                 )
                                 .collect(Collectors.toList())
                         )
