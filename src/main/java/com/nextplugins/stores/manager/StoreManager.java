@@ -4,12 +4,10 @@ import com.google.inject.Inject;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.dao.StoreDAO;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Yuhtin
@@ -21,9 +19,7 @@ public class StoreManager {
 
     @Getter private final Map<String, Store> stores = new HashMap<>();
 
-    @Inject
-    @Getter
-    private StoreDAO storeDAO;
+    @Inject @Getter private StoreDAO storeDAO;
 
     public void init() {
         this.storeDAO.createTable();

@@ -26,6 +26,10 @@ public final class MessageValue {
 
     private final Configuration configuration = NextStores.getInstance().getMessagesConfig();
 
+    // worlds
+
+    private final List<String> worlds = configuration.getStringList("worlds");
+
     // messages
 
     private final String incorrectUsage = message("messages.incorrect-usage");
@@ -35,7 +39,6 @@ public final class MessageValue {
     private final String storeStateChange = message("messages.store-state-change");
     private final String openState = message("messages.open-state");
     private final String closeState = message("messages.close-state");
-    private final List<String> changeStoreDescription = messageList("messages.change-store-description");
     private final String descriptionChangeCancelled = message("messages.description-change-cancelled");
     private final String commandPlayerOnly = message("messages.command-player-only");
     private final String defaultStoreDescription = message("messages.default-store-description");
@@ -45,11 +48,13 @@ public final class MessageValue {
     private final String cancelChatResponse = message("messages.cancel-chat-response");
     private final String storeLike = message("messages.store-like");
     private final String storeDislike = message("messages.store-dislike");
-    private final List<String> deletingStore = messageList("messages.deleting-store");
     private final String storeDeleted = message("messages.store-deleted");
     private final String storeDeleteTimeOut = message("messages.store-delete-time-out");
     private final String storeDeletionCancelled = message("messages.store-deletion-cancelled");
     private final String onlyPlotMessage = message("messages.only-plot-message");
+
+    private final List<String> changeStoreDescription = messageList("messages.change-store-description");
+    private final List<String> deletingStore = messageList("messages.deleting-store");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);

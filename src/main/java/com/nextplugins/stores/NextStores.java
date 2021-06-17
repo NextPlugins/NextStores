@@ -15,12 +15,12 @@ import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
+import lombok.val;
 import me.bristermitten.pdm.PluginDependencyManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -46,25 +46,26 @@ public final class NextStores extends JavaPlugin {
 
     @Inject private StoreManager storeManager;
 
-    private final PluginDependencyManager dependencyManager = PluginDependencyManager.of(this);
-
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
     }
 
     @Override
     public void onLoad() {
-        this.saveDefaultConfig();
-        this.messagesConfig = ConfigurationManager.of("messages.yml").saveDefault().load();
-        this.mainInventoryConfig = ConfigurationManager.of("inventories/main.yml").saveDefault().load();
-        this.storeInventoryConfig = ConfigurationManager.of("inventories/store.yml").saveDefault().load();
-        this.storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
+
+        saveDefaultConfig();
+
+        messagesConfig = ConfigurationManager.of("messages.yml").saveDefault().load();
+        mainInventoryConfig = ConfigurationManager.of("inventories/main.yml").saveDefault().load();
+        storeInventoryConfig = ConfigurationManager.of("inventories/store.yml").saveDefault().load();
+        storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
+
     }
 
     @Override
     public void onEnable() {
 
-        dependencyManager.loadAllDependencies()
+        PluginDependencyManager.of(this).loadAllDependencies()
             .exceptionally(error -> {
                 error.printStackTrace();
 
@@ -75,7 +76,7 @@ public final class NextStores extends JavaPlugin {
             })
             .thenRun(() -> {
                 InventoryManager.enable(this);
-                configureSqlProvider(this.getConfig());
+                configureSqlProvider(getConfig());
 
                 this.injector = PluginModule.from(this).createInjector();
                 this.injector.injectMembers(this);
@@ -87,7 +88,6 @@ public final class NextStores extends JavaPlugin {
                 getCommand("store").setExecutor(new StoreCommand(this));
 
                 listener();
-
                 configureBStats();
 
                 ChatConversation.registerListener();
@@ -110,25 +110,30 @@ public final class NextStores extends JavaPlugin {
                 .connect();
 
         } else {
-            ConfigurationSection sqliteSection = section.getConfigurationSection("connection.sqlite");
+
+            val sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
                 .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
                 .build()
                 .connect();
+
         }
 
     }
 
     private void configureBStats() {
-        Metrics metrics = new Metrics(this, PLUGIN_ID);
+
+        val metrics = new Metrics(this, PLUGIN_ID);
         metrics.addCustomChart(new Metrics.SingleLineChart("shops", () -> this.storeManager.getStores().size()));
+
     }
 
     private void listener() {
-        final PluginManager pluginManager = Bukkit.getPluginManager();
 
+        val pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new UserDisconnectListener(this), this);
+
     }
 
 }

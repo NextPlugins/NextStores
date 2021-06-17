@@ -64,7 +64,7 @@ public final class StoreDAO {
                 String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?)", TABLE),
                 statement -> {
 
-                    statement.set(1, store.getOwner().toString());
+                    statement.set(1, store.getOwner());
                     statement.set(2, store.isOpen() ? "true" : "false");
                     statement.set(3, store.getDescription());
                     statement.set(4, store.getVisits());

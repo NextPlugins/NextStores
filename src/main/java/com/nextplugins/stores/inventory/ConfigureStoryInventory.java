@@ -23,11 +23,9 @@ import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.location.Location;
-import com.plotsquared.core.plot.PlotArea;
 import lombok.val;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -44,6 +42,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
     @Inject private StoreManager storeManager;
     @Inject private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject private boolean usePlots;
 
     public ConfigureStoryInventory() {
 
@@ -58,35 +57,34 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
     @Override
     protected void configureInventory(Viewer viewer, InventoryEditor editor) {
+
         editor.setItem(0, DefaultItem.BACK.toInventoryItem(viewer));
 
-        ViewerPropertyMap propertyMap = viewer.getPropertyMap();
-        Store store = propertyMap.get("store" );
+        val propertyMap = viewer.getPropertyMap();
+        val store = (Store) propertyMap.get("store");
         if (store == null) {
 
             editor.setItem(13, InventoryItem.of(
                 new ItemBuilder(InventoryButton.getSkullItemStackName(viewer.getName()))
                     .name(ChatColor.GREEN + "Criar uma loja" )
-                    .lore(
-                        "",
-                        ChatColor.GRAY + "Parece que você ainda não possui uma loja...",
-                        "",
+                    .lore("",
+                        ChatColor.GRAY + "Parece que você ainda não possui uma loja...", "",
                         ChatColor.GREEN + "Clique aqui para criar uma."
                     )
                     .addItemFlags(ItemFlag.values())
                     .result()
                 ).defaultCallback(callback -> {
-                    Player player = callback.getPlayer();
 
-                    final PlotSquared plotSquared = PlotSquared.get();
+                    val player = callback.getPlayer();
+                    val plotSquared = PlotSquared.get();
 
-                    final Location plotLocation = new Location(player.getLocation().getWorld().getName(),
+                    val plotLocation = new Location(player.getLocation().getWorld().getName(),
                         (int) player.getLocation().getX(),
                         (int) player.getLocation().getY(),
                         (int) player.getLocation().getZ()
                     );
 
-                    final PlotArea plotArea = plotSquared.getApplicablePlotArea(plotLocation);
+                    val plotArea = plotSquared.getApplicablePlotArea(plotLocation);
 
                     if (plotArea == null || !plotArea.getPlot(plotLocation).isOwner(player.getUniqueId())) {
                         player.sendMessage(MessageValue.get(MessageValue::onlyPlotMessage));
@@ -95,11 +93,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                     storeManager.addStore(Store.builder()
                         .owner(player.getName())
-                        .likes(0)
-                        .dislikes(0)
                         .location(player.getLocation())
-                        .open(false)
-                        .visits(0)
                         .description(
                             MessageValue.get(MessageValue::defaultStoreDescription)
                                 .replace("$player", player.getName())
@@ -109,14 +103,14 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                     player.closeInventory();
 
-                    final TextComponent storeCreatedMessage = new FancyText("§aA sua loja foi criada com sucesso!" )
+                    val storeCreatedMessage = new FancyText(ChatColor.GREEN + "A sua loja foi criada com sucesso!" )
                         .click(
                             ClickEvent.Action.RUN_COMMAND,
                             "/store"
                         )
                         .hover(
                             HoverEvent.Action.SHOW_TEXT,
-                            "§7Clique aqui abrir a configuração da sua loja."
+                            ChatColor.GRAY + "Clique aqui abrir a configuração da sua loja."
                         )
                         .build();
 

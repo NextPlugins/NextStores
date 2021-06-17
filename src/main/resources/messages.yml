@@ -1,3 +1,6 @@
+# Caso seu servidor utilize o plugin 'PlotSquared', não precisa preencher isto
+worlds:
+  - 'MundoPlano'
 messages:
   incorrect-usage: '&cUso incorreto! Utilize /{usage}.'
   location-set: '&a&lYAY! &aVocê trocou a localização da sua loja para a sua posição atual.'
