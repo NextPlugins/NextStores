@@ -5,7 +5,7 @@ inventory:
     yourStore:
       material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
       data: 3
-      username: 'Yuhtin'
+      username: 'GoodBook1'
       displayName: "&aMinha Loja"
       lore:
         - '&7Clique para gerenciar sua loja.'
@@ -13,7 +13,7 @@ inventory:
     allStores:
       material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
       data: 3
-      username: 'Henry_Fabio' # Nick do dono da cabeça (apenas nick)
+      username: 'Unknown_Is_Gay' # Nick do dono da cabeça (apenas nick)
       displayName: "&aLista de Lojas"
       lore:
         - '&7Clique para acessar o menu de lojas.'

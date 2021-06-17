@@ -10,6 +10,7 @@ import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import com.nextplugins.stores.util.item.ItemBuilder;
+import lombok.val;
 import org.bukkit.inventory.meta.SkullMeta;
 
 /**
@@ -35,15 +36,16 @@ public class StoreInventory extends GlobalInventory {
     @Override
     protected void configureInventory(InventoryEditor editor) {
 
-        InventoryButton yourStoreButton = inventoryButtonRegistry.get("main.yourStore");
+        val yourStoreButton = inventoryButtonRegistry.get("main.yourStore");
         editor.setItem(
                 yourStoreButton.getInventorySlot(),
                 InventoryItem.of(
                         new ItemBuilder(yourStoreButton.getItemStack())
                                 .acceptItemMeta(itemMeta -> {
-                                    SkullMeta skullMeta = (SkullMeta) itemMeta;
 
+                                    val skullMeta = (SkullMeta) itemMeta;
                                     skullMeta.setOwner(yourStoreButton.getUsername());
+
                                 })
                                 .result()
                 ).defaultCallback(
@@ -51,7 +53,7 @@ public class StoreInventory extends GlobalInventory {
                 )
         );
 
-        InventoryButton allStoresButton = inventoryButtonRegistry.get("main.allStores");
+        val allStoresButton = inventoryButtonRegistry.get("main.allStores");
         editor.setItem(
                 allStoresButton.getInventorySlot(),
                 InventoryItem.of(
