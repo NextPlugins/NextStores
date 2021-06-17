@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NumberFormat {
 
-    private final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
     public static String format(double number) {
         return DECIMAL_FORMAT.format(number);

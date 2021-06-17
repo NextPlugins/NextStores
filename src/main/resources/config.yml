@@ -10,7 +10,7 @@
 #                         discord.gg/JtTN7E6A2q                        #
 connection:
   mysql:
-    enable: true
+    enable: false
     address: 'localhost:3306'
     username: 'root'
     password: ''

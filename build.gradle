@@ -54,7 +54,7 @@ bukkit {
     authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
     website = 'https://github.com/NextPlugins'
 
-    softDepend = ['PlotSquared']
+    softDepend = ['PlotSquared', 'HolographicDisplays', 'Citizens']
 
     commands {
         store {
@@ -65,7 +65,7 @@ bukkit {
 }
 
 shadowJar {
-    archiveName("${project.name}.jar")
+    archiveName("${project.name}-${project.version}.jar")
     relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugins.tasks.libs.inventoryapi'
     relocate 'com.henryfabio.minecraft.configinjector', 'com.nextplugins.tasks.libs.configinjector'
     relocate 'org.bstats', 'com.nextplugins.tasks.libs.bstats'

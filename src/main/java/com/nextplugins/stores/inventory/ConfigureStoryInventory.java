@@ -149,6 +149,33 @@ public class ConfigureStoryInventory extends SimpleInventory {
         editor.setItem(locationButton.getInventorySlot(),
                 InventoryItem.of(locationButton.getItemStack()).defaultCallback(callback -> {
 
+                    if (usePlots) {
+
+                        val plotLocation = new Location(player.getLocation().getWorld().getName(),
+                                (int) player.getLocation().getX(),
+                                (int) player.getLocation().getY(),
+                                (int) player.getLocation().getZ()
+                        );
+
+                        val plot = Plot.getPlot(plotLocation);
+                        if (plot == null || !plot.getOwners().contains(player.getUniqueId())) {
+
+                            player.sendMessage(MessageValue.get(MessageValue::onlyPlotMessage));
+                            return;
+
+                        }
+
+                    } else {
+
+                        if (!MessageValue.get(MessageValue::worlds).contains(player.getWorld().getName())) {
+
+                            player.sendMessage(MessageValue.get(MessageValue::wrongWorld));
+                            return;
+
+                        }
+
+                    }
+
                     store.setLocation(player.getLocation());
 
                     player.closeInventory();

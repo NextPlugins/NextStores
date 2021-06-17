@@ -1,3 +1,4 @@
+# Parar setar o npc utilize '/lojas setnpc'
 
 # Nick da skin do npc
 skin-nick: 'Villager'
@@ -13,7 +14,7 @@ hologram:
   # Altura em que o holograma irá ficar, quanto mais linha, mais altura será necessário
   # para ficar exatamente acima do npc
   height: 4
-  # caso não queira holograma, apague as linhas e ponha um [] do lado de messe
+  # Caso não queira holograma, apague as linhas e ponha um [] do lado
   # message: []
   message:
     - '&3&LLOJAS DE JOGADORES'

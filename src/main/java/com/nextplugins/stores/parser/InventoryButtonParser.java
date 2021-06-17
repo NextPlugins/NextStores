@@ -2,7 +2,7 @@ package com.nextplugins.stores.parser;
 
 import com.google.inject.Singleton;
 import com.nextplugins.stores.inventory.button.InventoryButton;
-import com.nextplugins.stores.util.text.ColorUtils;
+import com.nextplugins.stores.util.text.ColorUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;
@@ -14,9 +14,9 @@ public final class InventoryButtonParser {
 
     public InventoryButton parse(ConfigurationSection section) {
         return InventoryButton.builder()
-                .displayName(ColorUtils.colored(section.getString("displayName")))
+                .displayName(ColorUtil.colored(section.getString("displayName")))
                 .lore(section.getStringList("lore").stream()
-                        .map(ColorUtils::colored)
+                        .map(ColorUtil::colored)
                         .collect(Collectors.toList()))
                 .materialData(new MaterialData(
                         Material.getMaterial(section.getString("material")),

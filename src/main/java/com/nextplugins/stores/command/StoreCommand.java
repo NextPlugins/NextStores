@@ -5,10 +5,9 @@ import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import com.nextplugins.stores.util.LocationUtils;
-import com.nextplugins.stores.util.text.ColorUtils;
+import com.nextplugins.stores.util.text.ColorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,7 +30,7 @@ public class StoreCommand implements CommandExecutor {
         }
 
         val player = (Player) sender;
-        if (args.length > 1 && player.hasPermission("store.admin") && args[0].equalsIgnoreCase("setnpc")) {
+        if (args.length > 0 && player.hasPermission("store.admin") && args[0].equalsIgnoreCase("setnpc")) {
 
             val location = player.getLocation();
             val configManager = ConfigurationManager.of("npc.yml");
@@ -46,10 +45,10 @@ public class StoreCommand implements CommandExecutor {
                 val runnable = (NPCRunnable) NextStores.getInstance().getNpcManager().getRunnable();
                 runnable.spawnDefault(location);
 
-                player.sendMessage(ColorUtils.colored("&aNPC setado com sucesso."));
+                player.sendMessage(ColorUtil.colored("&aNPC setado com sucesso."));
 
             } catch (Exception exception) {
-                player.sendMessage(ColorUtils.colored("&cNão foi possível setar o npc, o sistema está desabilitado por falta de dependência."));
+                player.sendMessage(ColorUtil.colored("&cNão foi possível setar o npc, o sistema está desabilitado por falta de dependência."));
             }
 
             return true;
