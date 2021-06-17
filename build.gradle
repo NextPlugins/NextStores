@@ -19,7 +19,9 @@ repositories {
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
 
+    maven { url = 'https://mvn.intellectualsites.com/content/groups/public/' }
     maven { url = 'https://repo.codemc.org/repository/maven-public' }
+    maven { url = 'https://maven.enginehub.org/repo/' }
     maven { url = 'https://libraries.minecraft.net/' }
 
     maven { url = 'https://jitpack.io/' }
@@ -29,6 +31,7 @@ dependencies {
 
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:1.5.22'
+    compileOnly 'com.plotsquared:PlotSquared-Core:5.13.11'
 
     implementation 'com.github.HenryFabio:inventory-api:2.0.3'
     implementation 'com.github.HenryFabio:sql-provider:9561f20fd2'
@@ -48,6 +51,8 @@ bukkit {
     main = 'com.nextplugins.stores.NextStores'
     authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
     website = 'https://github.com/NextPlugins'
+
+    softDepend = ['PlotSquared']
 
     commands {
         store {

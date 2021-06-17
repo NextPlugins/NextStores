@@ -21,6 +21,9 @@ import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.util.item.ItemBuilder;
 import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
+import com.plotsquared.core.PlotSquared;
+import com.plotsquared.core.location.Location;
+import com.plotsquared.core.plot.PlotArea;
 import lombok.val;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -74,6 +77,21 @@ public class ConfigureStoryInventory extends SimpleInventory {
                     .result()
                 ).defaultCallback(callback -> {
                     Player player = callback.getPlayer();
+
+                    final PlotSquared plotSquared = PlotSquared.get();
+
+                    final Location plotLocation = new Location(player.getLocation().getWorld().getName(),
+                        (int) player.getLocation().getX(),
+                        (int) player.getLocation().getY(),
+                        (int) player.getLocation().getZ()
+                    );
+
+                    final PlotArea plotArea = plotSquared.getApplicablePlotArea(plotLocation);
+
+                    if (plotArea == null || !plotArea.getPlot(plotLocation).isOwner(player.getUniqueId())) {
+                        player.sendMessage(MessageValue.get(MessageValue::onlyPlotMessage));
+                        return;
+                    }
 
                     storeManager.addStore(Store.builder()
                         .owner(player.getName())
@@ -175,7 +193,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
             })
         );
 
-        InventoryButton deleteButton = inventoryButtonRegistry.get("store.delete");
+        InventoryButton deleteButton = inventoryButtonRegistry.get("store.delete" );
 
         System.out.println(deleteButton.toString());
         editor.setItem(
@@ -192,7 +210,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
                         MessageValue.get(MessageValue::deletingStore).forEach(System.out::println);
                         System.out.println(MessageValue.get(MessageValue::storeDeleteTimeOut));
 
-                        if (response.equalsIgnoreCase("confirmar")) {
+                        if (response.equalsIgnoreCase("confirmar" )) {
                             storeManager.deleteStore(store);
                             callback.getPlayer().sendMessage(MessageValue.get(MessageValue::storeDeleted));
                         }

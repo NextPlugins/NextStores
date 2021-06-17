@@ -49,6 +49,7 @@ public final class MessageValue {
     private final String storeDeleted = message("messages.store-deleted");
     private final String storeDeleteTimeOut = message("messages.store-delete-time-out");
     private final String storeDeletionCancelled = message("messages.store-deletion-cancelled");
+    private final String onlyPlotMessage = message("messages.only-plot-message");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);
