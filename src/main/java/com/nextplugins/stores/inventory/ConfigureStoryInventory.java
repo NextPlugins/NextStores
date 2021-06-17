@@ -23,6 +23,7 @@ import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.location.Location;
+import com.plotsquared.core.plot.Plot;
 import lombok.val;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -31,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import javax.inject.Named;
 import java.time.Duration;
 import java.util.stream.Collectors;
 
@@ -42,7 +44,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
     @Inject private StoreManager storeManager;
     @Inject private InventoryButtonRegistry inventoryButtonRegistry;
-    @Inject private boolean usePlots;
+    @Inject @Named("plots") private Boolean usePlots;
 
     public ConfigureStoryInventory() {
 
@@ -76,19 +78,31 @@ public class ConfigureStoryInventory extends SimpleInventory {
                 ).defaultCallback(callback -> {
 
                     val player = callback.getPlayer();
-                    val plotSquared = PlotSquared.get();
+                    if (usePlots) {
+                        
+                        val plotLocation = new Location(player.getLocation().getWorld().getName(),
+                                (int) player.getLocation().getX(),
+                                (int) player.getLocation().getY(),
+                                (int) player.getLocation().getZ()
+                        );
 
-                    val plotLocation = new Location(player.getLocation().getWorld().getName(),
-                        (int) player.getLocation().getX(),
-                        (int) player.getLocation().getY(),
-                        (int) player.getLocation().getZ()
-                    );
+                        val plot = Plot.getPlot(plotLocation);
+                        if (plot == null || !plot.getOwners().contains(player.getUniqueId())) {
 
-                    val plotArea = plotSquared.getApplicablePlotArea(plotLocation);
+                            player.sendMessage(MessageValue.get(MessageValue::onlyPlotMessage));
+                            return;
 
-                    if (plotArea == null || !plotArea.getPlot(plotLocation).isOwner(player.getUniqueId())) {
-                        player.sendMessage(MessageValue.get(MessageValue::onlyPlotMessage));
-                        return;
+                        }
+
+                    } else {
+
+                        if (!MessageValue.get(MessageValue::worlds).contains(player.getWorld().getName())) {
+
+                            player.sendMessage(MessageValue.get(MessageValue::wrongWorld));
+                            return;
+
+                        }
+
                     }
 
                     storeManager.addStore(Store.builder()
@@ -187,7 +201,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
             })
         );
 
-        InventoryButton deleteButton = inventoryButtonRegistry.get("store.delete" );
+        InventoryButton deleteButton = inventoryButtonRegistry.get("store.delete");
 
         System.out.println(deleteButton.toString());
         editor.setItem(

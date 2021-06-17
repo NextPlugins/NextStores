@@ -31,4 +31,5 @@ messages:
   store-deleted: '&aVocê deletou a sua loja com sucesso!'
   store-delete-time-out: '&cO tempo para confirmar a exclusão de sua loja foi esgotado!'
   store-deletion-cancelled: '&aVocê cancelou a exclusão de sua loja com sucesso!'
-  only-plot-message: '&cVocê só pode definir a localização da sua loja dentro de um de seus terrenos.'
+  only-plot-message: '&cVocê só pode definir a localização de sua loja dentro de um de seus terrenos.'
+  wrong-world: '&cVocê não pode definir a localização de sua loja aqui.'

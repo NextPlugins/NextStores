@@ -52,6 +52,7 @@ public final class MessageValue {
     private final String storeDeleteTimeOut = message("messages.store-delete-time-out");
     private final String storeDeletionCancelled = message("messages.store-deletion-cancelled");
     private final String onlyPlotMessage = message("messages.only-plot-message");
+    private final String wrongWorld = message("messages.world-world");
 
     private final List<String> changeStoreDescription = messageList("messages.change-store-description");
     private final List<String> deletingStore = messageList("messages.deleting-store");

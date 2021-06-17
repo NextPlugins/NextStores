@@ -8,6 +8,8 @@ import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.stores.NextStores;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.logging.Logger;
@@ -39,6 +41,12 @@ public class PluginModule extends AbstractModule {
         bind(ConfigurationSection.class)
                 .annotatedWith(Names.named("buttons"))
                 .toInstance(nextStores.getMainInventoryConfig().getConfigurationSection("inventory"));
+
+        val pluginManager = Bukkit.getPluginManager();
+
+        bind(Boolean.class)
+                .annotatedWith(Names.named("plots"))
+                .toInstance(pluginManager.isPluginEnabled("PlotSquared"));
 
     }
 
