@@ -13,6 +13,7 @@ import com.nextplugins.stores.guice.PluginModule;
 import com.nextplugins.stores.listener.UserDisconnectListener;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.npc.manager.NPCManager;
+import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
@@ -99,6 +100,16 @@ public final class NextStores extends JavaPlugin {
                 ChatConversation.registerListener();
                 ChatConversation.scheduleTimeoutRunnable();
             }).join();
+
+    }
+
+    @Override
+    public void onDisable() {
+
+        if (!npcManager.isEnabled()) return;
+
+        val npcRunnable = (NPCRunnable) npcManager.getRunnable();
+        npcRunnable.despawn();
 
     }
 

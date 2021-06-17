@@ -14,6 +14,7 @@ tasks.build.dependsOn('pdm', 'shadowJar')
 
 repositories {
     mavenCentral()
+    mavenLocal()
 
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
@@ -31,9 +32,11 @@ dependencies {
 
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:1.5.22'
-    compileOnly 'com.plotsquared:PlotSquared-Core:5.13.11'
     compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.0'
     compileOnly 'net.citizensnpcs:citizens:2.0.27-SNAPSHOT'
+
+    // local
+    compileOnly 'com.yuhtin.minecraft:plotsquared:1.0'
 
     implementation 'com.github.HenryFabio:inventory-api:2.0.3'
     implementation 'com.github.HenryFabio:sql-provider:9561f20fd2'
