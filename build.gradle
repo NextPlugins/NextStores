@@ -54,7 +54,7 @@ bukkit {
     authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
     website = 'https://github.com/NextPlugins'
 
-    softDepend = ['PlotSquared', 'HolographicDisplays', 'Citizens']
+    softDepend = ['NextUpdater', 'PlotSquared', 'HolographicDisplays', 'Citizens']
 
     commands {
         store {
