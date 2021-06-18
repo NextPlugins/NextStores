@@ -27,7 +27,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -151,10 +150,23 @@ public final class NextStores extends JavaPlugin {
     private void listener() {
         val pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new UserDisconnectListener(this), this);
-        pluginManager.registerEvents(new PlayerLikeStoreListener(), this);
-        pluginManager.registerEvents(new PlayerDislikeStoreListener(), this);
-        pluginManager.registerEvents(new PlayerVisitStoreListener(), this);
         pluginManager.registerEvents(new StoreStateChangeListener(), this);
+
+        val playerLikeStoreListener = new PlayerLikeStoreListener();
+        val playerVisitStoreListener = new PlayerVisitStoreListener();
+        val playerDislikeStoreListener = new PlayerDislikeStoreListener();
+
+        pluginManager.registerEvents(playerLikeStoreListener, this);
+        pluginManager.registerEvents(playerVisitStoreListener, this);
+        pluginManager.registerEvents(playerDislikeStoreListener, this);
+
+        this.injectMembers(playerLikeStoreListener, playerDislikeStoreListener, playerVisitStoreListener);
+    }
+
+    private void injectMembers(Object... instances) {
+        for (Object instance : instances) {
+            this.injector.injectMembers(instance);
+        }
     }
 
 }

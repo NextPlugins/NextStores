@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import javax.inject.Named;
 import java.time.Duration;
+import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -86,6 +87,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
                             MessageValue.get(MessageValue::defaultStoreDescription)
                                 .replace("$player", player.getName())
                         )
+                        .playersWhoRated(new LinkedHashMap<>())
                         .build();
 
                     storeManager.addStore(createdStore);

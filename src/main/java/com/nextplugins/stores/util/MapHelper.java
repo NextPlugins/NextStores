@@ -5,13 +5,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class MapHelper {
 
     private static final Gson gson = new GsonBuilder().create();
 
-    public static Map<String, String> fromDatabase(String databaseOutput) {
+    public static LinkedHashMap<String, String> fromDatabase(String databaseOutput) {
         Type typeOfHashMap = new TypeToken<Map<String, Long>>() {
         }.getType();
 
