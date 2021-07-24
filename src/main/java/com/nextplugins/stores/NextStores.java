@@ -6,6 +6,7 @@ import com.henryfabio.minecraft.inventoryapi.manager.InventoryManager;
 import com.henryfabio.sqlprovider.connector.SQLConnector;
 import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
+import com.nextplugins.stores.api.metric.MetricProvider;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.conversation.ChatConversation;
@@ -22,8 +23,6 @@ import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import lombok.Getter;
 import lombok.val;
-import me.bristermitten.pdm.PluginDependencyManager;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -48,11 +47,15 @@ public final class NextStores extends JavaPlugin {
     private Configuration storesInventoryConfig;
     private Configuration npcConfig;
 
-    @Inject private InventoryRegistry inventoryRegistry;
-    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
-    @Inject private NPCManager npcManager;
+    @Inject
+    private InventoryRegistry inventoryRegistry;
+    @Inject
+    private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject
+    private NPCManager npcManager;
 
-    @Inject private StoreManager storeManager;
+    @Inject
+    private StoreManager storeManager;
 
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
@@ -73,37 +76,24 @@ public final class NextStores extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        InventoryManager.enable(this);
+        configureSqlProvider(getConfig());
 
-        PluginDependencyManager.of(this).loadAllDependencies()
-            .exceptionally(error -> {
-                error.printStackTrace();
+        this.injector = PluginModule.from(this).createInjector();
+        this.injector.injectMembers(this);
 
-                getLogger().severe("Ocorreu um erro durante a inicialização do plugin!");
-                Bukkit.getPluginManager().disablePlugin(this);
+        inventoryRegistry.init();
+        inventoryButtonRegistry.init();
+        storeManager.init();
+        npcManager.init();
 
-                return null;
-            })
-            .thenRun(() -> {
-                InventoryManager.enable(this);
-                configureSqlProvider(getConfig());
+        getCommand("store").setExecutor(new StoreCommand(this));
 
-                this.injector = PluginModule.from(this).createInjector();
-                this.injector.injectMembers(this);
+        listener();
+        MetricProvider.of(this).register();
 
-                inventoryRegistry.init();
-                inventoryButtonRegistry.init();
-                storeManager.init();
-                npcManager.init();
-
-                getCommand("store").setExecutor(new StoreCommand(this));
-
-                listener();
-                configureBStats();
-
-                ChatConversation.registerListener();
-                ChatConversation.scheduleTimeoutRunnable();
-            }).join();
-
+        ChatConversation.registerListener();
+        ChatConversation.scheduleTimeoutRunnable();
     }
 
     @Override
@@ -120,30 +110,23 @@ public final class NextStores extends JavaPlugin {
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
 
             sqlConnector = MySQLDatabaseType.builder()
-                .address(mysqlSection.getString("address"))
-                .username(mysqlSection.getString("username"))
-                .password(mysqlSection.getString("password"))
-                .database(mysqlSection.getString("database"))
-                .build()
-                .connect();
+                    .address(mysqlSection.getString("address"))
+                    .username(mysqlSection.getString("username"))
+                    .password(mysqlSection.getString("password"))
+                    .database(mysqlSection.getString("database"))
+                    .build()
+                    .connect();
 
         } else {
 
             val sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
-                .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
-                .build()
-                .connect();
+                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
+                    .build()
+                    .connect();
 
         }
-
-    }
-
-    private void configureBStats() {
-
-        val metrics = new Metrics(this, PLUGIN_ID);
-        metrics.addCustomChart(new Metrics.SingleLineChart("shops", () -> this.storeManager.getStores().size()));
 
     }
 
