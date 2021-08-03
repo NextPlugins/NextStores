@@ -68,16 +68,23 @@ public class ConfigureStoryInventory extends SimpleInventory {
         if (store == null) {
 
             editor.setItem(13, InventoryItem.of(
-                new ItemBuilder(InventoryButton.getSkullItemStackName(viewer.getName()))
-                    .name(ChatColor.GREEN + "Criar uma loja")
-                    .lore("",
-                        ChatColor.GRAY + "Parece que você ainda não possui uma loja...", "",
-                        ChatColor.GREEN + "Clique aqui para criar uma."
-                    )
-                    .addItemFlags(ItemFlag.values())
-                    .result()
+                    new ItemBuilder(InventoryButton.getSkullItemStackName(viewer.getName()))
+                        .name(ChatColor.GREEN + "Criar uma loja")
+                        .lore("",
+                            ChatColor.GRAY + "Parece que você ainda não possui uma loja...", "",
+                            ChatColor.GREEN + "Clique aqui para criar uma."
+                        )
+                        .addItemFlags(ItemFlag.values())
+                        .result()
                 ).defaultCallback(callback -> {
                     val player = callback.getPlayer();
+
+                    if (!player.hasPermission("nextstores.stores.create")) {
+                        player.sendMessage(MessageValue.get(MessageValue::noPermissionToCreateStore));
+                        player.closeInventory();
+                        return;
+                    }
+
                     if (plotCheck(player)) return;
 
                     final Store createdStore = Store.builder()

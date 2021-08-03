@@ -110,21 +110,21 @@ public final class NextStores extends JavaPlugin {
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
 
             sqlConnector = MySQLDatabaseType.builder()
-                    .address(mysqlSection.getString("address"))
-                    .username(mysqlSection.getString("username"))
-                    .password(mysqlSection.getString("password"))
-                    .database(mysqlSection.getString("database"))
-                    .build()
-                    .connect();
+                .address(mysqlSection.getString("address"))
+                .username(mysqlSection.getString("username"))
+                .password(mysqlSection.getString("password"))
+                .database(mysqlSection.getString("database"))
+                .build()
+                .connect();
 
         } else {
 
             val sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
-                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
-                    .build()
-                    .connect();
+                .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
+                .build()
+                .connect();
 
         }
 

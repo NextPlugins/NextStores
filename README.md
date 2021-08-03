@@ -15,6 +15,10 @@ Um sistema de lojas completo e 100% em menus! O sistema possibilita os jogadores
 Você pode encontrar o plugin pronto para baixar [**aqui**](https://github.com/NextPlugins/NextStores/releases), ou se você quiser, pode optar por clonar o repositório e dar
 `build` no plugin com suas alterações.
 
+## Outras permissões
+
+- Permissão para criar uma loja: `nextstores.stores.create`
+
 ## Configuração
 O plugin conta com diversos arquivos de configuração, em que você pode configurar a conexão SQL, menus, ícones, mensagens, e outras opções.
 

@@ -53,6 +53,7 @@ public final class MessageValue {
     private final String storeDeletionCancelled = message("messages.store-deletion-cancelled");
     private final String onlyPlotMessage = message("messages.only-plot-message");
     private final String wrongWorld = message("messages.wrong-world");
+    private final String noPermissionToCreateStore = message("messages.no-permission-to-create-store");
 
     private final List<String> changeStoreDescription = messageList("messages.change-store-description");
     private final List<String> deletingStore = messageList("messages.deleting-store");

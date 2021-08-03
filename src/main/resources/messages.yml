@@ -33,3 +33,4 @@ messages:
   store-deletion-cancelled: '&aVocê cancelou a exclusão de sua loja com sucesso!'
   only-plot-message: '&cVocê só pode definir a localização de sua loja dentro de um de seus terrenos.'
   wrong-world: '&cVocê não pode definir a localização de sua loja aqui.'
+  no-permission-to-create-store: '&cVocê não tem permissão para criar uma loja.'
