@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Getter
 @Accessors(fluent = true)
@@ -35,13 +32,6 @@ public final class MainInventoryValue {
 
     private String message(String key) {
         return colors(Objects.requireNonNull(configuration).getString(key));
-    }
-
-    private List<String> messageList(String key) {
-        return Objects.requireNonNull(configuration).getStringList(key)
-                .stream()
-                .map(this::colors)
-                .collect(Collectors.toList());
     }
 
 }

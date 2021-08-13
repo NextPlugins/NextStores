@@ -1,7 +1,7 @@
 package com.nextplugins.stores.configuration.values;
 
 import com.nextplugins.stores.NextStores;
-import com.nextplugins.stores.util.text.ColorUtil;
+import com.nextplugins.stores.util.ColorUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +32,12 @@ public final class MessageValue {
 
     // messages
 
+    private final String npcSuccess = message("messages.npc.success");
+    private final String npcError = message("messages.npc.error");
+
+    private final String invalidPlayer = message("messages.invalidPlayer");
+    private final String noStore = message("messages.noStore");
+
     private final String incorrectUsage = message("messages.incorrect-usage");
     private final String locationSet = message("messages.location-set");
     private final String descriptionChangeTimeOut = message("messages.description-change-time-out");
@@ -54,6 +60,7 @@ public final class MessageValue {
     private final String onlyPlotMessage = message("messages.only-plot-message");
     private final String wrongWorld = message("messages.wrong-world");
     private final String noPermissionToCreateStore = message("messages.no-permission-to-create-store");
+    private final String noPermission = message("messages.no-permission");
 
     private final List<String> changeStoreDescription = messageList("messages.change-store-description");
     private final List<String> deletingStore = messageList("messages.deleting-store");

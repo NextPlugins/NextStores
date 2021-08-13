@@ -16,8 +16,13 @@ public final class InventoryButtonRegistry {
 
         val nextStores = NextStores.getInstance();
         val storeInventoryConfig = nextStores.getStoreInventoryConfig();
+        val storesInventoryConfig = nextStores.getStoresInventoryConfig();
         val buttonsConfig = nextStores.getMainInventoryConfig().getConfigurationSection("inventory");
         val buttonParser = new InventoryButtonParser();
+
+        register("visit", buttonParser.parse(
+                storesInventoryConfig.getConfigurationSection("visit")
+        ));
 
         register("main.yourStore", buttonParser.parse(
                 buttonsConfig.getConfigurationSection("buttons.yourStore")

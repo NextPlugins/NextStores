@@ -1,6 +1,5 @@
 package com.nextplugins.stores.util;
 
-import com.nextplugins.stores.util.text.ColorUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;

@@ -1,4 +1,4 @@
-package com.nextplugins.stores.util.number;
+package com.nextplugins.stores.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import java.text.DecimalFormat;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class NumberFormat {
+public final class NumberUtil {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 

@@ -58,6 +58,10 @@ bukkit {
             permission = 'nextstores.command.store'
             aliases = ['lojas', 'stores']
         }
+        storesetnpc {
+            permission = 'nextstores.command.setstore'
+            aliases = ['lojassetnpc']
+        }
     }
 }
 

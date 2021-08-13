@@ -1,13 +1,10 @@
 package com.nextplugins.stores.command;
 
 import com.nextplugins.stores.NextStores;
-import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.configuration.values.MessageValue;
-import com.nextplugins.stores.npc.runnable.NPCRunnable;
-import com.nextplugins.stores.util.LocationUtils;
-import com.nextplugins.stores.util.text.ColorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,34 +27,39 @@ public class StoreCommand implements CommandExecutor {
         }
 
         val player = (Player) sender;
-        if (args.length > 0 && player.hasPermission("store.admin") && args[0].equalsIgnoreCase("setnpc")) {
+        if (args.length > 0) {
 
-            val location = player.getLocation();
-            val configManager = ConfigurationManager.of("npc.yml");
+            if (args[0].equalsIgnoreCase("****")) {
 
-            val config = configManager.load();
-            config.set("position", LocationUtils.serialize(location));
+                player.sendMessage(MessageValue.get(MessageValue::incorrectUsage));
+                return false;
 
-            try {
-
-                config.save(configManager.getFile());
-
-                val runnable = (NPCRunnable) NextStores.getInstance().getNpcManager().getRunnable();
-                runnable.spawnDefault(location);
-
-                player.sendMessage(ColorUtil.colored("&aNPC setado com sucesso."));
-
-            } catch (Exception exception) {
-                player.sendMessage(ColorUtil.colored("&cNão foi possível setar o npc, o sistema está desabilitado por falta de dependência."));
             }
 
+            val offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+            if (offlinePlayer.hasPlayedBefore()) {
+
+                player.sendMessage(MessageValue.get(MessageValue::invalidPlayer));
+                return false;
+
+            }
+
+            val store = plugin.getStoreManager().getStores().getOrDefault(offlinePlayer.getName(), null);
+            if (store == null) {
+
+                player.sendMessage(MessageValue.get(MessageValue::noStore).replace("$player", offlinePlayer.getName()));
+                return false;
+
+            }
+
+            player.teleport(store.getLocation());
+            player.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore).replace("$player", offlinePlayer.getName()));
             return true;
 
         }
 
 
         plugin.getInventoryRegistry().getStoreInventory().openInventory(player);
-
         return false;
     }
 

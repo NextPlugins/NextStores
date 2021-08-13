@@ -37,11 +37,4 @@ public final class StoreInventoryValue {
         return colors(Objects.requireNonNull(configuration).getString(key));
     }
 
-    private List<String> messageList(String key) {
-        return Objects.requireNonNull(configuration).getStringList(key)
-                .stream()
-                .map(this::colors)
-                .collect(Collectors.toList());
-    }
-
 }

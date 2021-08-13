@@ -1,4 +1,4 @@
-package com.nextplugins.stores.conversation;
+package com.nextplugins.stores.util;
 
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.configuration.values.MessageValue;
@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ChatConversation {
+public final class ChatConversationUtils {
 
     private static final Map<String, Request> requests = new LinkedHashMap<>();
 

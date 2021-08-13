@@ -21,8 +21,12 @@ public class Store {
     private String description;
 
     private boolean open;
+    private int visits;
+    private int likes;
+    private int dislikes;
 
-    private int visits, likes, dislikes;
+    private Location location;
+    private Map<String, String> playersWhoRated;
 
     public double getRating() {
         return Math.floor((double) likes / (likes + dislikes) * 100);
@@ -35,10 +39,6 @@ public class Store {
     public void dislike() {
         setDislikes(getDislikes() + 1);
     }
-
-    private Map<String, String> playersWhoRated;
-
-    private Location location;
 
     public void rate(Player player, String rateType) {
         if (rateType.equalsIgnoreCase("like")) {

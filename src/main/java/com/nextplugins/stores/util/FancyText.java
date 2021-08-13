@@ -1,4 +1,4 @@
-package com.nextplugins.stores.util.text;
+package com.nextplugins.stores.util;
 
 import lombok.Data;
 import net.md_5.bungee.api.chat.ClickEvent;

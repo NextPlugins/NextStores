@@ -3,10 +3,8 @@ package com.nextplugins.stores.configuration;
 import com.nextplugins.stores.NextStores;
 import lombok.Data;
 import lombok.val;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 

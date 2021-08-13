@@ -6,9 +6,10 @@ import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
 import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.stores.api.metric.MetricProvider;
+import com.nextplugins.stores.command.SetStoreNPCCommand;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
-import com.nextplugins.stores.conversation.ChatConversation;
+import com.nextplugins.stores.util.ChatConversationUtils;
 import com.nextplugins.stores.dao.StoreDAO;
 import com.nextplugins.stores.listener.UserDisconnectListener;
 import com.nextplugins.stores.listener.store.PlayerDislikeStoreListener;
@@ -85,12 +86,13 @@ public final class NextStores extends JavaPlugin {
         npcManager.init();
 
         getCommand("store").setExecutor(new StoreCommand(this));
+        getCommand("storesetnpc").setExecutor(new SetStoreNPCCommand());
 
         listener();
         MetricProvider.of(this).register();
 
-        ChatConversation.registerListener();
-        ChatConversation.scheduleTimeoutRunnable();
+        ChatConversationUtils.registerListener();
+        ChatConversationUtils.scheduleTimeoutRunnable();
     }
 
     @Override

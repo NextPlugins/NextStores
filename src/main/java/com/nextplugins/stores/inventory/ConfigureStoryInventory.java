@@ -15,13 +15,13 @@ import com.nextplugins.stores.api.event.StoreStateChangeEvent;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.configuration.values.inventories.StoreInventoryValue;
-import com.nextplugins.stores.conversation.ChatConversation;
+import com.nextplugins.stores.util.ChatConversationUtils;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.util.ItemBuilder;
-import com.nextplugins.stores.util.number.NumberFormat;
-import com.nextplugins.stores.util.text.FancyText;
+import com.nextplugins.stores.util.NumberUtil;
+import com.nextplugins.stores.util.FancyText;
 import lombok.val;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -148,7 +148,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                     player.closeInventory();
 
-                    ChatConversation.awaitResponse(player, ChatConversation.Request.builder()
+                    ChatConversationUtils.awaitResponse(player, ChatConversationUtils.Request.builder()
                             .messages(MessageValue.get(MessageValue::changeStoreDescription))
                             .timeoutDuration(Duration.ofSeconds(30))
                             .timeoutWarn(MessageValue.get(MessageValue::descriptionChangeTimeOut))
@@ -179,7 +179,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
                     callback.getPlayer().closeInventory();
 
-                    ChatConversation.awaitResponse(callback.getPlayer(), ChatConversation.Request.builder()
+                    ChatConversationUtils.awaitResponse(callback.getPlayer(), ChatConversationUtils.Request.builder()
                             .messages(MessageValue.get(MessageValue::deletingStore))
                             .timeoutDuration(Duration.ofSeconds(30))
                             .timeoutWarn(MessageValue.get(MessageValue::storeDeleteTimeOut))
@@ -255,7 +255,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
                                             .replace("$description", store.getDescription())
                                             .replace("$likes", String.valueOf(store.getLikes()))
                                             .replace("$dislikes", String.valueOf(store.getDislikes()))
-                                            .replace("$rating", NumberFormat.format(store.getRating()))
+                                            .replace("$rating", NumberUtil.format(store.getRating()))
                                             .replace("$open", store.isOpen() ? "Sim" : "Não")
                                             .replace("$visits", String.valueOf(store.getVisits()))
                                     )

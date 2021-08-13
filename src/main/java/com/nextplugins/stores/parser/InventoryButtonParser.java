@@ -3,7 +3,7 @@ package com.nextplugins.stores.parser;
 import com.nextplugins.stores.api.model.store.MaterialData;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.util.TypeUtil;
-import com.nextplugins.stores.util.text.ColorUtil;
+import com.nextplugins.stores.util.ColorUtil;
 import lombok.val;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

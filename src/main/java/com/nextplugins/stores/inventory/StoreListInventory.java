@@ -14,8 +14,9 @@ import com.nextplugins.stores.api.event.PlayerLikeStoreEvent;
 import com.nextplugins.stores.api.event.PlayerVisitStoreEvent;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.configuration.values.inventories.StoresInventoryValue;
+import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.util.ItemBuilder;
-import com.nextplugins.stores.util.number.NumberFormat;
+import com.nextplugins.stores.util.NumberUtil;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.ClickType;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public final class StoreListInventory extends PagedInventory {
 
     private final NextStores plugin;
+    private final InventoryButtonRegistry inventoryButtonRegistry;
 
     public StoreListInventory(NextStores plugin) {
         super(
@@ -34,7 +36,9 @@ public final class StoreListInventory extends PagedInventory {
             StoresInventoryValue.get(StoresInventoryValue::inventoryTitle),
             6 * 9
         );
+
         this.plugin = plugin;
+        this.inventoryButtonRegistry = plugin.getInventoryButtonRegistry();
     }
 
     @Override
@@ -42,6 +46,12 @@ public final class StoreListInventory extends PagedInventory {
         editor.setItem(
             45,
             DefaultItem.BACK.toInventoryItem(viewer)
+        );
+
+        val visit = inventoryButtonRegistry.get("visit");
+        editor.setItem(
+                visit.getInventorySlot(),
+                InventoryItem.of(visit.getItemStack()).defaultCallback(click -> click.getPlayer().performCommand("lojas ****"))
         );
     }
 
@@ -78,8 +88,8 @@ public final class StoreListInventory extends PagedInventory {
                                     .replace("$description", store.getDescription())
                                     .replace("$likes", String.valueOf(store.getLikes()))
                                     .replace("$dislikes", String.valueOf(store.getDislikes()))
-                                    .replace("$rating", NumberFormat.format(store.getRating()))
-                                    .replace("$visits", NumberFormat.format(store.getVisits()))
+                                    .replace("$rating", NumberUtil.format(store.getRating()))
+                                    .replace("$visits", NumberUtil.format(store.getVisits()))
                                     .replace("$open", store.isOpen() ? "Sim" : "Não" )
                                 )
                                 .collect(Collectors.toList())

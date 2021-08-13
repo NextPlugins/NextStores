@@ -2,7 +2,10 @@
 worlds:
   - 'MundoPlano'
 messages:
-  incorrect-usage: '&cUso incorreto! Utilize /{usage}.'
+  npc:
+    success: '&aNPC setado com sucesso.'
+    error: '&cNão foi possível setar o npc, o sistema está desabilitado por falta de dependência.'
+  incorrect-usage: '&cUso incorreto! Utilize /{usage} [jogador].'
   location-set: '&a&lYAY! &aVocê trocou a localização da sua loja para a sua posição atual.'
   description-change-time-out: '&cO tempo para trocar a descrição da sua loja foi esgotado!'
   already-editing: '&cVocê já está editando a descrição da sua loja!'
@@ -15,9 +18,11 @@ messages:
     - ' &aDigite qual será a nova descrição para a sua loja:'
     - ' &7Para cancelar digite &c"cancelar"'
     - ''
+  invalidPlayer: '&cO jogador inserido não existe.'
+  noStore: '&cO jogador $player não possui uma loja.'
   description-change-cancelled: '&aOperação cancelada com sucesso.'
   command-player-only: '&cEste comando apenas pode ser executado por jogadores.'
-  default-store-description: '&8O jogador $player não alterou a descrição ainda.'
+  default-store-description: '&cO jogador $player não alterou a descrição ainda.'
   teleported-to-the-store: '&aVocê foi teleportado à loja de&f $player'
   command-chat-response: '&cVocê deve responder a pergunta antes de enviar algum comando!'
   cancel-chat-response: '&cVocê cancelou a resposta do chat!'
@@ -34,3 +39,4 @@ messages:
   only-plot-message: '&cVocê só pode definir a localização de sua loja dentro de um de seus terrenos.'
   wrong-world: '&cVocê não pode definir a localização de sua loja aqui.'
   no-permission-to-create-store: '&cVocê não tem permissão para criar uma loja.'
+  no-permission: '&cVocê não tem permissão para fazer isto.'

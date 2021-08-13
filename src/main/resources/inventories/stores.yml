@@ -1,5 +1,14 @@
 inventory-title: 'Lojas disponíveis'
 
+visit:
+  material: BOOK
+  data: 0
+  displayName: '&6Visitar loja'
+  lore:
+    - '&fVocê pode visitar a loja de um &ejogador'
+    - '&fespecífico usando &e/loja [jogador]'
+  inventorySlot: 44
+
 item:
   title: '&aLoja de $player'
   lore:
