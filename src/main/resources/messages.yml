@@ -1,4 +1,4 @@
-# Caso seu servidor utilize o plugin 'PlotSquared', não precisa preencher isto
+# Caso seu servidor utilize o plugin 'PlotSquared' e a opção usePlots esteja ativa na config, não precisa preencher isto
 worlds:
   - 'MundoPlano'
 messages:

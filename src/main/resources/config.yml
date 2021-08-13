@@ -17,3 +17,7 @@ connection:
     database: 'test'
   sqlite:
     file: 'storage/stores_data.db'
+
+# Bloquear a criação de lojas em plots de outras pessoas
+# Caso desative, a proteção será por mundos
+usePlots: true

@@ -52,7 +52,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
                 StoreInventoryValue.get(StoreInventoryValue::lines) * 9
         );
 
-        usePlots = Bukkit.getPluginManager().isPluginEnabled("PlotSquared");
+        usePlots = Bukkit.getPluginManager().isPluginEnabled("PlotSquared") && NextStores.getInstance().getConfig().getBoolean("usePlots");
     }
 
     @Override
