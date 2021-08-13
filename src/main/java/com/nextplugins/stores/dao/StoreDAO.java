@@ -23,7 +23,7 @@ public final class StoreDAO {
 
     public void createTable() {
 
-        this.sqlExecutor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
+        sqlExecutor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
             "owner VARCHAR(16) NOT NULL PRIMARY KEY UNIQUE," +
             "open TEXT," +
             "description TEXT," +
@@ -36,7 +36,7 @@ public final class StoreDAO {
     }
 
     public Set<Store> selectAll() {
-        return this.sqlExecutor.resultManyQuery(
+        return sqlExecutor.resultManyQuery(
             "SELECT * FROM " + TABLE,
             simpleStatement -> {
             },
@@ -46,7 +46,7 @@ public final class StoreDAO {
 
     public Set<Store> selectAll(String preferences) {
 
-        return this.sqlExecutor.resultManyQuery(
+        return sqlExecutor.resultManyQuery(
             "SELECT * FROM " + TABLE + " " + preferences,
             simpleStatement -> {
             },
@@ -57,7 +57,7 @@ public final class StoreDAO {
 
     public void insert(Store store) {
 
-        this.sqlExecutor.updateQuery(
+        sqlExecutor.updateQuery(
             String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?,?)", TABLE),
             statement -> {
                 statement.set(1, store.getOwner());
@@ -74,7 +74,7 @@ public final class StoreDAO {
     }
 
     public void delete(String owner) {
-        this.sqlExecutor.updateQuery(
+        sqlExecutor.updateQuery(
             String.format("DELETE FROM %s WHERE owner = '%s'", TABLE, owner)
         );
     }
