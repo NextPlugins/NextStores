@@ -1,13 +1,12 @@
 package com.nextplugins.stores.inventory.button;
 
+import com.nextplugins.stores.api.model.store.MaterialData;
 import lombok.Builder;
 import lombok.Data;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.MaterialData;
 
 import java.util.List;
 
@@ -27,37 +26,24 @@ public final class InventoryButton {
     private ItemStack itemStack;
 
     public ItemStack getItemStack() {
-
         if (this.itemStack == null) {
-
-            if (username != null) this.itemStack = InventoryButton.getSkullItemStackName(username);
-
             this.itemStack = materialData.toItemStack(1);
-
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(this.displayName);
             itemMeta.setLore(this.lore);
             itemMeta.addItemFlags(ItemFlag.values());
-
             this.itemStack.setItemMeta(itemMeta);
-
         }
-
         return this.itemStack;
-
     }
 
-    public static ItemStack getSkullItemStackName(String playerName) {
-
-        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+    public ItemStack getSkullItemStack(String playerName) {
+        ItemStack itemStack = this.getItemStack().clone();
 
         if (itemStack.getType().name().contains("SKULL_ITEM")) {
-
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-
             skullMeta.setOwner(playerName);
             itemStack.setItemMeta(skullMeta);
-
         }
 
         return itemStack;

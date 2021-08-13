@@ -13,7 +13,7 @@ public final class MapHelper {
     private static final Gson gson = new GsonBuilder().create();
 
     public static LinkedHashMap<String, String> fromDatabase(String databaseOutput) {
-        Type typeOfHashMap = new TypeToken<Map<String, Long>>() {
+        Type typeOfHashMap = new TypeToken<Map<String, String>>() {
         }.getType();
 
         return gson.fromJson(databaseOutput, typeOfHashMap);

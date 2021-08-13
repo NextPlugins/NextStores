@@ -6,15 +6,12 @@ import com.nextplugins.stores.inventory.StoreInventory;
 import com.nextplugins.stores.inventory.StoreListInventory;
 import lombok.Getter;
 
-import javax.inject.Singleton;
-
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
 
 @Getter
-@Singleton
 public class InventoryRegistry {
 
     private StoreInventory storeInventory;

@@ -1,16 +1,15 @@
 package com.nextplugins.stores;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.henryfabio.minecraft.inventoryapi.manager.InventoryManager;
 import com.henryfabio.sqlprovider.connector.SQLConnector;
 import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
+import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.stores.api.metric.MetricProvider;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.conversation.ChatConversation;
-import com.nextplugins.stores.guice.PluginModule;
+import com.nextplugins.stores.dao.StoreDAO;
 import com.nextplugins.stores.listener.UserDisconnectListener;
 import com.nextplugins.stores.listener.store.PlayerDislikeStoreListener;
 import com.nextplugins.stores.listener.store.PlayerLikeStoreListener;
@@ -38,7 +37,6 @@ public final class NextStores extends JavaPlugin {
      */
     private static final int PLUGIN_ID = 10227;
 
-    private Injector injector;
     private SQLConnector sqlConnector;
 
     private Configuration messagesConfig;
@@ -47,15 +45,12 @@ public final class NextStores extends JavaPlugin {
     private Configuration storesInventoryConfig;
     private Configuration npcConfig;
 
-    @Inject
     private InventoryRegistry inventoryRegistry;
-    @Inject
     private InventoryButtonRegistry inventoryButtonRegistry;
-    @Inject
-    private NPCManager npcManager;
 
-    @Inject
+    private StoreDAO storeDAO;
     private StoreManager storeManager;
+    private NPCManager npcManager;
 
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
@@ -77,10 +72,12 @@ public final class NextStores extends JavaPlugin {
     @Override
     public void onEnable() {
         InventoryManager.enable(this);
-        configureSqlProvider(getConfig());
+        sqlProvider(getConfig());
 
-        this.injector = PluginModule.from(this).createInjector();
-        this.injector.injectMembers(this);
+        inventoryRegistry = new InventoryRegistry();
+        inventoryButtonRegistry = new InventoryButtonRegistry();
+        storeManager = new StoreManager(storeDAO);
+        npcManager = new NPCManager();
 
         inventoryRegistry.init();
         inventoryButtonRegistry.init();
@@ -104,7 +101,7 @@ public final class NextStores extends JavaPlugin {
         npcRunnable.despawn();
     }
 
-    private void configureSqlProvider(ConfigurationSection section) {
+    private void sqlProvider(ConfigurationSection section) {
 
         if (section.getBoolean("connection.mysql.enable")) {
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
@@ -128,6 +125,8 @@ public final class NextStores extends JavaPlugin {
 
         }
 
+        storeDAO = new StoreDAO(new SQLExecutor(sqlConnector));
+
     }
 
     private void listener() {
@@ -143,13 +142,6 @@ public final class NextStores extends JavaPlugin {
         pluginManager.registerEvents(playerVisitStoreListener, this);
         pluginManager.registerEvents(playerDislikeStoreListener, this);
 
-        this.injectMembers(playerLikeStoreListener, playerDislikeStoreListener, playerVisitStoreListener);
-    }
-
-    private void injectMembers(Object... instances) {
-        for (Object instance : instances) {
-            this.injector.injectMembers(instance);
-        }
     }
 
 }

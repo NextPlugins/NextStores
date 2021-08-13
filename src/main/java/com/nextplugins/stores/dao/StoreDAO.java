@@ -1,12 +1,11 @@
 package com.nextplugins.stores.dao;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.dao.adapter.StoreAdapter;
 import com.nextplugins.stores.serializer.impl.LocationSerializer;
 import com.nextplugins.stores.util.MapHelper;
+import lombok.AllArgsConstructor;
 
 import java.util.Set;
 
@@ -15,12 +14,12 @@ import java.util.Set;
  * Github: https://github.com/Yuhtin
  */
 
-@Singleton
+@AllArgsConstructor
 public final class StoreDAO {
 
     private static final String TABLE = "stores";
 
-    @Inject private SQLExecutor sqlExecutor;
+    private final SQLExecutor sqlExecutor;
 
     public void createTable() {
 

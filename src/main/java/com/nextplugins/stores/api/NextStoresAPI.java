@@ -1,7 +1,6 @@
 package com.nextplugins.stores.api;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.Inject;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.model.store.Store;
 import com.nextplugins.stores.manager.StoreManager;
@@ -25,11 +24,7 @@ public final class NextStoresAPI {
 
     @Getter public static final NextStoresAPI instance = new NextStoresAPI();
 
-    static {
-        NextStores.getInstance().getInjector().injectMembers(instance);
-    }
-
-    @Inject private StoreManager storeManager;
+    private final StoreManager storeManager = NextStores.getInstance().getStoreManager();
 
     /**
      * Get a store by owner name

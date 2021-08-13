@@ -13,15 +13,11 @@ import com.nextplugins.stores.api.event.PlayerDislikeStoreEvent;
 import com.nextplugins.stores.api.event.PlayerLikeStoreEvent;
 import com.nextplugins.stores.api.event.PlayerVisitStoreEvent;
 import com.nextplugins.stores.api.model.store.Store;
-import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.configuration.values.inventories.StoresInventoryValue;
-import com.nextplugins.stores.inventory.button.InventoryButton;
-import com.nextplugins.stores.util.item.ItemBuilder;
+import com.nextplugins.stores.util.ItemBuilder;
 import com.nextplugins.stores.util.number.NumberFormat;
 import lombok.val;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
 import java.util.LinkedList;
@@ -70,12 +66,12 @@ public final class StoreListInventory extends PagedInventory {
         List<InventoryItemSupplier> items = new LinkedList<>();
 
         for (Store store : plugin.getStoreManager().getStores().values()) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(store.getOwner());
+            val owner = store.getOwner();
 
             items.add(() ->
                 InventoryItem.of(
-                    new ItemBuilder(InventoryButton.getSkullItemStackName(player.getName()).clone())
-                        .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", player.getName()))
+                    new ItemBuilder(owner)
+                        .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", owner))
                         .lore(
                             StoresInventoryValue.get(StoresInventoryValue::lore).stream()
                                 .map(line -> line

@@ -4,17 +4,15 @@ import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.listener.InteractNPCListener;
 import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import lombok.Getter;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
-
-import javax.inject.Singleton;
 
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
 
-@Singleton
 public class NPCManager {
 
     protected final NextStores plugin = NextStores.getInstance();
@@ -46,7 +44,7 @@ public class NPCManager {
 
         enabled = true;
 
-        InteractNPCListener interactNPCListener = new InteractNPCListener(this);
+        val interactNPCListener = new InteractNPCListener(this);
         Bukkit.getPluginManager().registerEvents(interactNPCListener, plugin);
 
     }

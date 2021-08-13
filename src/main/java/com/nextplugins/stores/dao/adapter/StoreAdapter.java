@@ -1,6 +1,5 @@
 package com.nextplugins.stores.dao.adapter;
 
-import com.google.inject.Singleton;
 import com.henryfabio.sqlprovider.executor.adapter.SQLResultAdapter;
 import com.henryfabio.sqlprovider.executor.result.SimpleResultSet;
 import com.nextplugins.stores.api.model.store.Store;
@@ -15,7 +14,6 @@ import java.util.Map;
  * Github: https://github.com/Yuhtin
  */
 
-@Singleton
 public class StoreAdapter implements SQLResultAdapter<Store> {
 
     @Override

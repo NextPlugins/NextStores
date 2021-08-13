@@ -1,6 +1,5 @@
 package com.nextplugins.stores.inventory;
 
-import com.google.inject.Inject;
 import com.henryfabio.minecraft.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.minecraft.inventoryapi.inventory.impl.simple.SimpleInventory;
 import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
@@ -20,7 +19,7 @@ import com.nextplugins.stores.conversation.ChatConversation;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
-import com.nextplugins.stores.util.item.ItemBuilder;
+import com.nextplugins.stores.util.ItemBuilder;
 import com.nextplugins.stores.util.number.NumberFormat;
 import com.nextplugins.stores.util.text.FancyText;
 import lombok.val;
@@ -32,7 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import javax.inject.Named;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
@@ -43,19 +41,18 @@ import java.util.stream.Collectors;
  */
 public class ConfigureStoryInventory extends SimpleInventory {
 
-    @Inject private StoreManager storeManager;
-    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
-    @Inject @Named("plots") private Boolean usePlots;
+    private final StoreManager storeManager = NextStores.getInstance().getStoreManager();
+    private final InventoryButtonRegistry inventoryButtonRegistry = NextStores.getInstance().getInventoryButtonRegistry();
+    private final boolean usePlots;
 
     public ConfigureStoryInventory() {
-
         super(
-            "stores.configure",
-            StoreInventoryValue.get(StoreInventoryValue::title),
-            StoreInventoryValue.get(StoreInventoryValue::lines) * 9
+                "stores.configure",
+                StoreInventoryValue.get(StoreInventoryValue::title),
+                StoreInventoryValue.get(StoreInventoryValue::lines) * 9
         );
 
-        NextStores.getInstance().getInjector().injectMembers(this);
+        usePlots = Bukkit.getPluginManager().isPluginEnabled("PlotSquared");
     }
 
     @Override
@@ -68,55 +65,55 @@ public class ConfigureStoryInventory extends SimpleInventory {
         if (store == null) {
 
             editor.setItem(13, InventoryItem.of(
-                    new ItemBuilder(InventoryButton.getSkullItemStackName(viewer.getName()))
-                        .name(ChatColor.GREEN + "Criar uma loja")
-                        .lore("",
-                            ChatColor.GRAY + "Parece que você ainda não possui uma loja...", "",
-                            ChatColor.GREEN + "Clique aqui para criar uma."
-                        )
-                        .addItemFlags(ItemFlag.values())
-                        .result()
-                ).defaultCallback(callback -> {
-                    val player = callback.getPlayer();
+                            new ItemBuilder(viewer.getName())
+                                    .name(ChatColor.GREEN + "Criar uma loja")
+                                    .lore("",
+                                            ChatColor.GRAY + "Parece que você ainda não possui uma loja...", "",
+                                            ChatColor.GREEN + "Clique aqui para criar uma."
+                                    )
+                                    .addItemFlags(ItemFlag.values())
+                                    .result()
+                    ).defaultCallback(callback -> {
+                        val player = callback.getPlayer();
 
-                    if (!player.hasPermission("nextstores.stores.create")) {
-                        player.sendMessage(MessageValue.get(MessageValue::noPermissionToCreateStore));
+                        if (!player.hasPermission("nextstores.stores.create")) {
+                            player.sendMessage(MessageValue.get(MessageValue::noPermissionToCreateStore));
+                            player.closeInventory();
+                            return;
+                        }
+
+                        if (plotCheck(player)) return;
+
+                        final Store createdStore = Store.builder()
+                                .owner(player.getName())
+                                .location(player.getLocation())
+                                .description(
+                                        MessageValue.get(MessageValue::defaultStoreDescription)
+                                                .replace("$player", player.getName())
+                                )
+                                .playersWhoRated(new LinkedHashMap<>())
+                                .build();
+
+                        storeManager.addStore(createdStore);
+
                         player.closeInventory();
-                        return;
-                    }
 
-                    if (plotCheck(player)) return;
+                        val storeCreatedMessage = new FancyText(ChatColor.GREEN + "A sua loja foi criada com sucesso!")
+                                .click(
+                                        ClickEvent.Action.RUN_COMMAND,
+                                        "/store"
+                                )
+                                .hover(
+                                        HoverEvent.Action.SHOW_TEXT,
+                                        ChatColor.GRAY + "Clique aqui abrir a configuração da sua loja."
+                                )
+                                .build();
 
-                    final Store createdStore = Store.builder()
-                        .owner(player.getName())
-                        .location(player.getLocation())
-                        .description(
-                            MessageValue.get(MessageValue::defaultStoreDescription)
-                                .replace("$player", player.getName())
-                        )
-                        .playersWhoRated(new LinkedHashMap<>())
-                        .build();
+                        player.spigot().sendMessage(storeCreatedMessage);
 
-                    storeManager.addStore(createdStore);
-
-                    player.closeInventory();
-
-                    val storeCreatedMessage = new FancyText(ChatColor.GREEN + "A sua loja foi criada com sucesso!")
-                        .click(
-                            ClickEvent.Action.RUN_COMMAND,
-                            "/store"
-                        )
-                        .hover(
-                            HoverEvent.Action.SHOW_TEXT,
-                            ChatColor.GRAY + "Clique aqui abrir a configuração da sua loja."
-                        )
-                        .build();
-
-                    player.spigot().sendMessage(storeCreatedMessage);
-
-                    final StoreCreatedEvent storeCreatedEvent = new StoreCreatedEvent(player, createdStore);
-                    Bukkit.getPluginManager().callEvent(storeCreatedEvent);
-                })
+                        final StoreCreatedEvent storeCreatedEvent = new StoreCreatedEvent(player, createdStore);
+                        Bukkit.getPluginManager().callEvent(storeCreatedEvent);
+                    })
             );
 
         } else storeItems(viewer.getPlayer(), store, editor);
@@ -135,65 +132,65 @@ public class ConfigureStoryInventory extends SimpleInventory {
     private void storeItems(Player player, Store store, InventoryEditor editor) {
         val locationButton = inventoryButtonRegistry.get("store.location");
         editor.setItem(locationButton.getInventorySlot(),
-            InventoryItem.of(locationButton.getItemStack()).defaultCallback(callback -> {
-                if (plotCheck(player)) return;
+                InventoryItem.of(locationButton.getItemStack()).defaultCallback(callback -> {
+                    if (plotCheck(player)) return;
 
-                store.setLocation(player.getLocation());
+                    store.setLocation(player.getLocation());
 
-                player.closeInventory();
-                player.sendMessage(MessageValue.get(MessageValue::locationSet));
-            })
+                    player.closeInventory();
+                    player.sendMessage(MessageValue.get(MessageValue::locationSet));
+                })
         );
 
         val descriptionButton = inventoryButtonRegistry.get("store.description");
         editor.setItem(descriptionButton.getInventorySlot(),
-            InventoryItem.of(descriptionButton.getItemStack()).defaultCallback(callback -> {
+                InventoryItem.of(descriptionButton.getItemStack()).defaultCallback(callback -> {
 
-                player.closeInventory();
+                    player.closeInventory();
 
-                ChatConversation.awaitResponse(player, ChatConversation.Request.builder()
-                    .messages(MessageValue.get(MessageValue::changeStoreDescription))
-                    .timeoutDuration(Duration.ofSeconds(30))
-                    .timeoutWarn(MessageValue.get(MessageValue::descriptionChangeTimeOut))
-                    .responseConsumer(response -> {
-                        val responseDescription = ChatColor.translateAlternateColorCodes('&', response);
-                        store.setDescription(responseDescription);
+                    ChatConversation.awaitResponse(player, ChatConversation.Request.builder()
+                            .messages(MessageValue.get(MessageValue::changeStoreDescription))
+                            .timeoutDuration(Duration.ofSeconds(30))
+                            .timeoutWarn(MessageValue.get(MessageValue::descriptionChangeTimeOut))
+                            .responseConsumer(response -> {
+                                val responseDescription = ChatColor.translateAlternateColorCodes('&', response);
+                                store.setDescription(responseDescription);
 
-                        this.openInventory(player);
-                    })
-                    .build());
+                                this.openInventory(player);
+                            })
+                            .build());
 
-            })
+                })
         );
 
         val stateButton = inventoryButtonRegistry.get("store.state");
         editor.setItem(stateButton.getInventorySlot(),
-            InventoryItem.of(stateButton.getItemStack()).defaultCallback(callback -> {
-                final StoreStateChangeEvent storeStateChangeEvent = new StoreStateChangeEvent(player, store);
-                Bukkit.getPluginManager().callEvent(storeStateChangeEvent);
-                updateInventory(player);
-            })
+                InventoryItem.of(stateButton.getItemStack()).defaultCallback(callback -> {
+                    final StoreStateChangeEvent storeStateChangeEvent = new StoreStateChangeEvent(player, store);
+                    Bukkit.getPluginManager().callEvent(storeStateChangeEvent);
+                    updateInventory(player);
+                })
         );
 
         val deleteButton = inventoryButtonRegistry.get("store.delete");
 
         editor.setItem(deleteButton.getInventorySlot(),
-            InventoryItem.of(deleteButton.getItemStack()).defaultCallback(callback -> {
+                InventoryItem.of(deleteButton.getItemStack()).defaultCallback(callback -> {
 
-                callback.getPlayer().closeInventory();
+                    callback.getPlayer().closeInventory();
 
-                ChatConversation.awaitResponse(callback.getPlayer(), ChatConversation.Request.builder()
-                    .messages(MessageValue.get(MessageValue::deletingStore))
-                    .timeoutDuration(Duration.ofSeconds(30))
-                    .timeoutWarn(MessageValue.get(MessageValue::storeDeleteTimeOut))
-                    .responseConsumer(response -> {
-                        if (response.equalsIgnoreCase("confirmar")) {
-                            storeManager.deleteStore(store);
-                            callback.getPlayer().sendMessage(MessageValue.get(MessageValue::storeDeleted));
-                        }
-                    })
-                    .build());
-            })
+                    ChatConversation.awaitResponse(callback.getPlayer(), ChatConversation.Request.builder()
+                            .messages(MessageValue.get(MessageValue::deletingStore))
+                            .timeoutDuration(Duration.ofSeconds(30))
+                            .timeoutWarn(MessageValue.get(MessageValue::storeDeleteTimeOut))
+                            .responseConsumer(response -> {
+                                if (response.equalsIgnoreCase("confirmar")) {
+                                    storeManager.deleteStore(store);
+                                    callback.getPlayer().sendMessage(MessageValue.get(MessageValue::storeDeleted));
+                                }
+                            })
+                            .build());
+                })
         );
     }
 
@@ -201,9 +198,9 @@ public class ConfigureStoryInventory extends SimpleInventory {
         if (usePlots) {
 
             val plotLocation = new Location(player.getLocation().getWorld().getName(),
-                (int) player.getLocation().getX(),
-                (int) player.getLocation().getY(),
-                (int) player.getLocation().getZ()
+                    (int) player.getLocation().getX(),
+                    (int) player.getLocation().getY(),
+                    (int) player.getLocation().getZ()
             );
 
             val plot = Plot.getPlot(plotLocation);
@@ -241,33 +238,33 @@ public class ConfigureStoryInventory extends SimpleInventory {
         val infoButton = (InventoryButton) inventoryButtonRegistry.get("store.info");
 
         editor.setItem(
-            infoButton.getInventorySlot(),
-            InventoryItem.of(new ItemBuilder(infoButton.getItemStack().clone())
-                .acceptItemMeta(itemMeta -> {
-                    val skullMeta = (SkullMeta) itemMeta;
+                infoButton.getInventorySlot(),
+                InventoryItem.of(new ItemBuilder(infoButton.getItemStack().clone())
+                        .changeItemMeta(itemMeta -> {
+                            val skullMeta = (SkullMeta) itemMeta;
 
-                    if (infoButton.getUsername() == null || infoButton.getUsername().isEmpty()) {
-                        skullMeta.setOwner(player.getName());
-                    } else {
-                        skullMeta.setOwner(infoButton.getUsername());
-                    }
+                            if (infoButton.getUsername() == null || infoButton.getUsername().isEmpty()) {
+                                skullMeta.setOwner(player.getName());
+                            } else {
+                                skullMeta.setOwner(infoButton.getUsername());
+                            }
 
-                    val replacedLore = itemMeta.getLore()
-                        .stream()
-                        .map(line -> line
-                            .replace("$description", store.getDescription())
-                            .replace("$likes", String.valueOf(store.getLikes()))
-                            .replace("$dislikes", String.valueOf(store.getDislikes()))
-                            .replace("$rating", NumberFormat.format(store.getRating()))
-                            .replace("$open", store.isOpen() ? "Sim" : "Não")
-                            .replace("$visits", String.valueOf(store.getVisits()))
-                        )
-                        .collect(Collectors.toList());
+                            val replacedLore = itemMeta.getLore()
+                                    .stream()
+                                    .map(line -> line
+                                            .replace("$description", store.getDescription())
+                                            .replace("$likes", String.valueOf(store.getLikes()))
+                                            .replace("$dislikes", String.valueOf(store.getDislikes()))
+                                            .replace("$rating", NumberFormat.format(store.getRating()))
+                                            .replace("$open", store.isOpen() ? "Sim" : "Não")
+                                            .replace("$visits", String.valueOf(store.getVisits()))
+                                    )
+                                    .collect(Collectors.toList());
 
-                    itemMeta.setLore(replacedLore);
-                })
-                .result()
-            )
+                            itemMeta.setLore(replacedLore);
+                        })
+                        .result()
+                )
         );
     }
 

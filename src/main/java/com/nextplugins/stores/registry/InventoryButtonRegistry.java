@@ -1,54 +1,52 @@
 package com.nextplugins.stores.registry;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.parser.InventoryButtonParser;
-import org.bukkit.configuration.ConfigurationSection;
+import lombok.val;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Singleton
 public final class InventoryButtonRegistry {
 
     private final Map<String, InventoryButton> inventoryButtonMap = new LinkedHashMap<>();
 
-    @Inject @Named("buttons" ) private ConfigurationSection buttonsConfig;
-    @Inject private InventoryButtonParser inventoryButtonParser;
-
     public void init() {
 
-        register("main.yourStore", inventoryButtonParser.parse(
-            buttonsConfig.getConfigurationSection("buttons.yourStore" )
+        val nextStores = NextStores.getInstance();
+        val storeInventoryConfig = nextStores.getStoreInventoryConfig();
+        val buttonsConfig = nextStores.getMainInventoryConfig().getConfigurationSection("inventory");
+        val buttonParser = new InventoryButtonParser();
+
+        register("main.yourStore", buttonParser.parse(
+                buttonsConfig.getConfigurationSection("buttons.yourStore")
         ));
 
-        register("main.allStores", inventoryButtonParser.parse(
-            buttonsConfig.getConfigurationSection("buttons.allStores" )
+        register("main.allStores", buttonParser.parse(
+                buttonsConfig.getConfigurationSection("buttons.allStores")
         ));
 
         // store inventory
 
-        register("store.info", inventoryButtonParser.parse(
-            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.yourStore" )
+        register("store.info", buttonParser.parse(
+                storeInventoryConfig.getConfigurationSection("inventory.buttons.yourStore")
         ));
 
-        register("store.location", inventoryButtonParser.parse(
-            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.location" )
+        register("store.location", buttonParser.parse(
+                storeInventoryConfig.getConfigurationSection("inventory.buttons.location")
         ));
 
-        register("store.description", inventoryButtonParser.parse(
-            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.description" )
+        register("store.description", buttonParser.parse(
+                storeInventoryConfig.getConfigurationSection("inventory.buttons.description")
         ));
 
-        register("store.state", inventoryButtonParser.parse(
-            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.state" )
+        register("store.state", buttonParser.parse(
+                storeInventoryConfig.getConfigurationSection("inventory.buttons.state")
         ));
 
-        register("store.delete", inventoryButtonParser.parse(
-            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory.buttons.delete" )
+        register("store.delete", buttonParser.parse(
+                storeInventoryConfig.getConfigurationSection("inventory.buttons.delete")
         ));
 
     }
