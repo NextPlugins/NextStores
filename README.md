@@ -8,7 +8,7 @@ Um sistema de lojas completo e 100% em menus! O sistema possibilita os jogadores
 |Comando               |Descrição           |Permissão             |
 |----------------------|--------------------|----------------------|
 |/lojas                |Abre o menu principal do sistema|`nextstores.command.store`|
-|/lojas setnpc         |Seta o NPC          |`stores.admin`|
+|/lojassetnpc         |Seta o NPC          |`nextstores.command.setstore`|
 
 ## Download
 
