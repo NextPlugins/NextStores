@@ -37,7 +37,7 @@ public class StoreCommand implements CommandExecutor {
             }
 
             val offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-            if (offlinePlayer.hasPlayedBefore()) {
+            if (!offlinePlayer.hasPlayedBefore()) {
 
                 player.sendMessage(MessageValue.get(MessageValue::invalidPlayer));
                 return false;
