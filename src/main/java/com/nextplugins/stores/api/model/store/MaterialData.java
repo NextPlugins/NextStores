@@ -26,9 +26,5 @@ public class MaterialData {
         return new ItemStack(material, quantity, (short) data);
     }
 
-    public boolean equals(MaterialData materialData) {
-        return materialData.getMaterial() == material && (ignoreData || materialData.getData() == data);
-    }
-
 }
 
