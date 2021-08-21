@@ -6,8 +6,8 @@ visit:
   displayName: '&6Visitar loja'
   lore:
     - '&fVocê pode visitar a loja de um &ejogador'
-    - '&fespecífico usando &e/loja [jogador]'
-  inventorySlot: 44
+    - '&fespecífico utilizando &e/loja [jogador]'
+  inventorySlot: 53
 
 item:
   title: '&aLoja de $player'

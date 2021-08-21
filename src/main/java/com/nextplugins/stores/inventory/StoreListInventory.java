@@ -50,15 +50,15 @@ public final class StoreListInventory extends PagedInventory {
 
         val visit = inventoryButtonRegistry.get("visit");
         editor.setItem(
-                visit.getInventorySlot(),
-                InventoryItem.of(visit.getItemStack()).defaultCallback(click -> click.getPlayer().performCommand("lojas ****"))
+            visit.getInventorySlot(),
+            InventoryItem.of(visit.getItemStack()).defaultCallback(click -> click.getPlayer().performCommand("lojas ****"))
         );
     }
 
     @Override
     protected void configureViewer(PagedViewer viewer) {
         final ViewerConfigurationImpl.Paged configuration = viewer.getConfiguration();
-        configuration.backInventory("stores.main" );
+        configuration.backInventory("stores.main");
     }
 
     @Override
@@ -78,6 +78,8 @@ public final class StoreListInventory extends PagedInventory {
         for (Store store : plugin.getStoreManager().getStores().values()) {
             val owner = store.getOwner();
 
+            System.out.println(NumberUtil.format(store.getRating()));
+
             items.add(() ->
                 InventoryItem.of(
                     new ItemBuilder(owner)
@@ -86,11 +88,11 @@ public final class StoreListInventory extends PagedInventory {
                             StoresInventoryValue.get(StoresInventoryValue::lore).stream()
                                 .map(line -> line
                                     .replace("$description", store.getDescription())
-                                    .replace("$likes", String.valueOf(store.getLikes()))
-                                    .replace("$dislikes", String.valueOf(store.getDislikes()))
+                                    .replace("$likes", NumberUtil.format(store.getLikes()))
+                                    .replace("$dislikes", NumberUtil.format(store.getDislikes()))
                                     .replace("$rating", NumberUtil.format(store.getRating()))
                                     .replace("$visits", NumberUtil.format(store.getVisits()))
-                                    .replace("$open", store.isOpen() ? "Sim" : "Não" )
+                                    .replace("$open", store.isOpen() ? "Sim" : "Não")
                                 )
                                 .collect(Collectors.toList())
                         )

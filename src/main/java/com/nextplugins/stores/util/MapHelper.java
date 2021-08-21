@@ -3,16 +3,16 @@ package com.nextplugins.stores.util;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.lang.reflect.Type;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class MapHelper {
 
     private static final Gson gson = new GsonBuilder().create();
 
-    public static LinkedHashMap<String, String> fromDatabase(String databaseOutput) {
+    public static LinkedTreeMap<String, String> fromDatabase(String databaseOutput) {
         Type typeOfHashMap = new TypeToken<Map<String, String>>() {
         }.getType();
 

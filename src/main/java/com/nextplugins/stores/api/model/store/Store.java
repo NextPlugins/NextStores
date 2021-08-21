@@ -29,7 +29,11 @@ public class Store {
     private Map<String, String> playersWhoRated;
 
     public double getRating() {
-        return Math.floor((double) likes / (likes + dislikes) * 100);
+        final double rating = Math.floor((double) likes / (likes + dislikes) * 100);
+
+        if (rating <= 0) return 0;
+
+        return rating;
     }
 
     public void like() {

@@ -31,7 +31,7 @@ public class StoreCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("****")) {
 
-                player.sendMessage(MessageValue.get(MessageValue::incorrectUsage));
+                player.sendMessage(MessageValue.get(MessageValue::incorrectUsage).replace("{usage}", "lojas"));
                 return false;
 
             }
