@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class StoreInventory extends GlobalInventory {
 
-    private final InventoryButtonRegistry inventoryButtonRegistry = NextStores.getInstance().getInventoryButtonRegistry();;
+    private final InventoryButtonRegistry inventoryButtonRegistry = NextStores.getInstance().getInventoryButtonRegistry();
     private final InventoryRegistry inventoryRegistry = NextStores.getInstance().getInventoryRegistry();
 
     public StoreInventory() {
@@ -61,7 +61,16 @@ public class StoreInventory extends GlobalInventory {
                                 })
                                 .result()
                 ).defaultCallback(
-                        callback -> inventoryRegistry.getStoreListInventory().openInventory(callback.getPlayer())
+                        callback -> {
+                            try {
+                                inventoryRegistry.getStoreListInventory().openInventory(callback.getPlayer());
+                            }catch (Throwable ignored) {
+                                val player = callback.getPlayer();
+                                player.sendMessage("§cNão existe nenhuma loja criada no servidor.");
+                                player.closeInventory();
+                            }
+                        }
+
                 )
         );
 
