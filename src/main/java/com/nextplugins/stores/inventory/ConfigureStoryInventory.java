@@ -156,7 +156,7 @@ public class ConfigureStoryInventory extends SimpleInventory {
                         val responseDescription = ChatColor.translateAlternateColorCodes('&', response);
                         store.setDescription(responseDescription);
 
-                        this.openInventory(player);
+                        Bukkit.getScheduler().runTask(NextStores.getInstance(), () -> this.openInventory(player));
                     })
                     .build());
 
