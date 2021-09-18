@@ -145,21 +145,13 @@ public class ConfigureStoryInventory extends SimpleInventory {
         val descriptionButton = inventoryButtonRegistry.get("store.description");
         editor.setItem(descriptionButton.getInventorySlot(),
             InventoryItem.of(descriptionButton.getItemStack()).defaultCallback(callback -> {
-
                 player.closeInventory();
 
-                ChatConversationUtils.awaitResponse(player, ChatConversationUtils.Request.builder()
-                    .messages(MessageValue.get(MessageValue::changeStoreDescription))
-                    .timeoutDuration(Duration.ofSeconds(30))
-                    .timeoutWarn(MessageValue.get(MessageValue::descriptionChangeTimeOut))
-                    .responseConsumer(response -> {
-                        val responseDescription = ChatColor.translateAlternateColorCodes('&', response);
-                        store.setDescription(responseDescription);
+                for (String message : MessageValue.get(MessageValue::changeStoreDescription)) {
+                    player.sendMessage(message);
+                }
 
-                        Bukkit.getScheduler().runTask(NextStores.getInstance(), () -> this.openInventory(player));
-                    })
-                    .build());
-
+                storeManager.getPlayersChangingStoreDescription().put(player.getUniqueId(), store);
             })
         );
 

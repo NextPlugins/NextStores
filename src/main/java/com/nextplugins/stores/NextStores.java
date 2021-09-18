@@ -9,18 +9,15 @@ import com.nextplugins.stores.api.metric.MetricProvider;
 import com.nextplugins.stores.command.SetStoreNPCCommand;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
-import com.nextplugins.stores.util.ChatConversationUtils;
 import com.nextplugins.stores.dao.StoreDAO;
 import com.nextplugins.stores.listener.UserDisconnectListener;
-import com.nextplugins.stores.listener.store.PlayerDislikeStoreListener;
-import com.nextplugins.stores.listener.store.PlayerLikeStoreListener;
-import com.nextplugins.stores.listener.store.PlayerVisitStoreListener;
-import com.nextplugins.stores.listener.store.StoreStateChangeListener;
+import com.nextplugins.stores.listener.store.*;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.npc.manager.NPCManager;
 import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
+import com.nextplugins.stores.util.ChatConversationUtils;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -135,6 +132,7 @@ public final class NextStores extends JavaPlugin {
         val pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new UserDisconnectListener(this), this);
         pluginManager.registerEvents(new StoreStateChangeListener(), this);
+        pluginManager.registerEvents(new StoreDescriptionChangeListener(this.storeManager), this);
 
         val playerLikeStoreListener = new PlayerLikeStoreListener();
         val playerVisitStoreListener = new PlayerVisitStoreListener();

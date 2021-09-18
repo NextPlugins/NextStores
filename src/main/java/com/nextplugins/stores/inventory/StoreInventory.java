@@ -23,9 +23,9 @@ public class StoreInventory extends GlobalInventory {
 
     public StoreInventory() {
         super(
-                "stores.main",
-                MainInventoryValue.get(MainInventoryValue::title),
-                MainInventoryValue.get(MainInventoryValue::lines) * 9
+            "stores.main",
+            MainInventoryValue.get(MainInventoryValue::title),
+            MainInventoryValue.get(MainInventoryValue::lines) * 9
         );
     }
 
@@ -34,44 +34,44 @@ public class StoreInventory extends GlobalInventory {
 
         val yourStoreButton = inventoryButtonRegistry.get("main.yourStore");
         editor.setItem(
-                yourStoreButton.getInventorySlot(),
-                InventoryItem.of(
-                        new ItemBuilder(yourStoreButton.getItemStack())
-                                .changeItemMeta(itemMeta -> {
+            yourStoreButton.getInventorySlot(),
+            InventoryItem.of(
+                new ItemBuilder(yourStoreButton.getItemStack())
+                    .changeItemMeta(itemMeta -> {
 
-                                    val skullMeta = (SkullMeta) itemMeta;
-                                    skullMeta.setOwner(yourStoreButton.getUsername());
+                        val skullMeta = (SkullMeta) itemMeta;
+                        skullMeta.setOwner(yourStoreButton.getUsername());
 
-                                })
-                                .result()
-                ).defaultCallback(
-                        callback -> inventoryRegistry.getConfigureStoryInventory().openInventory(callback.getPlayer())
-                )
+                    })
+                    .result()
+            ).defaultCallback(
+                callback -> inventoryRegistry.getConfigureStoryInventory().openInventory(callback.getPlayer())
+            )
         );
 
         val allStoresButton = inventoryButtonRegistry.get("main.allStores");
         editor.setItem(
-                allStoresButton.getInventorySlot(),
-                InventoryItem.of(
-                        new ItemBuilder(allStoresButton.getItemStack())
-                                .changeItemMeta(itemMeta -> {
-                                    SkullMeta skullMeta = (SkullMeta) itemMeta;
+            allStoresButton.getInventorySlot(),
+            InventoryItem.of(
+                new ItemBuilder(allStoresButton.getItemStack())
+                    .changeItemMeta(itemMeta -> {
+                        SkullMeta skullMeta = (SkullMeta) itemMeta;
 
-                                    skullMeta.setOwner(allStoresButton.getUsername());
-                                })
-                                .result()
-                ).defaultCallback(
-                        callback -> {
-                            try {
-                                inventoryRegistry.getStoreListInventory().openInventory(callback.getPlayer());
-                            }catch (Throwable ignored) {
-                                val player = callback.getPlayer();
-                                player.sendMessage("§cNão existe nenhuma loja criada no servidor.");
-                                player.closeInventory();
-                            }
-                        }
+                        skullMeta.setOwner(allStoresButton.getUsername());
+                    })
+                    .result()
+            ).defaultCallback(
+                callback -> {
+                    try {
+                        inventoryRegistry.getStoreListInventory().openInventory(callback.getPlayer());
+                    } catch (Throwable ignored) {
+                        val player = callback.getPlayer();
+                        player.sendMessage("§cNão existe nenhuma loja criada no servidor.");
+                        player.closeInventory();
+                    }
+                }
 
-                )
+            )
         );
 
     }

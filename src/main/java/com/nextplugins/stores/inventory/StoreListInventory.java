@@ -76,52 +76,51 @@ public final class StoreListInventory extends PagedInventory {
         List<InventoryItemSupplier> items = new LinkedList<>();
 
         for (Store store : plugin.getStoreManager().getStores().values()) {
-            val owner = store.getOwner();
+            items.add(() -> {
+                    val owner = store.getOwner();
 
-            System.out.println(NumberUtil.format(store.getRating()));
+                    return InventoryItem.of(
+                        new ItemBuilder(owner)
+                            .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", owner))
+                            .lore(
+                                StoresInventoryValue.get(StoresInventoryValue::lore).stream()
+                                    .map(line -> line
+                                        .replace("$description", store.getDescription())
+                                        .replace("$likes", NumberUtil.format(store.getLikes()))
+                                        .replace("$dislikes", NumberUtil.format(store.getDislikes()))
+                                        .replace("$rating", NumberUtil.format(store.getRating()))
+                                        .replace("$visits", NumberUtil.format(store.getVisits()))
+                                        .replace("$open", store.isOpen() ? "Sim" : "Não")
+                                    )
+                                    .collect(Collectors.toList())
+                            )
+                            .result()
+                    ).callback(
+                        ClickType.LEFT,
+                        callback -> {
+                            final PlayerVisitStoreEvent playerVisitStoreEvent = new PlayerVisitStoreEvent(callback.getPlayer(), store);
+                            Bukkit.getPluginManager().callEvent(playerVisitStoreEvent);
 
-            items.add(() ->
-                InventoryItem.of(
-                    new ItemBuilder(owner)
-                        .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", owner))
-                        .lore(
-                            StoresInventoryValue.get(StoresInventoryValue::lore).stream()
-                                .map(line -> line
-                                    .replace("$description", store.getDescription())
-                                    .replace("$likes", NumberUtil.format(store.getLikes()))
-                                    .replace("$dislikes", NumberUtil.format(store.getDislikes()))
-                                    .replace("$rating", NumberUtil.format(store.getRating()))
-                                    .replace("$visits", NumberUtil.format(store.getVisits()))
-                                    .replace("$open", store.isOpen() ? "Sim" : "Não")
-                                )
-                                .collect(Collectors.toList())
-                        )
-                        .result()
-                ).callback(
-                    ClickType.LEFT,
-                    callback -> {
-                        final PlayerVisitStoreEvent playerVisitStoreEvent = new PlayerVisitStoreEvent(callback.getPlayer(), store);
-                        Bukkit.getPluginManager().callEvent(playerVisitStoreEvent);
+                            callback.getPlayer().closeInventory();
+                        }
+                    ).callback(
+                        ClickType.SHIFT_LEFT,
+                        callback -> {
+                            final PlayerLikeStoreEvent playerLikeStoreEvent = new PlayerLikeStoreEvent(callback.getPlayer(), store);
+                            Bukkit.getPluginManager().callEvent(playerLikeStoreEvent);
 
-                        callback.getPlayer().closeInventory();
-                    }
-                ).callback(
-                    ClickType.SHIFT_LEFT,
-                    callback -> {
-                        final PlayerLikeStoreEvent playerLikeStoreEvent = new PlayerLikeStoreEvent(callback.getPlayer(), store);
-                        Bukkit.getPluginManager().callEvent(playerLikeStoreEvent);
+                            callback.getPlayer().closeInventory();
+                        }
+                    ).callback(
+                        ClickType.SHIFT_RIGHT,
+                        callback -> {
+                            final PlayerDislikeStoreEvent playerDislikeStoreEvent = new PlayerDislikeStoreEvent(callback.getPlayer(), store);
+                            Bukkit.getPluginManager().callEvent(playerDislikeStoreEvent);
 
-                        callback.getPlayer().closeInventory();
-                    }
-                ).callback(
-                    ClickType.SHIFT_RIGHT,
-                    callback -> {
-                        final PlayerDislikeStoreEvent playerDislikeStoreEvent = new PlayerDislikeStoreEvent(callback.getPlayer(), store);
-                        Bukkit.getPluginManager().callEvent(playerDislikeStoreEvent);
-
-                        callback.getPlayer().closeInventory();
-                    }
-                )
+                            callback.getPlayer().closeInventory();
+                        }
+                    );
+                }
             );
         }
 
