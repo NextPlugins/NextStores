@@ -101,7 +101,6 @@ public final class NextStores extends JavaPlugin {
     }
 
     private void sqlProvider(ConfigurationSection section) {
-
         if (section.getBoolean("connection.mysql.enable")) {
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
 
@@ -125,7 +124,6 @@ public final class NextStores extends JavaPlugin {
         }
 
         storeDAO = new StoreDAO(new SQLExecutor(sqlConnector));
-
     }
 
     private void listener() {

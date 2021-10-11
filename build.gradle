@@ -32,11 +32,9 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.22'
     compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.0'
     compileOnly 'net.citizensnpcs:citizens:2.0.27-SNAPSHOT'
+    compileOnly fileTree('libs')
 
-    compileOnly files('libs/PlotSquared.jar')
-
-    // implementation 'com.github.HenryFabio:inventory-api:2.0.3'
-    implementation files('libs/inventory-api-2.0.3-SNAPSHOT.jar')
+    implementation 'com.github.HenryFabio:inventory-api:main-SNAPSHOT'
     implementation 'com.github.HenryFabio:sql-provider:9561f20fd2'
 
     def lombok = 'org.projectlombok:lombok:1.18.16'
@@ -50,7 +48,7 @@ bukkit {
     website = 'https://github.com/NextPlugins'
     apiVersion = '1.13'
 
-    softDepend = ['PlotSquared', 'HolographicDisplays', 'Citizens']
+    softDepend = ['PlotSquared', 'HolographicDisplays', 'Citizens', 'CMI']
 
     load = 'POSTWORLD'
 

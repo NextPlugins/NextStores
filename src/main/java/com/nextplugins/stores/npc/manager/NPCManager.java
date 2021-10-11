@@ -8,38 +8,46 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.logging.Level;
+
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
 
+@Getter
 public class NPCManager {
 
     protected final NextStores plugin = NextStores.getInstance();
     protected final PluginManager MANAGER = Bukkit.getPluginManager();
 
-    protected final String CITIZENS = "Citizens";
-    protected final String HOLOGRAPHIC_DISPLAYS = "HolographicDisplays";
-
-    @Getter private boolean enabled;
-    @Getter private Runnable runnable;
+    private boolean enabled;
+    private Runnable runnable;
+    private boolean holographicDisplays;
 
     public void init() {
 
-        if (!MANAGER.isPluginEnabled(CITIZENS) || !MANAGER.isPluginEnabled(HOLOGRAPHIC_DISPLAYS)) {
-
-            plugin.getLogger().warning(
-                    String.format("Dependências não encontradas (%s, %s) O NPC não será usado.",
-                            CITIZENS,
-                            HOLOGRAPHIC_DISPLAYS
-                    )
+        if (!MANAGER.isPluginEnabled("CMI") && !MANAGER.isPluginEnabled("HolographicDisplays")) {
+            plugin.getLogger().log(Level.WARNING,
+                    "Dependência não encontrada ({0}) O ranking em NPC, Holograma e ArmorStand não serão usados.",
+                    "HolographicDisplays ou CMI"
             );
 
             return;
-
         }
 
-        runnable = new NPCRunnable(plugin);
+        if (!MANAGER.isPluginEnabled("Citizens")) {
+            plugin.getLogger().log(Level.WARNING,
+                    "Dependências não encontrada ({0}) O NPC não será usado.",
+                    "Citizens"
+            );
+
+            return;
+        }
+
+        holographicDisplays = MANAGER.isPluginEnabled("HolographicDisplays");
+
+        runnable = new NPCRunnable(plugin, holographicDisplays);
         runnable.run();
 
         enabled = true;
