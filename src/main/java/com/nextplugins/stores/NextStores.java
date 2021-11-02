@@ -30,11 +30,6 @@ import java.io.File;
 @Getter
 public final class NextStores extends JavaPlugin {
 
-    /**
-     * Metrics plugin id (used for statistics)
-     */
-    private static final int PLUGIN_ID = 10227;
-
     private SQLConnector sqlConnector;
 
     private Configuration messagesConfig;
