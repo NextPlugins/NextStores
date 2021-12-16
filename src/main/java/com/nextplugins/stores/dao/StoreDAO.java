@@ -56,7 +56,6 @@ public final class StoreDAO {
     }
 
     public void insert(Store store) {
-
         sqlExecutor.updateQuery(
             String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?,?)", TABLE),
             statement -> {
@@ -70,7 +69,6 @@ public final class StoreDAO {
                 statement.set(8, MapHelper.toDatabase(store.getPlayersWhoRated()));
             }
         );
-
     }
 
     public void delete(String owner) {
