@@ -25,10 +25,6 @@ O plugin conta com diversos arquivos de configuração, em que você pode config
 ## Dependências
 O plugin não necessita de nenhuma dependência. As dependências de desenvolvimento são baixadas automaticamente.
 
-### Tecnologias usadas
--   [Google Guice](https://github.com/google/guice) - Fornece suporte para injeção de dependência usando anotações.
--   [PDM](https://github.com/knightzmc/pdm) - Baixa as dependências de desenvolvimento assim que o plugin é ligado pela primeira vez.
-
 **APIs e Frameworks**
 
 - [inventory-api](https://github.com/HenryFabio/inventory-api) - API para criação e o gerenciamento de inventários customizados.
