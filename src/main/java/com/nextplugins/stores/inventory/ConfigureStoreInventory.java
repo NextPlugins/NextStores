@@ -18,6 +18,7 @@ import com.nextplugins.stores.configuration.values.inventories.StoreInventoryVal
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
+import com.nextplugins.stores.registry.InventoryRegistry;
 import com.nextplugins.stores.util.FancyText;
 import com.nextplugins.stores.util.ItemBuilder;
 import com.nextplugins.stores.util.NumberUtil;
@@ -39,18 +40,22 @@ import java.util.stream.Collectors;
  */
 public class ConfigureStoreInventory extends SimpleInventory {
 
-    private final StoreManager storeManager = NextStores.getInstance().getStoreManager();
-    private final InventoryButtonRegistry inventoryButtonRegistry = NextStores.getInstance().getInventoryButtonRegistry();
+    private final StoreManager storeManager;
+    private final InventoryRegistry inventoryRegistry;
+    private final InventoryButtonRegistry inventoryButtonRegistry;
     private final boolean usePlots;
 
-    public ConfigureStoreInventory() {
+    public ConfigureStoreInventory(final NextStores instance) {
         super(
             "stores.configure",
             StoreInventoryValue.get(StoreInventoryValue::title),
             StoreInventoryValue.get(StoreInventoryValue::lines) * 9
         );
 
-        usePlots = Bukkit.getPluginManager().isPluginEnabled("PlotSquared") && NextStores.getInstance().getConfig().getBoolean("usePlots");
+        usePlots = Bukkit.getPluginManager().isPluginEnabled("PlotSquared") && instance.getConfig().getBoolean("usePlots");
+        storeManager = instance.getStoreManager();
+        inventoryButtonRegistry = instance.getInventoryButtonRegistry();
+        inventoryRegistry = instance.getInventoryRegistry();
     }
 
     @Override
@@ -182,11 +187,12 @@ public class ConfigureStoreInventory extends SimpleInventory {
                 //    })
                 //    .build()); **/
 
-                val confirmInventory = new StoreDeleteConfirmInventory();
+                val confirmInventory = inventoryRegistry.getStoreDeleteConfirmInventory();
 
                 confirmInventory.openInventory(callbackPlayer, viewer -> {
                     viewer.getPropertyMap().set("meta.store", store);
                 });
+
             })
         );
     }

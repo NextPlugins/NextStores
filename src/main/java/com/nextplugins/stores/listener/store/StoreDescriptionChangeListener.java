@@ -2,7 +2,7 @@ package com.nextplugins.stores.listener.store;
 
 import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.api.model.store.Store;
-import com.nextplugins.stores.inventory.ConfigureStoryInventory;
+import com.nextplugins.stores.inventory.ConfigureStoreInventory;
 import com.nextplugins.stores.manager.StoreManager;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -32,9 +32,9 @@ public final class StoreDescriptionChangeListener implements Listener {
         val responseDescription = ChatColor.translateAlternateColorCodes('&', event.getMessage());
         store.setDescription(responseDescription);
 
-        final ConfigureStoryInventory configureStoryInventory = new ConfigureStoryInventory();
+        final ConfigureStoreInventory configureStoreInventory = new ConfigureStoreInventory(NextStores.getInstance());
 
-        Bukkit.getScheduler().runTask(NextStores.getInstance(), () -> configureStoryInventory.openInventory(player));
+        Bukkit.getScheduler().runTask(NextStores.getInstance(), () -> configureStoreInventory.openInventory(player));
         storeManager.getPlayersChangingStoreDescription().invalidate(player.getUniqueId());
     }
 

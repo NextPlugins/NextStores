@@ -18,15 +18,18 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class StoreInventory extends GlobalInventory {
 
-    private final InventoryButtonRegistry inventoryButtonRegistry = NextStores.getInstance().getInventoryButtonRegistry();
-    private final InventoryRegistry inventoryRegistry = NextStores.getInstance().getInventoryRegistry();
+    private final InventoryButtonRegistry inventoryButtonRegistry;
+    private final InventoryRegistry inventoryRegistry;
 
-    public StoreInventory() {
+    public StoreInventory(final NextStores instance) {
         super(
             "stores.main",
             MainInventoryValue.get(MainInventoryValue::title),
             MainInventoryValue.get(MainInventoryValue::lines) * 9
         );
+
+        inventoryRegistry = instance.getInventoryRegistry();
+        inventoryButtonRegistry = instance.getInventoryButtonRegistry();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class StoreInventory extends GlobalInventory {
                     })
                     .result()
             ).defaultCallback(
-                callback -> inventoryRegistry.getConfigureStoryInventory().openInventory(callback.getPlayer())
+                callback -> inventoryRegistry.getConfigureStoreInventory().openInventory(callback.getPlayer())
             )
         );
 
