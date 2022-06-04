@@ -18,7 +18,6 @@ import com.nextplugins.stores.configuration.values.inventories.StoreInventoryVal
 import com.nextplugins.stores.inventory.button.InventoryButton;
 import com.nextplugins.stores.manager.StoreManager;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
-import com.nextplugins.stores.util.ChatConversationUtils;
 import com.nextplugins.stores.util.FancyText;
 import com.nextplugins.stores.util.ItemBuilder;
 import com.nextplugins.stores.util.NumberUtil;
@@ -31,7 +30,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
@@ -39,13 +37,13 @@ import java.util.stream.Collectors;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-public class ConfigureStoryInventory extends SimpleInventory {
+public class ConfigureStoreInventory extends SimpleInventory {
 
     private final StoreManager storeManager = NextStores.getInstance().getStoreManager();
     private final InventoryButtonRegistry inventoryButtonRegistry = NextStores.getInstance().getInventoryButtonRegistry();
     private final boolean usePlots;
 
-    public ConfigureStoryInventory() {
+    public ConfigureStoreInventory() {
         super(
             "stores.configure",
             StoreInventoryValue.get(StoreInventoryValue::title),
@@ -168,20 +166,27 @@ public class ConfigureStoryInventory extends SimpleInventory {
 
         editor.setItem(deleteButton.getInventorySlot(),
             InventoryItem.of(deleteButton.getItemStack()).defaultCallback(callback -> {
+                val callbackPlayer = callback.getPlayer();
 
-                callback.getPlayer().closeInventory();
+                callbackPlayer.closeInventory();
 
-                ChatConversationUtils.awaitResponse(callback.getPlayer(), ChatConversationUtils.Request.builder()
-                    .messages(MessageValue.get(MessageValue::deletingStore))
-                    .timeoutDuration(Duration.ofSeconds(30))
-                    .timeoutWarn(MessageValue.get(MessageValue::storeDeleteTimeOut))
-                    .responseConsumer(response -> {
-                        if (response.equalsIgnoreCase("confirmar")) {
-                            storeManager.deleteStore(store);
-                            callback.getPlayer().sendMessage(MessageValue.get(MessageValue::storeDeleted));
-                        }
-                    })
-                    .build());
+                // ChatConversationUtils.awaitResponse(callback.getPlayer(), ChatConversationUtils.Request.builder()
+                //    .messages(MessageValue.get(MessageValue::deletingStore))
+                //    .timeoutDuration(Duration.ofSeconds(30))
+                //    .timeoutWarn(MessageValue.get(MessageValue::storeDeleteTimeOut))
+                //    .responseConsumer(response -> {
+                //        if (response.equalsIgnoreCase("confirmar")) {
+                //            storeManager.deleteStore(store);
+                //            callback.getPlayer().sendMessage(MessageValue.get(MessageValue::storeDeleted));
+                //        }
+                //    })
+                //    .build()); **/
+
+                val confirmInventory = new StoreDeleteConfirmInventory();
+
+                confirmInventory.openInventory(callbackPlayer, viewer -> {
+                    viewer.getPropertyMap().set("meta.store", store);
+                });
             })
         );
     }
