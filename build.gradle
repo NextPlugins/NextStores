@@ -36,6 +36,7 @@ dependencies {
 
     implementation 'com.github.HenryFabio:inventory-api:main-SNAPSHOT'
     implementation 'com.github.HenryFabio:sql-provider:9561f20fd2'
+    implementation 'com.github.Yuhtin:update-checker:1.2'
 
     def lombok = 'org.projectlombok:lombok:1.18.22'
     compileOnly lombok

@@ -18,14 +18,19 @@ import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import com.nextplugins.stores.registry.InventoryButtonRegistry;
 import com.nextplugins.stores.registry.InventoryRegistry;
 import com.nextplugins.stores.util.ChatConversationUtils;
+import com.yuhtin.updatechecker.UpdateChecker;
+import com.yuhtin.updatechecker.model.GithubRelease;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 @Getter
 public final class NextStores extends JavaPlugin {
@@ -45,6 +50,8 @@ public final class NextStores extends JavaPlugin {
     private StoreManager storeManager;
     private NPCManager npcManager;
 
+    private UpdateChecker updateChecker;
+
     public static NextStores getInstance() {
         return getPlugin(NextStores.class);
     }
@@ -60,10 +67,13 @@ public final class NextStores extends JavaPlugin {
         storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
         npcConfig = ConfigurationManager.of("npc.yml").saveDefault().load();
 
+        updateChecker = new UpdateChecker(this, "NextPlugins");
+
     }
 
     @Override
     public void onEnable() {
+        checkUpdate();
         InventoryManager.enable(this);
         sqlProvider(getConfig());
 
@@ -135,6 +145,22 @@ public final class NextStores extends JavaPlugin {
         pluginManager.registerEvents(playerVisitStoreListener, this);
         pluginManager.registerEvents(playerDislikeStoreListener, this);
 
+    }
+
+    private void checkUpdate() {
+        final Logger logger = getLogger();
+
+        updateChecker.check();
+
+        if (updateChecker.canUpdate()) {
+            @NotNull final GithubRelease githubRelease = updateChecker.getLastRelease();
+
+            logger.warning("Você está usando uma versão antiga.");
+            logger.warning("Nova versão: " + githubRelease.getVersion());
+            logger.warning("Download: " + githubRelease.getDownloadURL());
+        } else {
+            logger.info("Você está rodando a última versão.");
+        }
     }
 
 }

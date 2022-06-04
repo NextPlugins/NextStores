@@ -31,6 +31,7 @@ O plugin não necessita de nenhuma dependência. As dependências de desenvolvim
 
 **APIs e Frameworks**
 
--   [inventory-api](https://github.com/HenryFabio/inventory-api) - API para criação e o gerenciamento de inventários customizados.
--   [sql-provider](https://github.com/henryfabio/sql-provider) - Provê a conexão com o banco de dados.
--   [configuration-injector](https://github.com/HenryFabio/configuration-injector) - Injeta valores dos arquivos de configuração em alguns campos definidos mo código.
+- [inventory-api](https://github.com/HenryFabio/inventory-api) - API para criação e o gerenciamento de inventários customizados.
+- [sql-provider](https://github.com/henryfabio/sql-provider) - Provê a conexão com o banco de dados.
+- [configuration-injector](https://github.com/HenryFabio/configuration-injector) - Injeta valores dos arquivos de configuração em alguns campos definidos mo código.
+- [update-checker](https://github.com/Yuhtin/update-checker) - Verifica se há alguma nova versão do plugin.
