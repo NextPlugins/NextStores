@@ -5,10 +5,11 @@
 Um sistema de lojas completo e 100% em menus! O sistema possibilita os jogadores de criar e gerenciar a sua loja. Algumas [imagens in-game](https://imgur.com/a/DWBdfjb)
 
 ## Comandos
-|Comando               |Descrição           |Permissão             |
-|----------------------|--------------------|----------------------|
-|/lojas                |Abre o menu principal do sistema|`nextstores.command.store`|
-|/lojassetnpc         |Seta o NPC          |`nextstores.command.setstore`|
+| Comando     | Descrição                       |Permissão             |
+|-------------|---------------------------------|----------------------|
+| /lojas      | Abre o menu principal do sistema |`nextstores.command.store`|
+| /lojassetnpc | Seta o NPC                      |`nextstores.command.setstore`|
+| /lojadelnpc | Deleta o NPC                    |`nextstores.command.setstore`|
 
 ## Download
 
