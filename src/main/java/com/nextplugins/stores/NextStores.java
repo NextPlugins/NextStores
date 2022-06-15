@@ -6,6 +6,7 @@ import com.henryfabio.sqlprovider.connector.type.impl.MySQLDatabaseType;
 import com.henryfabio.sqlprovider.connector.type.impl.SQLiteDatabaseType;
 import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.stores.api.metric.MetricProvider;
+import com.nextplugins.stores.command.DelStoreNPCCommand;
 import com.nextplugins.stores.command.SetStoreNPCCommand;
 import com.nextplugins.stores.command.StoreCommand;
 import com.nextplugins.stores.configuration.ConfigurationManager;
@@ -89,6 +90,7 @@ public final class NextStores extends JavaPlugin {
 
         getCommand("store").setExecutor(new StoreCommand(this));
         getCommand("storesetnpc").setExecutor(new SetStoreNPCCommand());
+        getCommand("storedelnpc").setExecutor(new DelStoreNPCCommand());
 
         listener();
         MetricProvider.of(this).register();
