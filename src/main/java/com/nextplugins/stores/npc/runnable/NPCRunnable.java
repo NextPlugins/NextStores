@@ -13,6 +13,7 @@ import lombok.val;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.LookClose;
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -74,17 +75,17 @@ public class NPCRunnable implements Runnable {
 
         // npc implementation
         val npc = registry.createNPC(EntityType.PLAYER, npcName);
-        npc.data().set(NPC.PLAYER_SKIN_UUID_METADATA, Bukkit.getOfflinePlayer(skinNick).getName());
         npc.setProtected(true);
         npc.spawn(location);
 
-        if (NPCValue.get(NPCValue::lookCLose)) {
+        final SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
+        skinTrait.setSkinName(skinNick, true);
 
+        if (NPCValue.get(NPCValue::lookCLose)) {
             val lookClose = new LookClose();
             lookClose.lookClose(true);
 
             npc.addTrait(lookClose);
-
         }
 
         NPC = npc;

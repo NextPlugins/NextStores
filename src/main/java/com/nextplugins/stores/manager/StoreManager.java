@@ -46,7 +46,8 @@ public final class StoreManager {
 
     public void init() {
         this.storeDAO.createTable();
-        this.storeDAO.selectAll().forEach(this::addStore);
+
+        this.storeDAO.selectAll().forEach(store -> this.stores.put(store.getOwner(), store));
     }
 
     public void addStore(Store store) {
