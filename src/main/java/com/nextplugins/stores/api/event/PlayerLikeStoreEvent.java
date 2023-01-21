@@ -16,5 +16,4 @@ public final class PlayerLikeStoreEvent extends StoreEvent implements Cancellabl
     private final Player player;
     private final Store store;
     private boolean cancelled;
-
 }

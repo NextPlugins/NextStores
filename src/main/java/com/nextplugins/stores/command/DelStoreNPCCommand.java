@@ -5,19 +5,18 @@ import com.nextplugins.stores.configuration.ConfigurationManager;
 import com.nextplugins.stores.configuration.values.MessageValue;
 import com.nextplugins.stores.npc.runnable.NPCRunnable;
 import com.nextplugins.stores.util.ColorUtil;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class DelStoreNPCCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(
+            @NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(MessageValue.get(MessageValue::commandPlayerOnly));
 
@@ -40,7 +39,8 @@ public class DelStoreNPCCommand implements CommandExecutor {
         try {
             configuration.save(manager.getFile());
 
-            final NPCRunnable runnable = (NPCRunnable) NextStores.getInstance().getNpcManager().getRunnable();
+            final NPCRunnable runnable =
+                    (NPCRunnable) NextStores.getInstance().getNpcManager().getRunnable();
 
             runnable.despawn();
 
@@ -50,5 +50,4 @@ public class DelStoreNPCCommand implements CommandExecutor {
         }
         return false;
     }
-
 }

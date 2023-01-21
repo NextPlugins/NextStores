@@ -14,5 +14,4 @@ public final class PlayerDislikeStoreListener implements Listener {
 
         store.rate(player, "dislike");
     }
-
 }

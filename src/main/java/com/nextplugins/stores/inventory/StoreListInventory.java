@@ -31,11 +31,7 @@ public final class StoreListInventory extends PagedInventory {
     private final InventoryButtonRegistry inventoryButtonRegistry;
 
     public StoreListInventory(NextStores plugin) {
-        super(
-            "stores.storeList",
-            StoresInventoryValue.get(StoresInventoryValue::inventoryTitle),
-            6 * 9
-        );
+        super("stores.storeList", StoresInventoryValue.get(StoresInventoryValue::inventoryTitle), 6 * 9);
 
         this.plugin = plugin;
         this.inventoryButtonRegistry = plugin.getInventoryButtonRegistry();
@@ -43,16 +39,13 @@ public final class StoreListInventory extends PagedInventory {
 
     @Override
     protected void configureInventory(final Viewer viewer, final InventoryEditor editor) {
-        editor.setItem(
-            45,
-            DefaultItem.BACK.toInventoryItem(viewer)
-        );
+        editor.setItem(45, DefaultItem.BACK.toInventoryItem(viewer));
 
         val visit = inventoryButtonRegistry.get("visit");
         editor.setItem(
-            visit.getInventorySlot(),
-            InventoryItem.of(visit.getItemStack()).defaultCallback(click -> click.getPlayer().performCommand("lojas ****"))
-        );
+                visit.getInventorySlot(),
+                InventoryItem.of(visit.getItemStack())
+                        .defaultCallback(click -> click.getPlayer().performCommand("lojas ****")));
     }
 
     @Override
@@ -77,54 +70,44 @@ public final class StoreListInventory extends PagedInventory {
 
         for (Store store : plugin.getStoreManager().getStores().values()) {
             items.add(() -> {
-                    val owner = store.getOwner();
+                val owner = store.getOwner();
 
-                    return InventoryItem.of(
-                        new ItemBuilder(owner)
-                            .name(StoresInventoryValue.get(StoresInventoryValue::title).replace("$player", owner))
-                            .lore(
-                                StoresInventoryValue.get(StoresInventoryValue::lore).stream()
-                                    .map(line -> line
-                                        .replace("$description", store.getDescription())
-                                        .replace("$likes", NumberUtil.format(store.getLikes()))
-                                        .replace("$dislikes", NumberUtil.format(store.getDislikes()))
-                                        .replace("$rating", NumberUtil.format(store.getRating()))
-                                        .replace("$visits", NumberUtil.format(store.getVisits()))
-                                        .replace("$open", store.isOpen() ? "Sim" : "Não")
-                                    )
-                                    .collect(Collectors.toList())
-                            )
-                            .result()
-                    ).callback(
-                        ClickType.LEFT,
-                        callback -> {
-                            final PlayerVisitStoreEvent playerVisitStoreEvent = new PlayerVisitStoreEvent(callback.getPlayer(), store);
+                return InventoryItem.of(new ItemBuilder(owner)
+                                .name(StoresInventoryValue.get(StoresInventoryValue::title)
+                                        .replace("$player", owner))
+                                .lore(StoresInventoryValue.get(StoresInventoryValue::lore).stream()
+                                        .map(line -> line.replace("$description", store.getDescription())
+                                                .replace("$likes", NumberUtil.format(store.getLikes()))
+                                                .replace("$dislikes", NumberUtil.format(store.getDislikes()))
+                                                .replace("$rating", NumberUtil.format(store.getRating()))
+                                                .replace("$visits", NumberUtil.format(store.getVisits()))
+                                                .replace("$open", store.isOpen() ? "Sim" : "Não"))
+                                        .collect(Collectors.toList()))
+                                .result())
+                        .callback(ClickType.LEFT, callback -> {
+                            final PlayerVisitStoreEvent playerVisitStoreEvent =
+                                    new PlayerVisitStoreEvent(callback.getPlayer(), store);
                             Bukkit.getPluginManager().callEvent(playerVisitStoreEvent);
 
                             callback.getPlayer().closeInventory();
-                        }
-                    ).callback(
-                        ClickType.SHIFT_LEFT,
-                        callback -> {
-                            final PlayerLikeStoreEvent playerLikeStoreEvent = new PlayerLikeStoreEvent(callback.getPlayer(), store);
+                        })
+                        .callback(ClickType.SHIFT_LEFT, callback -> {
+                            final PlayerLikeStoreEvent playerLikeStoreEvent =
+                                    new PlayerLikeStoreEvent(callback.getPlayer(), store);
                             Bukkit.getPluginManager().callEvent(playerLikeStoreEvent);
 
                             callback.getPlayer().closeInventory();
-                        }
-                    ).callback(
-                        ClickType.SHIFT_RIGHT,
-                        callback -> {
-                            final PlayerDislikeStoreEvent playerDislikeStoreEvent = new PlayerDislikeStoreEvent(callback.getPlayer(), store);
+                        })
+                        .callback(ClickType.SHIFT_RIGHT, callback -> {
+                            final PlayerDislikeStoreEvent playerDislikeStoreEvent =
+                                    new PlayerDislikeStoreEvent(callback.getPlayer(), store);
                             Bukkit.getPluginManager().callEvent(playerDislikeStoreEvent);
 
                             callback.getPlayer().closeInventory();
-                        }
-                    );
-                }
-            );
+                        });
+            });
         }
 
         return items;
     }
-
 }

@@ -31,9 +31,9 @@ public class StoreCommand implements CommandExecutor {
 
             if (args[0].equalsIgnoreCase("****")) {
 
-                player.sendMessage(MessageValue.get(MessageValue::incorrectUsage).replace("{usage}", "lojas"));
+                player.sendMessage(
+                        MessageValue.get(MessageValue::incorrectUsage).replace("{usage}", "lojas"));
                 return false;
-
             }
 
             val offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
@@ -41,7 +41,6 @@ public class StoreCommand implements CommandExecutor {
 
                 player.sendMessage(MessageValue.get(MessageValue::invalidPlayer));
                 return false;
-
             }
 
             val store = plugin.getStoreManager().getStores().getOrDefault(offlinePlayer.getName(), null);
@@ -49,18 +48,15 @@ public class StoreCommand implements CommandExecutor {
 
                 player.sendMessage(MessageValue.get(MessageValue::noStore).replace("$player", offlinePlayer.getName()));
                 return false;
-
             }
 
             player.teleport(store.getLocation());
-            player.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore).replace("$player", offlinePlayer.getName()));
+            player.sendMessage(
+                    MessageValue.get(MessageValue::teleportedToTheStore).replace("$player", offlinePlayer.getName()));
             return true;
-
         }
-
 
         plugin.getInventoryRegistry().getStoreInventory().openInventory(player);
         return false;
     }
-
 }

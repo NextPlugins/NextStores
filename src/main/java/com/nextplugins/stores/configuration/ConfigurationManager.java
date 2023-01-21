@@ -12,7 +12,6 @@ import java.io.File;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @Data(staticConstructor = "of")
 public final class ConfigurationManager {
 
@@ -28,7 +27,6 @@ public final class ConfigurationManager {
         instance.saveResource(this.config, false);
 
         return this;
-
     }
 
     /**
@@ -40,7 +38,6 @@ public final class ConfigurationManager {
 
         val instance = NextStores.getInstance();
         return new File(instance.getDataFolder(), this.config);
-
     }
 
     /**
@@ -51,6 +48,4 @@ public final class ConfigurationManager {
     public FileConfiguration load() {
         return YamlConfiguration.loadConfiguration(getFile());
     }
-
-
 }

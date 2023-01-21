@@ -11,7 +11,6 @@ import lombok.Getter;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @Getter
 public class InventoryRegistry {
 
@@ -27,7 +26,5 @@ public class InventoryRegistry {
         this.configureStoreInventory = new ConfigureStoreInventory(nextStores).init();
         this.storeListInventory = new StoreListInventory(nextStores).init();
         this.storeDeleteConfirmInventory = new StoreDeleteConfirmInventory(nextStores).init();
-
     }
-
 }

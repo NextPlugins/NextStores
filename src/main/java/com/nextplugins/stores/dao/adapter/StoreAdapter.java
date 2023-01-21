@@ -13,7 +13,6 @@ import java.util.Map;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 public class StoreAdapter implements SQLResultAdapter<Store> {
 
     @Override
@@ -22,15 +21,14 @@ public class StoreAdapter implements SQLResultAdapter<Store> {
         final Map<String, String> ratings = MapHelper.fromDatabase(resultSet.get("ratings"));
 
         return Store.builder()
-            .owner(resultSet.get("owner"))
-            .description(resultSet.get("description"))
-            .open(Boolean.parseBoolean(resultSet.get("open")))
-            .visits(resultSet.get("visits"))
-            .likes(resultSet.get("likes"))
-            .dislikes(resultSet.get("dislikes"))
-            .location(LocationSerializer.getInstance().decode(resultSet.get("location")))
-            .playersWhoRated(ratings == null ? new LinkedHashMap<>() : ratings)
-            .build();
+                .owner(resultSet.get("owner"))
+                .description(resultSet.get("description"))
+                .open(Boolean.parseBoolean(resultSet.get("open")))
+                .visits(resultSet.get("visits"))
+                .likes(resultSet.get("likes"))
+                .dislikes(resultSet.get("dislikes"))
+                .location(LocationSerializer.getInstance().decode(resultSet.get("location")))
+                .playersWhoRated(ratings == null ? new LinkedHashMap<>() : ratings)
+                .build();
     }
-
 }

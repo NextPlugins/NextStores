@@ -16,5 +16,4 @@ public final class StoreCreatedEvent extends StoreEvent implements Cancellable {
     private final Player player;
     private final Store store;
     private boolean cancelled;
-
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -17,7 +18,8 @@ public final class MainInventoryValue {
 
     private static final MainInventoryValue instance = new MainInventoryValue();
 
-    private final ConfigurationSection configuration = NextStores.getInstance().getMainInventoryConfig().getConfigurationSection("inventory");
+    private final ConfigurationSection configuration =
+            NextStores.getInstance().getMainInventoryConfig().getConfigurationSection("inventory");
 
     private final String title = message("title");
     private final int lines = configuration.getInt("lines");
@@ -33,5 +35,4 @@ public final class MainInventoryValue {
     private String message(String key) {
         return colors(Objects.requireNonNull(configuration).getString(key));
     }
-
 }

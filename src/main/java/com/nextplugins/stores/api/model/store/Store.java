@@ -12,7 +12,6 @@ import java.util.Map;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @Data
 @Builder
 public class Store {
@@ -81,5 +80,4 @@ public class Store {
             }
         }
     }
-
 }

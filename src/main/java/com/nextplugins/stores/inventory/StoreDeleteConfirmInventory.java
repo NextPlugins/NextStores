@@ -23,17 +23,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class StoreDeleteConfirmInventory extends SimpleInventory {
 
-
     private final InventoryButtonRegistry inventoryButtonRegistry;
     private final InventoryRegistry inventoryRegistry;
     private final StoreManager storeManager;
 
     public StoreDeleteConfirmInventory(final NextStores instance) {
-        super(
-                "stores.delete.confirm",
-                "Confirmar",
-                27
-        );
+        super("stores.delete.confirm", "Confirmar", 27);
 
         this.inventoryButtonRegistry = instance.getInventoryButtonRegistry();
         this.inventoryRegistry = instance.getInventoryRegistry();
@@ -46,13 +41,11 @@ public class StoreDeleteConfirmInventory extends SimpleInventory {
 
         editor.setItem(
                 11,
-                InventoryItem
-                        .of(
-                            new ItemBuilder(getWoolItem(DyeColor.LIME))
+                InventoryItem.of(new ItemBuilder(getWoolItem(DyeColor.LIME))
                                 .name(ColorUtil.colored("&aConfirmar"))
                                 .lore("&7Clique aqui para confirmar", "&7sua ação e deletar", "&7sua loja.")
-                                .result()
-                        ).callback(ClickType.LEFT, (event) -> {
+                                .result())
+                        .callback(ClickType.LEFT, (event) -> {
                             final Player player = event.getPlayer();
 
                             Bukkit.getPluginManager().callEvent(new StoreDeletedEvent(player, store));
@@ -60,24 +53,20 @@ public class StoreDeleteConfirmInventory extends SimpleInventory {
 
                             player.closeInventory();
                             player.sendMessage(MessageValue.get(MessageValue::storeDeleted));
-                        }
-                )
-        );
+                        }));
 
         editor.setItem(
                 15,
-                InventoryItem.of(
-                new ItemBuilder(getWoolItem(DyeColor.RED))
-                        .name(ColorUtil.colored("&cCancelar"))
-                        .lore("&7Clique aqui para cancelar", "&7sua ação.")
-                        .result()
-                ).callback(ClickType.LEFT, event -> {
-                    final Player player = event.getPlayer();
+                InventoryItem.of(new ItemBuilder(getWoolItem(DyeColor.RED))
+                                .name(ColorUtil.colored("&cCancelar"))
+                                .lore("&7Clique aqui para cancelar", "&7sua ação.")
+                                .result())
+                        .callback(ClickType.LEFT, event -> {
+                            final Player player = event.getPlayer();
 
-                    player.closeInventory();
-                    player.sendMessage(MessageValue.get(MessageValue::storeDeletionCancelled));
-                })
-        );
+                            player.closeInventory();
+                            player.sendMessage(MessageValue.get(MessageValue::storeDeletionCancelled));
+                        }));
     }
 
     private ItemStack getWoolItem(DyeColor color) {
@@ -86,5 +75,4 @@ public class StoreDeleteConfirmInventory extends SimpleInventory {
         if (material != null) return new ItemStack(material);
         else return new ItemStack(Material.getMaterial("WOOL"), 1, color.getWoolData());
     }
-
 }

@@ -18,25 +18,19 @@ public final class FancyText {
     public FancyText hover(HoverEvent.Action action, String... messages) {
         String message = String.join("\n", messages);
 
-        this.textComponent.setHoverEvent(
-                new HoverEvent(action, new ComponentBuilder(message).create())
-        );
+        this.textComponent.setHoverEvent(new HoverEvent(action, new ComponentBuilder(message).create()));
 
         return this;
     }
 
     public FancyText hover(HoverEvent.Action action, String message) {
-        this.textComponent.setHoverEvent(
-                new HoverEvent(action, new ComponentBuilder(message).create())
-        );
+        this.textComponent.setHoverEvent(new HoverEvent(action, new ComponentBuilder(message).create()));
 
         return this;
     }
 
     public FancyText click(ClickEvent.Action action, String message) {
-        this.textComponent.setClickEvent(
-                new ClickEvent(action, message)
-        );
+        this.textComponent.setClickEvent(new ClickEvent(action, message));
 
         return this;
     }
@@ -44,5 +38,4 @@ public final class FancyText {
     public TextComponent build() {
         return this.textComponent;
     }
-
 }

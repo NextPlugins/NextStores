@@ -19,7 +19,8 @@ public final class UserDisconnectListener implements Listener {
         val player = event.getPlayer();
         val nextStoresAPI = NextStoresAPI.getInstance();
 
-        nextStoresAPI.findStoreByPlayer(player).ifPresent(store -> plugin.getStoreManager().getStoreDAO().insert(store));
+        nextStoresAPI
+                .findStoreByPlayer(player)
+                .ifPresent(store -> plugin.getStoreManager().getStoreDAO().insert(store));
     }
-
 }

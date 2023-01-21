@@ -14,12 +14,12 @@ public final class TypeUtil {
         } catch (Exception exception) {
             try {
                 val material = Material.valueOf("LEGACY_" + materialName);
-                return new ItemStack(Bukkit.getUnsafe().fromLegacy(new org.bukkit.material.MaterialData(material, (byte) damage)));
+                return new ItemStack(
+                        Bukkit.getUnsafe().fromLegacy(new org.bukkit.material.MaterialData(material, (byte) damage)));
             } catch (Exception error) {
                 NextStores.getInstance().getLogger().warning("O material " + materialName + " é nulo");
                 return null;
             }
         }
     }
-
 }

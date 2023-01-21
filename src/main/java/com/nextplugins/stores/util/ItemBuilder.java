@@ -44,7 +44,6 @@ public class ItemBuilder {
         LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
         meta.setColor(color);
         item.setItemMeta(meta);
-
     }
 
     public ItemBuilder changeItemMeta(Consumer<ItemMeta> consumer) {

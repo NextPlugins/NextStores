@@ -16,5 +16,4 @@ public final class StoreStateChangeEvent extends StoreEvent implements Cancellab
     private final Player player;
     private final Store store;
     private boolean cancelled;
-
 }

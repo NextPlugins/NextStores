@@ -14,7 +14,6 @@ import java.util.logging.Level;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @Getter
 public class NPCManager {
 
@@ -28,19 +27,18 @@ public class NPCManager {
     public void init() {
 
         if (!MANAGER.isPluginEnabled("CMI") && !MANAGER.isPluginEnabled("HolographicDisplays")) {
-            plugin.getLogger().log(Level.WARNING,
-                    "Dependência não encontrada ({0}) O ranking em NPC, Holograma e ArmorStand não serão usados.",
-                    "HolographicDisplays ou CMI"
-            );
+            plugin.getLogger()
+                    .log(
+                            Level.WARNING,
+                            "Dependência não encontrada ({0}) O ranking em NPC, Holograma e ArmorStand não serão usados.",
+                            "HolographicDisplays ou CMI");
 
             return;
         }
 
         if (!MANAGER.isPluginEnabled("Citizens")) {
-            plugin.getLogger().log(Level.WARNING,
-                    "Dependências não encontrada ({0}) O NPC não será usado.",
-                    "Citizens"
-            );
+            plugin.getLogger()
+                    .log(Level.WARNING, "Dependências não encontrada ({0}) O NPC não será usado.", "Citizens");
 
             return;
         }
@@ -54,7 +52,5 @@ public class NPCManager {
 
         val interactNPCListener = new InteractNPCListener(this);
         Bukkit.getPluginManager().registerEvents(interactNPCListener, plugin);
-
     }
-
 }

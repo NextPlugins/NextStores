@@ -20,40 +20,33 @@ public final class InventoryButtonRegistry {
         val buttonsConfig = nextStores.getMainInventoryConfig().getConfigurationSection("inventory");
         val buttonParser = new InventoryButtonParser();
 
-        register("visit", buttonParser.parse(
-                storesInventoryConfig.getConfigurationSection("visit")
-        ));
+        register("visit", buttonParser.parse(storesInventoryConfig.getConfigurationSection("visit")));
 
-        register("main.yourStore", buttonParser.parse(
-                buttonsConfig.getConfigurationSection("buttons.yourStore")
-        ));
+        register("main.yourStore", buttonParser.parse(buttonsConfig.getConfigurationSection("buttons.yourStore")));
 
-        register("main.allStores", buttonParser.parse(
-                buttonsConfig.getConfigurationSection("buttons.allStores")
-        ));
+        register("main.allStores", buttonParser.parse(buttonsConfig.getConfigurationSection("buttons.allStores")));
 
         // store inventory
 
-        register("store.info", buttonParser.parse(
-                storeInventoryConfig.getConfigurationSection("inventory.buttons.yourStore")
-        ));
+        register(
+                "store.info",
+                buttonParser.parse(storeInventoryConfig.getConfigurationSection("inventory.buttons.yourStore")));
 
-        register("store.location", buttonParser.parse(
-                storeInventoryConfig.getConfigurationSection("inventory.buttons.location")
-        ));
+        register(
+                "store.location",
+                buttonParser.parse(storeInventoryConfig.getConfigurationSection("inventory.buttons.location")));
 
-        register("store.description", buttonParser.parse(
-                storeInventoryConfig.getConfigurationSection("inventory.buttons.description")
-        ));
+        register(
+                "store.description",
+                buttonParser.parse(storeInventoryConfig.getConfigurationSection("inventory.buttons.description")));
 
-        register("store.state", buttonParser.parse(
-                storeInventoryConfig.getConfigurationSection("inventory.buttons.state")
-        ));
+        register(
+                "store.state",
+                buttonParser.parse(storeInventoryConfig.getConfigurationSection("inventory.buttons.state")));
 
-        register("store.delete", buttonParser.parse(
-                storeInventoryConfig.getConfigurationSection("inventory.buttons.delete")
-        ));
-
+        register(
+                "store.delete",
+                buttonParser.parse(storeInventoryConfig.getConfigurationSection("inventory.buttons.delete")));
     }
 
     public void register(String id, InventoryButton inventoryButton) {
@@ -63,5 +56,4 @@ public final class InventoryButtonRegistry {
     public InventoryButton get(String id) {
         return inventoryButtonMap.get(id);
     }
-
 }

@@ -9,5 +9,4 @@ public interface Serializer<T> {
     T decode(String data);
 
     String encode(T data);
-
 }

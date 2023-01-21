@@ -25,6 +25,4 @@ public class MaterialData {
     public ItemStack toItemStack(int quantity) {
         return new ItemStack(material, quantity, (short) data);
     }
-
 }
-

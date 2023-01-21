@@ -14,7 +14,5 @@ public final class MetricProvider {
 
         new MetricsConnector(plugin, 10227);
         plugin.getLogger().info("Métrica de uso habilitada com sucesso.");
-
     }
-
 }

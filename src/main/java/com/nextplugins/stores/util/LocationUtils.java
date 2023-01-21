@@ -16,8 +16,7 @@ public final class LocationUtils {
                 Double.parseDouble(split[2]),
                 Double.parseDouble(split[3]),
                 Float.parseFloat(split[4]),
-                Float.parseFloat(split[5])
-        );
+                Float.parseFloat(split[5]));
     }
 
     public static String serialize(Location data) {
@@ -28,5 +27,4 @@ public final class LocationUtils {
                 + data.getYaw() + ","
                 + data.getPitch();
     }
-
 }

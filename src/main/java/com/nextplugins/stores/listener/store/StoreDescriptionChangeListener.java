@@ -37,5 +37,4 @@ public final class StoreDescriptionChangeListener implements Listener {
         Bukkit.getScheduler().runTask(NextStores.getInstance(), () -> configureStoreInventory.openInventory(player));
         storeManager.getPlayersChangingStoreDescription().invalidate(player.getUniqueId());
     }
-
 }

@@ -31,17 +31,22 @@ public final class ChatConversationUtils {
     }
 
     public static void scheduleTimeoutRunnable() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(NextStores.getInstance(), () -> {
-            for (Map.Entry<String, Request> requestEntry : requests.entrySet()) {
-                Player player = Bukkit.getPlayer(requestEntry.getKey());
+        Bukkit.getScheduler()
+                .runTaskTimerAsynchronously(
+                        NextStores.getInstance(),
+                        () -> {
+                            for (Map.Entry<String, Request> requestEntry : requests.entrySet()) {
+                                Player player = Bukkit.getPlayer(requestEntry.getKey());
 
-                Request request = requestEntry.getValue();
-                if (request.isTimeout()) {
-                    request.sendTimeoutWarn(player);
-                    requests.remove(player.getName());
-                }
-            }
-        }, 0, 20);
+                                Request request = requestEntry.getValue();
+                                if (request.isTimeout()) {
+                                    request.sendTimeoutWarn(player);
+                                    requests.remove(player.getName());
+                                }
+                            }
+                        },
+                        0,
+                        20);
     }
 
     public static void awaitResponse(Player player, Request request) {
@@ -96,7 +101,6 @@ public final class ChatConversationUtils {
             Player player = event.getPlayer();
             removeAwaitResponse(player);
         }
-
     }
 
     @Builder
@@ -108,7 +112,9 @@ public final class ChatConversationUtils {
         private final Duration timeoutDuration;
         private final String timeoutWarn;
 
-        @Builder.Default private final Predicate<String> responseFilter = response -> true;
+        @Builder.Default
+        private final Predicate<String> responseFilter = response -> true;
+
         private final Consumer<String> responseConsumer;
 
         private final Instant requestInstant = Instant.now();
@@ -134,7 +140,5 @@ public final class ChatConversationUtils {
             val timeoutInstant = requestInstant.plus(timeoutDuration);
             return timeoutInstant.isBefore(Instant.now());
         }
-
     }
-
 }

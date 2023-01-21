@@ -11,10 +11,11 @@ import org.bukkit.Location;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 public class LocationSerializer implements Serializer<Location> {
 
-    @Getter private static final LocationSerializer instance = new LocationSerializer();
+    @Getter
+    private static final LocationSerializer instance = new LocationSerializer();
+
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
@@ -26,5 +27,4 @@ public class LocationSerializer implements Serializer<Location> {
     public String encode(Location data) {
         return GSON.toJson(SimpleLocation.of(data));
     }
-
 }

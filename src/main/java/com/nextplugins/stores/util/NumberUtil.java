@@ -13,6 +13,4 @@ public final class NumberUtil {
     public static String format(double number) {
         return DECIMAL_FORMAT.format(number);
     }
-
 }
-

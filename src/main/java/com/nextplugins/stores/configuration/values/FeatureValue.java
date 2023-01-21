@@ -23,5 +23,4 @@ public final class FeatureValue {
     public static <T> T get(Function<FeatureValue, T> supplier) {
         return supplier.apply(FeatureValue.instance);
     }
-
 }

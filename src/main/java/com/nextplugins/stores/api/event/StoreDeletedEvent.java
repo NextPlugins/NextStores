@@ -8,12 +8,10 @@ import org.bukkit.entity.Player;
 /**
  * Evento chamado ao deletar uma loja
  */
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class StoreDeletedEvent extends StoreEvent {
 
     private final Player player;
     private final Store store;
-
 }

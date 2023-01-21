@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @AllArgsConstructor
 public class InteractNPCListener implements Listener {
 
@@ -23,10 +22,9 @@ public class InteractNPCListener implements Listener {
         if (event.getNPC() == null || !this.npcManager.isEnabled()) return;
 
         NPCRunnable runnable = (NPCRunnable) this.npcManager.getRunnable();
-        if (runnable.getNPC() == null || event.getNPC().getId() != runnable.getNPC().getId()) return;
+        if (runnable.getNPC() == null
+                || event.getNPC().getId() != runnable.getNPC().getId()) return;
 
         event.getClicker().performCommand("lojas");
-
     }
-
 }

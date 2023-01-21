@@ -15,17 +15,13 @@ public final class StoreStateChangeListener implements Listener {
 
         if (store.isOpen()) {
             store.setOpen(false);
-            player.sendMessage(
-                MessageValue.get(MessageValue::storeStateChange)
-                    .replace("$state", MessageValue.get(MessageValue::closeState).toLowerCase())
-            );
+            player.sendMessage(MessageValue.get(MessageValue::storeStateChange)
+                    .replace(
+                            "$state", MessageValue.get(MessageValue::closeState).toLowerCase()));
         } else {
             store.setOpen(true);
-            player.sendMessage(
-                MessageValue.get(MessageValue::storeStateChange)
-                    .replace("$state", MessageValue.get(MessageValue::openState).toLowerCase())
-            );
+            player.sendMessage(MessageValue.get(MessageValue::storeStateChange)
+                    .replace("$state", MessageValue.get(MessageValue::openState).toLowerCase()));
         }
     }
-
 }

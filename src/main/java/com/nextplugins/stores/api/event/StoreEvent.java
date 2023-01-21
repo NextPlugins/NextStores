@@ -6,12 +6,11 @@ import org.bukkit.event.HandlerList;
 
 public abstract class StoreEvent extends Event {
 
-    @Getter private static final HandlerList handlerList = new HandlerList();
+    @Getter
+    private static final HandlerList handlerList = new HandlerList();
 
     @Override
     public HandlerList getHandlers() {
         return handlerList;
     }
-
 }
-

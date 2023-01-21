@@ -40,10 +40,8 @@ public final class StoresInventoryValue {
     }
 
     private List<String> messageList(String key) {
-        return Objects.requireNonNull(configuration).getStringList(key)
-                .stream()
+        return Objects.requireNonNull(configuration).getStringList(key).stream()
                 .map(this::colors)
                 .collect(Collectors.toList());
     }
-
 }

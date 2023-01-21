@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NextStoresAPI {
 
-    @Getter public static final NextStoresAPI instance = new NextStoresAPI();
+    @Getter
+    public static final NextStoresAPI instance = new NextStoresAPI();
 
     private final StoreManager storeManager = NextStores.getInstance().getStoreManager();
 
@@ -47,10 +47,7 @@ public final class NextStoresAPI {
      * @return {@link Optional} with the {@link Store} found
      */
     public Optional<Store> findStoreByFilter(Predicate<Store> filter) {
-        return allStores()
-                .stream()
-                .filter(filter)
-                .findAny();
+        return allStores().stream().filter(filter).findAny();
     }
 
     /**
@@ -60,10 +57,7 @@ public final class NextStoresAPI {
      * @return {@link Optional} with the {@link Store} found
      */
     public Set<Store> findStoresByFilter(Predicate<Store> filter) {
-        return allStores()
-                .stream()
-                .filter(filter)
-                .collect(Collectors.toSet());
+        return allStores().stream().filter(filter).collect(Collectors.toSet());
     }
 
     /**
@@ -83,5 +77,4 @@ public final class NextStoresAPI {
     public Set<Store> allStores() {
         return ImmutableSet.copyOf(storeManager.getStores().values());
     }
-
 }

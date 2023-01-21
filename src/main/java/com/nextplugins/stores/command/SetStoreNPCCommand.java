@@ -41,7 +41,8 @@ public class SetStoreNPCCommand implements CommandExecutor {
 
             config.save(configManager.getFile());
 
-            val runnable = (NPCRunnable) NextStores.getInstance().getNpcManager().getRunnable();
+            val runnable =
+                    (NPCRunnable) NextStores.getInstance().getNpcManager().getRunnable();
             runnable.spawnDefault(location);
 
             player.sendMessage(MessageValue.get(MessageValue::npcSuccess));
@@ -51,6 +52,5 @@ public class SetStoreNPCCommand implements CommandExecutor {
         }
 
         return true;
-
     }
 }

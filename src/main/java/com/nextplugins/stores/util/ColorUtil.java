@@ -24,9 +24,6 @@ public final class ColorUtil {
 
     public static List<String> colored(List<String> description) {
 
-        return description.stream()
-                .map(ColorUtil::colored)
-                .collect(Collectors.toList());
-
+        return description.stream().map(ColorUtil::colored).collect(Collectors.toList());
     }
 }

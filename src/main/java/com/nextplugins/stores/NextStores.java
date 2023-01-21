@@ -30,7 +30,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Getter
@@ -63,13 +62,15 @@ public final class NextStores extends JavaPlugin {
         saveDefaultConfig();
 
         messagesConfig = ConfigurationManager.of("messages.yml").saveDefault().load();
-        mainInventoryConfig = ConfigurationManager.of("inventories/main.yml").saveDefault().load();
-        storeInventoryConfig = ConfigurationManager.of("inventories/store.yml").saveDefault().load();
-        storesInventoryConfig = ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
+        mainInventoryConfig =
+                ConfigurationManager.of("inventories/main.yml").saveDefault().load();
+        storeInventoryConfig =
+                ConfigurationManager.of("inventories/store.yml").saveDefault().load();
+        storesInventoryConfig =
+                ConfigurationManager.of("inventories/stores.yml").saveDefault().load();
         npcConfig = ConfigurationManager.of("npc.yml").saveDefault().load();
 
         updateChecker = new UpdateChecker(this, "NextPlugins");
-
     }
 
     @Override
@@ -112,22 +113,21 @@ public final class NextStores extends JavaPlugin {
             ConfigurationSection mysqlSection = section.getConfigurationSection("connection.mysql");
 
             sqlConnector = MySQLDatabaseType.builder()
-                .address(mysqlSection.getString("address"))
-                .username(mysqlSection.getString("username"))
-                .password(mysqlSection.getString("password"))
-                .database(mysqlSection.getString("database"))
-                .build()
-                .connect();
+                    .address(mysqlSection.getString("address"))
+                    .username(mysqlSection.getString("username"))
+                    .password(mysqlSection.getString("password"))
+                    .database(mysqlSection.getString("database"))
+                    .build()
+                    .connect();
 
         } else {
 
             val sqliteSection = section.getConfigurationSection("connection.sqlite");
 
             sqlConnector = SQLiteDatabaseType.builder()
-                .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
-                .build()
-                .connect();
-
+                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
+                    .build()
+                    .connect();
         }
 
         storeDAO = new StoreDAO(new SQLExecutor(sqlConnector));
@@ -146,7 +146,6 @@ public final class NextStores extends JavaPlugin {
         pluginManager.registerEvents(playerLikeStoreListener, this);
         pluginManager.registerEvents(playerVisitStoreListener, this);
         pluginManager.registerEvents(playerDislikeStoreListener, this);
-
     }
 
     private void checkUpdate() {
@@ -164,5 +163,4 @@ public final class NextStores extends JavaPlugin {
             logger.info("Você está rodando a última versão.");
         }
     }
-
 }

@@ -13,7 +13,6 @@ import java.util.Set;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @AllArgsConstructor
 public final class StoreDAO {
 
@@ -23,58 +22,42 @@ public final class StoreDAO {
 
     public void createTable() {
 
-        sqlExecutor.updateQuery("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
-            "owner VARCHAR(16) NOT NULL PRIMARY KEY UNIQUE," +
-            "open TEXT," +
-            "description TEXT," +
-            "visits INTEGER," +
-            "likes INTEGER," +
-            "dislikes INTEGER," +
-            "location TEXT," +
-            "ratings TEXT" +
-            ");");
+        sqlExecutor.updateQuery(
+                "CREATE TABLE IF NOT EXISTS " + TABLE + "(" + "owner VARCHAR(16) NOT NULL PRIMARY KEY UNIQUE,"
+                        + "open TEXT,"
+                        + "description TEXT,"
+                        + "visits INTEGER,"
+                        + "likes INTEGER,"
+                        + "dislikes INTEGER,"
+                        + "location TEXT,"
+                        + "ratings TEXT"
+                        + ");");
     }
 
     public Set<Store> selectAll() {
-        return sqlExecutor.resultManyQuery(
-            "SELECT * FROM " + TABLE,
-            simpleStatement -> {
-            },
-            StoreAdapter.class
-        );
+        return sqlExecutor.resultManyQuery("SELECT * FROM " + TABLE, simpleStatement -> {}, StoreAdapter.class);
     }
 
     public Set<Store> selectAll(String preferences) {
 
         return sqlExecutor.resultManyQuery(
-            "SELECT * FROM " + TABLE + " " + preferences,
-            simpleStatement -> {
-            },
-            StoreAdapter.class
-        );
-
+                "SELECT * FROM " + TABLE + " " + preferences, simpleStatement -> {}, StoreAdapter.class);
     }
 
     public void insert(Store store) {
-        sqlExecutor.updateQuery(
-            String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?,?)", TABLE),
-            statement -> {
-                statement.set(1, store.getOwner());
-                statement.set(2, store.isOpen() ? "true" : "false");
-                statement.set(3, store.getDescription());
-                statement.set(4, store.getVisits());
-                statement.set(5, store.getLikes());
-                statement.set(6, store.getDislikes());
-                statement.set(7, LocationSerializer.getInstance().encode(store.getLocation()));
-                statement.set(8, MapHelper.toDatabase(store.getPlayersWhoRated()));
-            }
-        );
+        sqlExecutor.updateQuery(String.format("REPLACE INTO %s VALUES(?,?,?,?,?,?,?,?)", TABLE), statement -> {
+            statement.set(1, store.getOwner());
+            statement.set(2, store.isOpen() ? "true" : "false");
+            statement.set(3, store.getDescription());
+            statement.set(4, store.getVisits());
+            statement.set(5, store.getLikes());
+            statement.set(6, store.getDislikes());
+            statement.set(7, LocationSerializer.getInstance().encode(store.getLocation()));
+            statement.set(8, MapHelper.toDatabase(store.getPlayersWhoRated()));
+        });
     }
 
     public void delete(String owner) {
-        sqlExecutor.updateQuery(
-            String.format("DELETE FROM %s WHERE owner = '%s'", TABLE, owner)
-        );
+        sqlExecutor.updateQuery(String.format("DELETE FROM %s WHERE owner = '%s'", TABLE, owner));
     }
-
 }

@@ -52,14 +52,12 @@ public class MetricsConnector {
             config.addDefault("logSentData", false);
             config.addDefault("logResponseStatusText", false);
             // Inform the server owners about bStats
-            config
-                    .options()
-                    .header(
-                            "bStats (https://bStats.org) collects some basic information for plugin authors, like how\n"
-                                    + "many people use their plugin and their total player count. It's recommended to keep bStats\n"
-                                    + "enabled, but if you're not comfortable with this, you can turn this setting off. There is no\n"
-                                    + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
-                                    + "anonymous.")
+            config.options()
+                    .header("bStats (https://bStats.org) collects some basic information for plugin authors, like how\n"
+                            + "many people use their plugin and their total player count. It's recommended to keep bStats\n"
+                            + "enabled, but if you're not comfortable with this, you can turn this setting off. There is no\n"
+                            + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
+                            + "anonymous.")
                     .copyDefaults(true);
             try {
                 config.save(configFile);
@@ -72,21 +70,20 @@ public class MetricsConnector {
         boolean logErrors = config.getBoolean("logFailedRequests", false);
         boolean logSentData = config.getBoolean("logSentData", false);
         boolean logResponseStatusText = config.getBoolean("logResponseStatusText", false);
-        metricsBase =
-                new MetricsBase(
-                        "bukkit",
-                        serverUUID,
-                        serviceId,
-                        enabled,
-                        this::appendPlatformData,
-                        this::appendServiceData,
-                        submitDataTask -> Bukkit.getScheduler().runTask(plugin, submitDataTask),
-                        plugin::isEnabled,
-                        (message, error) -> this.plugin.getLogger().log(Level.WARNING, message, error),
-                        (message) -> this.plugin.getLogger().log(Level.INFO, message),
-                        logErrors,
-                        logSentData,
-                        logResponseStatusText);
+        metricsBase = new MetricsBase(
+                "bukkit",
+                serverUUID,
+                serviceId,
+                enabled,
+                this::appendPlatformData,
+                this::appendServiceData,
+                submitDataTask -> Bukkit.getScheduler().runTask(plugin, submitDataTask),
+                plugin::isEnabled,
+                (message, error) -> this.plugin.getLogger().log(Level.WARNING, message, error),
+                (message) -> this.plugin.getLogger().log(Level.INFO, message),
+                logErrors,
+                logSentData,
+                logResponseStatusText);
     }
 
     /**
@@ -226,19 +223,18 @@ public class MetricsConnector {
         }
 
         private void startSubmitting() {
-            final Runnable submitTask =
-                    () -> {
-                        if (!enabled || !checkServiceEnabledSupplier.get()) {
-                            // Submitting data or service is disabled
-                            scheduler.shutdown();
-                            return;
-                        }
-                        if (submitTaskConsumer != null) {
-                            submitTaskConsumer.accept(this::submitData);
-                        } else {
-                            this.submitData();
-                        }
-                    };
+            final Runnable submitTask = () -> {
+                if (!enabled || !checkServiceEnabledSupplier.get()) {
+                    // Submitting data or service is disabled
+                    scheduler.shutdown();
+                    return;
+                }
+                if (submitTaskConsumer != null) {
+                    submitTaskConsumer.accept(this::submitData);
+                } else {
+                    this.submitData();
+                }
+            };
             // Many servers tend to restart at a fixed time at xx:00 which causes an uneven distribution
             // of requests on the
             // bStats backend. To circumvent this problem, we introduce some randomness into the initial
@@ -258,29 +254,27 @@ public class MetricsConnector {
             appendPlatformDataConsumer.accept(baseJsonBuilder);
             final JsonObjectBuilder serviceJsonBuilder = new JsonObjectBuilder();
             appendServiceDataConsumer.accept(serviceJsonBuilder);
-            JsonObjectBuilder.JsonObject[] chartData =
-                    customCharts.stream()
-                            .map(customChart -> customChart.getRequestJsonObject(errorLogger, logErrors))
-                            .filter(Objects::nonNull)
-                            .toArray(JsonObjectBuilder.JsonObject[]::new);
+            JsonObjectBuilder.JsonObject[] chartData = customCharts.stream()
+                    .map(customChart -> customChart.getRequestJsonObject(errorLogger, logErrors))
+                    .filter(Objects::nonNull)
+                    .toArray(JsonObjectBuilder.JsonObject[]::new);
             serviceJsonBuilder.appendField("id", serviceId);
             serviceJsonBuilder.appendField("customCharts", chartData);
             baseJsonBuilder.appendField("service", serviceJsonBuilder.build());
             baseJsonBuilder.appendField("serverUUID", serverUuid);
             baseJsonBuilder.appendField("metricsVersion", METRICS_VERSION);
             JsonObjectBuilder.JsonObject data = baseJsonBuilder.build();
-            scheduler.execute(
-                    () -> {
-                        try {
-                            // Send the data
-                            sendData(data);
-                        } catch (Exception e) {
-                            // Something went wrong! :(
-                            if (logErrors) {
-                                errorLogger.accept("Could not submit bStats metrics data", e);
-                            }
-                        }
-                    });
+            scheduler.execute(() -> {
+                try {
+                    // Send the data
+                    sendData(data);
+                } catch (Exception e) {
+                    // Something went wrong! :(
+                    if (logErrors) {
+                        errorLogger.accept("Could not submit bStats metrics data", e);
+                    }
+                }
+            });
         }
 
         private void sendData(JsonObjectBuilder.JsonObject data) throws Exception {
@@ -304,7 +298,7 @@ public class MetricsConnector {
             }
             StringBuilder builder = new StringBuilder();
             try (BufferedReader bufferedReader =
-                         new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
                     builder.append(line);
@@ -322,8 +316,7 @@ public class MetricsConnector {
                     || !System.getProperty("bstats.relocatecheck").equals("false")) {
                 // Maven's Relocate is clever and changes strings, too. So we have to use this little
                 // "trick" ... :D
-                final String defaultPackage =
-                        new String(new byte[] {'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's'});
+                final String defaultPackage = new String(new byte[] {'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's'});
                 final String examplePackage =
                         new String(new byte[] {'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
                 // We want to make sure no one just copy & pastes the example and uses the wrong package
@@ -389,7 +382,9 @@ public class MetricsConnector {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new JsonObjectBuilder()
+                    .appendField("values", valuesBuilder.build())
+                    .build();
         }
     }
 
@@ -419,7 +414,9 @@ public class MetricsConnector {
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
                 valuesBuilder.appendField(entry.getKey(), new int[] {entry.getValue()});
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new JsonObjectBuilder()
+                    .appendField("values", valuesBuilder.build())
+                    .build();
         }
     }
 
@@ -459,7 +456,9 @@ public class MetricsConnector {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new JsonObjectBuilder()
+                    .appendField("values", valuesBuilder.build())
+                    .build();
         }
     }
 
@@ -499,7 +498,9 @@ public class MetricsConnector {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new JsonObjectBuilder()
+                    .appendField("values", valuesBuilder.build())
+                    .build();
         }
     }
 
@@ -616,7 +617,8 @@ public class MetricsConnector {
             for (Map.Entry<String, Map<String, Integer>> entryValues : map.entrySet()) {
                 JsonObjectBuilder valueBuilder = new JsonObjectBuilder();
                 boolean allSkipped = true;
-                for (Map.Entry<String, Integer> valueEntry : map.get(entryValues.getKey()).entrySet()) {
+                for (Map.Entry<String, Integer> valueEntry :
+                        map.get(entryValues.getKey()).entrySet()) {
                     valueBuilder.appendField(valueEntry.getKey(), valueEntry.getValue());
                     allSkipped = false;
                 }
@@ -629,7 +631,9 @@ public class MetricsConnector {
                 // Null = skip the chart
                 return null;
             }
-            return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
+            return new JsonObjectBuilder()
+                    .appendField("values", valuesBuilder.build())
+                    .build();
         }
     }
 
@@ -713,10 +717,9 @@ public class MetricsConnector {
             if (values == null) {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
-            String escapedValues =
-                    Arrays.stream(values)
-                            .map(value -> "\"" + escape(value) + "\"")
-                            .collect(Collectors.joining(","));
+            String escapedValues = Arrays.stream(values)
+                    .map(value -> "\"" + escape(value) + "\"")
+                    .collect(Collectors.joining(","));
             appendFieldUnescaped(key, "[" + escapedValues + "]");
             return this;
         }

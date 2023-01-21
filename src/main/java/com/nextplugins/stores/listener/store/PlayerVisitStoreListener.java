@@ -15,13 +15,12 @@ public final class PlayerVisitStoreListener implements Listener {
 
         if (store.isOpen()) {
             player.teleport(store.getLocation());
-            player.sendMessage(MessageValue.get(MessageValue::teleportedToTheStore)
-                .replace("$player", player.getName()));
+            player.sendMessage(
+                    MessageValue.get(MessageValue::teleportedToTheStore).replace("$player", player.getName()));
 
             store.setVisits(store.getVisits() + 1);
         } else {
             player.sendMessage(MessageValue.get(MessageValue::storeClosed));
         }
     }
-
 }

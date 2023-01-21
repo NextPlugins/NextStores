@@ -20,17 +20,17 @@ import java.util.concurrent.TimeUnit;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @AllArgsConstructor
 public final class StoreManager {
 
-    @Getter private final Map<String, Store> stores = new HashMap<>();
+    @Getter
+    private final Map<String, Store> stores = new HashMap<>();
 
-    @Getter private final LoadingCache<UUID, Store> playersChangingStoreDescription = CacheBuilder.newBuilder()
-        .maximumSize(1000)
-        .expireAfterWrite(30, TimeUnit.SECONDS)
-        .build(
-            new CacheLoader<UUID, Store>() {
+    @Getter
+    private final LoadingCache<UUID, Store> playersChangingStoreDescription = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(30, TimeUnit.SECONDS)
+            .build(new CacheLoader<UUID, Store>() {
                 @Override
                 public Store load(@NotNull UUID key) {
                     final Player player = Bukkit.getPlayer(key);
@@ -39,10 +39,10 @@ public final class StoreManager {
 
                     return stores.get(player.getName());
                 }
-            }
-        );
+            });
 
-    @Getter private final StoreDAO storeDAO;
+    @Getter
+    private final StoreDAO storeDAO;
 
     public void init() {
         this.storeDAO.createTable();
@@ -59,5 +59,4 @@ public final class StoreManager {
         this.stores.remove(store.getOwner());
         this.storeDAO.delete(store.getOwner());
     }
-
 }

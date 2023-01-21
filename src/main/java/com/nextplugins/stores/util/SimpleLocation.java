@@ -28,9 +28,7 @@ public class SimpleLocation implements Serializable {
                 location.getY(),
                 location.getZ(),
                 location.getYaw(),
-                location.getPitch()
-        );
-
+                location.getPitch());
     }
 
     public World getWorld() {
@@ -40,5 +38,4 @@ public class SimpleLocation implements Serializable {
     public Location toBukkit() {
         return new Location(this.getWorld(), x, y, z, this.yaw, this.pitch);
     }
-
 }

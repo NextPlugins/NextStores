@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -52,10 +51,6 @@ public final class NPCValue {
     }
 
     private List<String> messageList(String key) {
-        return configuration.getStringList(key)
-                .stream()
-                .map(this::colored)
-                .collect(Collectors.toList());
+        return configuration.getStringList(key).stream().map(this::colored).collect(Collectors.toList());
     }
-
 }

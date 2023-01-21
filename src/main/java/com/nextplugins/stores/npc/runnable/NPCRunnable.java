@@ -4,8 +4,6 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.google.common.collect.Lists;
-import com.nextplugins.stores.NextStores;
 import com.nextplugins.stores.configuration.values.NPCValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +17,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
-
 @Getter
 @RequiredArgsConstructor
 public class NPCRunnable implements Runnable {
@@ -48,13 +44,15 @@ public class NPCRunnable implements Runnable {
      * Default spawn of npc & hologram
      */
     public void spawnDefault(Location location) {
-        Bukkit.getScheduler().runTask(this.plugin, () -> spawn(
-                location,
-                NPCValue.get(NPCValue::npcName),
-                NPCValue.get(NPCValue::skinNick),
-                NPCValue.get(NPCValue::hologramMessage),
-                NPCValue.get(NPCValue::heightToAdd)
-        ));
+        Bukkit.getScheduler()
+                .runTask(
+                        this.plugin,
+                        () -> spawn(
+                                location,
+                                NPCValue.get(NPCValue::npcName),
+                                NPCValue.get(NPCValue::skinNick),
+                                NPCValue.get(NPCValue::hologramMessage),
+                                NPCValue.get(NPCValue::heightToAdd)));
     }
 
     /**
@@ -62,11 +60,8 @@ public class NPCRunnable implements Runnable {
      *
      * @param location to spawn the npc and hologram
      */
-    public boolean spawn(Location location,
-                         String npcName,
-                         String skinNick,
-                         List<String> hologramMessage,
-                         double hologramAddition) {
+    public boolean spawn(
+            Location location, String npcName, String skinNick, List<String> hologramMessage, double hologramAddition) {
 
         // prevent duplicate npc / holograms
         despawn();
@@ -110,7 +105,6 @@ public class NPCRunnable implements Runnable {
         }
 
         return true;
-
     }
 
     /**
@@ -124,12 +118,11 @@ public class NPCRunnable implements Runnable {
         if (holographicDisplays) {
             HologramsAPI.getHolograms(plugin).forEach(Hologram::delete);
         } else {
-            val cmiHologram = CMI.getInstance().getHologramManager().getHolograms().get("NextStores");
+            val cmiHologram =
+                    CMI.getInstance().getHologramManager().getHolograms().get("NextStores");
             if (cmiHologram == null) return;
 
             CMI.getInstance().getHologramManager().removeHolo(cmiHologram);
         }
-
     }
-
 }

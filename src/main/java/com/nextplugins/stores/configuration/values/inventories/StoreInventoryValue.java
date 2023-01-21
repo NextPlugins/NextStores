@@ -18,7 +18,8 @@ public final class StoreInventoryValue {
 
     private static final StoreInventoryValue instance = new StoreInventoryValue();
 
-    private final ConfigurationSection configuration = NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory");
+    private final ConfigurationSection configuration =
+            NextStores.getInstance().getStoreInventoryConfig().getConfigurationSection("inventory");
 
     private final String title = message("title");
     private final int lines = configuration.getInt("lines");
@@ -34,5 +35,4 @@ public final class StoreInventoryValue {
     private String message(String key) {
         return colors(Objects.requireNonNull(configuration).getString(key));
     }
-
 }

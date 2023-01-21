@@ -48,5 +48,4 @@ public final class InventoryButton {
 
         return itemStack;
     }
-
 }
